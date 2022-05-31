@@ -17,5 +17,6 @@
 		<module>mano-vim-api</module>
 		<module>mano-vim-openstack</module>
 		<module>mano-vim-contrail</module>
+		<module>mano-helm</module>
 	</modules>
 </project>
