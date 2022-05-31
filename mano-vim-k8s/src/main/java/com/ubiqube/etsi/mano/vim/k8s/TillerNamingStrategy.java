@@ -14,45 +14,21 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim;
+package com.ubiqube.etsi.mano.vim.k8s;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.UUID;
 
 /**
+ * Tiller doesn't seems to support namespace for chart name.
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CnfK8sParams {
+public class TillerNamingStrategy implements K8sNamingStragegy {
 
-	private String clusterTemplate;
+	@Override
+	public String getChartName(final UUID id, final String chartName) {
+		return id.toString() + chartName;
+	}
 
-	private String dnsServer;
-
-	private Integer volumeSize;
-
-	private String externalNetworkId;
-
-	private String flavorId;
-
-	private String imageId;
-
-	private String keypair;
-
-	private String masterFlavor;
-
-	private String name;
-
-	private String networkDriver;
-
-	private String serverType;
 }

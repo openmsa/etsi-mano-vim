@@ -14,45 +14,16 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim;
+package com.ubiqube.etsi.mano.vim.k8s;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.UUID;
 
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CnfK8sParams {
+public interface K8sNamingStragegy {
 
-	private String clusterTemplate;
-
-	private String dnsServer;
-
-	private Integer volumeSize;
-
-	private String externalNetworkId;
-
-	private String flavorId;
-
-	private String imageId;
-
-	private String keypair;
-
-	private String masterFlavor;
-
-	private String name;
-
-	private String networkDriver;
-
-	private String serverType;
+	String getChartName(UUID id, String chartName);
 }

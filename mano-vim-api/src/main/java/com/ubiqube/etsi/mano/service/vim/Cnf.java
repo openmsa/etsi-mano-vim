@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
+import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
+
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
@@ -23,7 +25,17 @@ package com.ubiqube.etsi.mano.service.vim;
  */
 public interface Cnf {
 
-	String createK8sTemplate(CnfK8sParams params);
+	String startK8s(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount, String networkId);
 
-	String startK8s(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount);
+	void deleteK8s(String vimResourceId);
+
+	String createContainer(CnfK8sParams params);
+
+	String deleteContainer(String clusterInstanceId);
+
+	K8sStatus k8sStatus(String string);
+
+	K8sServers getClusterInformations(String id);
+
+	K8sServers sign(String userCn, K8sServers server);
 }

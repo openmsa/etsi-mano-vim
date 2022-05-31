@@ -17,10 +17,14 @@
 package com.ubiqube.etsi.mano.service.vim;
 
 import org.openstack4j.api.OSClient.OSClientV3;
+import org.openstack4j.model.common.ActionResponse;
+import org.openstack4j.model.magnum.Carequest;
+import org.openstack4j.model.magnum.Certificate;
 import org.openstack4j.model.magnum.Cluster;
-import org.openstack4j.model.magnum.Clustertemplate;
+import org.openstack4j.openstack.magnum.MagnumCarequest;
 import org.openstack4j.openstack.magnum.MagnumCluster;
-import org.openstack4j.openstack.magnum.MagnumClustertemplate;
+
+import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
 
 /**
  *
@@ -36,36 +40,67 @@ public class OsCnf implements Cnf {
 	}
 
 	@Override
-	public String createK8sTemplate(final CnfK8sParams params) {
-		final Clustertemplate template = MagnumClustertemplate.builder()
-				.clusterDistro(params.getClusterDistro())
-				.coe("kubernetes")
-				.dnsNameserver(params.getDnsServer())
-				.dockerStorageDriver("")
-				.dockerVolumeSize(params.getVolumeSize())
-				.externalNetworkId(params.getExternalNetworkId())
-				.flavorId(params.getFlavorId())
-				.imageId(params.getImageId())
-				.keypairId(params.getKeypair())
-				.masterFlavorId(params.getMasterFlavor())
-				.name(params.getName())
-				.networkDriver("flannel")
-				.serverType("vm")
-				.build();
-		final Clustertemplate obj = os.magnum().createClustertemplate(template);
-		return obj.getUuid();
-	}
-
-	@Override
-	public String startK8s(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount) {
+	public String startK8s(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount, final String networkId) {
 		final Cluster cluster = MagnumCluster.builder()
 				.clusterTemplateId(clusterTemplateId)
 				.keypair(keypair)
 				.masterCount(masterCount)
 				.name(name)
 				.nodeCount(nodeCount)
+				.fixedNetwork(networkId)
 				.build();
 		final Cluster res = os.magnum().createCluster(cluster);
 		return res.getUuid();
 	}
+
+	@Override
+	public void deleteK8s(final String vimResourceId) {
+		os.magnum().deleteCluster(vimResourceId);
+	}
+
+	@Override
+	public String deleteContainer(final String clusterInstanceId) {
+		final ActionResponse res = os.magnum().deleteContainer(clusterInstanceId);
+		return res.toString();
+	}
+
+	@Override
+	public String createContainer(final CnfK8sParams params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public K8sStatus k8sStatus(final String string) {
+		final Cluster res = os.magnum().showCluster(string);
+		return K8sStatus.builder()
+				.masterAddresses(res.getMasterAddresses())
+				.status(StatusType.valueOf(res.getStatus()))
+				.apiAddress(res.getApiAddress())
+				.build();
+	}
+
+	@Override
+	public K8sServers getClusterInformations(final String id) {
+		final K8sStatus status = k8sStatus(id);
+		final Certificate ca = os.magnum().getCertificate(id);
+		return K8sServers.builder()
+				.apiAddress(status.getApiAddress())
+				.caPem(ca.getPem())
+				.masterAddresses(status.getMasterAddresses())
+				.vimResourceId(id)
+				.build();
+	}
+
+	@Override
+	public K8sServers sign(final String csr, final K8sServers server) {
+		final Carequest ca = MagnumCarequest.builder()
+				.bayUuid(server.getVimResourceId())
+				.csr(csr)
+				.build();
+		final Certificate sign = os.magnum().signCertificate(ca);
+		server.setUserCrt(sign.getPem());
+		return server;
+	}
+
 }

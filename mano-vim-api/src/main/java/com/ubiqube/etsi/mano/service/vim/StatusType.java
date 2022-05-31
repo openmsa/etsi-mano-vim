@@ -16,43 +16,29 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CnfK8sParams {
+public enum StatusType {
+	CREATE_IN_PROGRESS,
+	CREATE_FAILED,
+	CREATE_COMPLETE,
+	UPDATE_IN_PROGRESS,
+	UPDATE_FAILED,
+	UPDATE_COMPLETE,
+	DELETE_IN_PROGRESS,
+	DELETE_FAILED,
+	DELETE_COMPLETE,
+	RESUME_COMPLETE,
+	RESUME_FAILED,
+	RESTORE_COMPLETE,
+	ROLLBACK_IN_PROGRESS,
+	ROLLBACK_FAILED,
+	ROLLBACK_COMPLETE,
+	SNAPSHOT_COMPLETE,
+	CHECK_COMPLETE,
+	ADOPT_COMPLETE;
 
-	private String clusterTemplate;
-
-	private String dnsServer;
-
-	private Integer volumeSize;
-
-	private String externalNetworkId;
-
-	private String flavorId;
-
-	private String imageId;
-
-	private String keypair;
-
-	private String masterFlavor;
-
-	private String name;
-
-	private String networkDriver;
-
-	private String serverType;
 }

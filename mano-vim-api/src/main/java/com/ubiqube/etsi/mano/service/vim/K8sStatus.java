@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,27 +34,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CnfK8sParams {
+public class K8sStatus {
 
-	private String clusterTemplate;
+	private String apiAddress;
 
-	private String dnsServer;
+	private List<String> masterAddresses;
 
-	private Integer volumeSize;
-
-	private String externalNetworkId;
-
-	private String flavorId;
-
-	private String imageId;
-
-	private String keypair;
-
-	private String masterFlavor;
-
-	private String name;
-
-	private String networkDriver;
-
-	private String serverType;
+	private StatusType status;
 }

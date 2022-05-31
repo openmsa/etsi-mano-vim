@@ -14,45 +14,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim;
+package com.ubiqube.etsi.mano.service.vim.k8s;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-@Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CnfK8sParams {
+@Service
+public class K8sService {
+	private K8sClient k8sClient;
 
-	private String clusterTemplate;
-
-	private String dnsServer;
-
-	private Integer volumeSize;
-
-	private String externalNetworkId;
-
-	private String flavorId;
-
-	private String imageId;
-
-	private String keypair;
-
-	private String masterFlavor;
-
-	private String name;
-
-	private String networkDriver;
-
-	private String serverType;
+	public String deployHelm() {
+		return k8sClient.deploy();
+	}
 }
