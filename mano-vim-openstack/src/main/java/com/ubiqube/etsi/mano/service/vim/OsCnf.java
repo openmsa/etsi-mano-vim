@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
+import java.util.Optional;
+
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.model.common.ActionResponse;
 import org.openstack4j.model.magnum.Carequest;
@@ -25,6 +27,7 @@ import org.openstack4j.openstack.magnum.MagnumCarequest;
 import org.openstack4j.openstack.magnum.MagnumCluster;
 
 import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
+import com.ubiqube.etsi.mano.dao.mano.vnfi.StatusType;
 
 /**
  *
@@ -83,12 +86,13 @@ public class OsCnf implements Cnf {
 	@Override
 	public K8sServers getClusterInformations(final String id) {
 		final K8sStatus status = k8sStatus(id);
-		final Certificate ca = os.magnum().getCertificate(id);
+		final Optional<Certificate> ca = Optional.ofNullable(os.magnum().getCertificate(id));
 		return K8sServers.builder()
 				.apiAddress(status.getApiAddress())
-				.caPem(ca.getPem())
+				.caPem(ca.map(Certificate::getPem).orElse(null))
 				.masterAddresses(status.getMasterAddresses())
 				.vimResourceId(id)
+				.status(status.getStatus())
 				.build();
 	}
 
