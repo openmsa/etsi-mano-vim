@@ -44,14 +44,16 @@ public class K8sTest {
 				.setAuthentication(new ClientCertificateAuthentication(certificate, key))
 				.setVerifyingSsl(false)
 				.build();
-		// final ApiClient client = Config.fromUrl("http://10.31.1.184").setBasePath("https://10.31.1.184:6443");
-		// final ApiKeyAuth BearerToken = (ApiKeyAuth) client.getAuthentication("BearerToken");
+		// final ApiClient client =
+		// Config.fromUrl("http://10.31.1.184").setBasePath("https://10.31.1.184:6443");
+		// final ApiKeyAuth BearerToken = (ApiKeyAuth)
+		// client.getAuthentication("BearerToken");
 		// BearerToken.setApiKey(TOKEN);
 		Configuration.setDefaultApiClient(client);
 		final CoreV1Api api = new CoreV1Api(client);
 		final V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null, null);
 		for (final V1Pod item : list.getItems()) {
-			System.out.println(item.getMetadata().getName());
+			System.out.println(item.getMetadata());
 		}
 	}
 }

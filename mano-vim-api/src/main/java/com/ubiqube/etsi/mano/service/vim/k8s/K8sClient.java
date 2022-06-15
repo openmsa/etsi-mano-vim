@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.service.vim.k8s;
 
+import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
+
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
@@ -23,6 +25,8 @@ package com.ubiqube.etsi.mano.service.vim.k8s;
  */
 public interface K8sClient {
 
-	String deploy();
+	String deploy(K8sServers server, String userKey, String file);
+
+	void undeploy(String vimResourceId);
 
 }

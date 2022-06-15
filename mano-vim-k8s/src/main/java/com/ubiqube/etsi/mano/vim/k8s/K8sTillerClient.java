@@ -16,11 +16,37 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.springframework.stereotype.Service;
+
+import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
+import com.ubiqube.etsi.mano.service.vim.VimException;
+import com.ubiqube.etsi.mano.service.vim.k8s.K8sClient;
+
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-public interface K8sClient {
+@Service
+public class K8sTillerClient implements K8sClient {
+
+	@Override
+	public String deploy(final K8sServers server, final String userKey, final String file) {
+		try {
+			final TillerClient cli = TillerClient.ofCerts(new URL(server.getApiAddress()), server.getCaPem(), server.getUserCrt(), userKey);
+			return cli.deploy(file);
+		} catch (final MalformedURLException e) {
+			throw new VimException(e);
+		}
+	}
+
+	@Override
+	public void undeploy(final String vimResourceId) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

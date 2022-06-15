@@ -20,14 +20,19 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.microbean.helm.ReleaseManager;
 import org.microbean.helm.Tiller;
+import org.microbean.helm.chart.URLChartLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ubiqube.etsi.mano.service.vim.VimException;
-import com.ubiqube.etsi.mano.service.vim.k8s.K8sClient;
 
+import hapi.chart.ChartOuterClass.Chart;
+import hapi.chart.ChartOuterClass.Chart.Builder;
 import hapi.release.ReleaseOuterClass.Release;
 import hapi.services.tiller.Tiller.InstallReleaseRequest;
 import hapi.services.tiller.Tiller.InstallReleaseResponse;
@@ -40,11 +45,13 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-public class TillerClient implements K8sClient {
+public class TillerClient {
+
+	private static final Logger LOG = LoggerFactory.getLogger(TillerClient.class);
 
 	private final DefaultKubernetesClient client;
 	private final Tiller tiller;
-	private final long timeout = 300L;
+	private static final long TIMEOUT = 300L;
 
 	private TillerClient(final Config config) {
 		this.client = new DefaultKubernetesClient(config);
@@ -77,22 +84,34 @@ public class TillerClient implements K8sClient {
 		return new TillerClient(c);
 	}
 
-	@Override
-	public String deploy() {
+	public String deploy(final String file) {
 		try (final ReleaseManager releaseManager = new ReleaseManager(tiller)) {
+			final Chart.Builder chart = getChart(file);
 			final InstallReleaseRequest.Builder requestBuilder = InstallReleaseRequest.newBuilder();
-			requestBuilder.setTimeout(timeout);
+			requestBuilder.setTimeout(TIMEOUT);
 			requestBuilder.setName("test-charts"); // Set the Helm release name
 			requestBuilder.setWait(true); // Wait for Pods to be ready
 			requestBuilder.setNamespace(UUID.randomUUID().toString());
 			final Future<InstallReleaseResponse> releaseFuture = releaseManager.install(requestBuilder, chart);
 			assert releaseFuture != null;
 			final Release release = releaseFuture.get().getRelease();
-			System.out.println("release => " + release.getInfo().getStatus().getCode());
-		} catch (final IOException e) {
+			LOG.debug("release => {}", release.getInfo().getStatus().getCode());
+		} catch (final InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new VimException(e);
+		} catch (final IOException | ExecutionException e) {
 			throw new VimException(e);
 		}
 		return null;
+	}
+
+	private static Builder getChart(final String file) {
+		try (final URLChartLoader chartLoader = new URLChartLoader()) {
+			return chartLoader.load(new URL(file));
+		} catch (final IOException e) {
+			throw new VimException(e);
+		}
+
 	}
 
 }
