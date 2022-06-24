@@ -52,7 +52,6 @@ import net.juniper.contrail.api.types.VnSubnetsType;
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-@SuppressWarnings("static-method")
 class ContrailTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ContrailTest.class);
@@ -65,6 +64,11 @@ class ContrailTest {
 		vimConnectionInformation.setAccessInfo(new HashMap<>());
 		vimConnectionInformation.getAccessInfo().put("username", "ncroot");
 		vimConnectionInformation.getAccessInfo().put("password", "password");
+	}
+
+	@Test
+	void dummy() {
+		assertTrue(true);
 	}
 
 	private final static ApiConnector getConnection() {

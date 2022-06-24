@@ -84,11 +84,13 @@ public class OpenStackVim implements Vim {
 
 	public OpenStackVim(final MapperFacade mapper) {
 		this.mapper = mapper;
-		LOG.info("Booting Openstack VIM.\n" +
-				"   ___  ___   __   _____ __  __ \n" +
-				"  / _ \\/ __|__\\ \\ / /_ _|  \\/  |\n" +
-				" | (_) \\__ \\___\\ V / | || |\\/| |\n" +
-				"  \\___/|___/    \\_/ |___|_|  |_|\n");
+		LOG.info("""
+				Booting Openstack VIM.\n" +
+				   ___  ___   __   _____ __  __
+				  / _ \\/ __|__\\ \\ / /_ _|  \\/
+				 | (_) \\__ \\___\\ V / | || |\\/|
+				  \\___/|___/    \\_/ |___|_|  |_|
+				""");
 	}
 
 	/**
@@ -179,7 +181,7 @@ public class OpenStackVim implements Vim {
 		} else {
 			cp.getPortsId().forEach(bs::addNetworkPort);
 		}
-		if (null != cp.getCloudInitData() && !cp.getCloudInitData().isEmpty()) {
+		if ((null != cp.getCloudInitData()) && !cp.getCloudInitData().isEmpty()) {
 			bs.userData(Base64.getEncoder().encodeToString(cp.getCloudInitData().getBytes(Charset.defaultCharset())));
 		}
 		if (!cp.getAffinityRules().isEmpty()) {
@@ -204,8 +206,8 @@ public class OpenStackVim implements Vim {
 		final List<Flavor> matchingFlavor = os.compute().flavors().list()
 				.parallelStream()
 				.filter(x -> x.getVcpus() == numVcpu)
-				.filter(x -> x.getRam() == virtualMemorySize / MEGA)
-				.filter(x -> x.getDisk() == disk / GIGA)
+				.filter(x -> x.getRam() == (virtualMemorySize / MEGA))
+				.filter(x -> x.getDisk() == (disk / GIGA))
 				.map(Flavor.class::cast)
 				.filter(x -> {
 					final OSClientV3 os2 = OpenStackVim.getClient(vimConnectionInformation);

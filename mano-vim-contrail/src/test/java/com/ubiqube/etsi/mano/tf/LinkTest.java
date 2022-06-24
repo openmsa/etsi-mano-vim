@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.tf;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,11 +30,12 @@ class LinkTest {
 		final List<PairsVl> ports = Arrays.asList(new PairsVl("A", "B"),
 				new PairsVl("C", "D"),
 				new PairsVl("E", "F"));
-		for (int i = 0; i < ports.size() - 1; i++) {
+		for (int i = 0; i < (ports.size() - 1); i++) {
 			final PairsVl left = ports.get(i);
 			final PairsVl right = ports.get(i + 1);
 			System.out.println(" + " + left.right + " -> " + right.left);
 		}
+		assertTrue(true);
 	}
 
 	record PairsVl(String left, String right) {

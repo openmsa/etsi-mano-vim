@@ -89,7 +89,7 @@ public class OsSfcSystem implements System<NsSfcTask> {
 		final SfcPortChainUow chain = new SfcPortChainUow(new SfcPortChainVt(chainTask), vim);
 		builder.add(flowUow, chain);
 		vnffg.getNfpd().forEach(nfp -> {
-			nfp.getInstancces().forEach(inst -> {
+			nfp.getInstances().forEach(inst -> {
 				final SfcPortPairGroupTask ppg = createPortPairGroup(task, inst);
 				final Set<String> portPair = ppg.getPortPair();
 				final SfcPortPairGroupUow portPairGroupUow = new SfcPortPairGroupUow(new SfcPortPairGroupVt(ppg), vim);

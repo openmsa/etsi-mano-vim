@@ -98,6 +98,8 @@ public class OpenStackTest {
 
 	private final VimConnectionInformation vimConnectionInformation;
 
+	private final VimConnectionInformation vciInari;
+
 	private final UUID id;
 
 	public OpenStackTest() throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
@@ -108,7 +110,15 @@ public class OpenStackTest {
 		id = UUID.randomUUID();
 		vimConnectionInformation.setId(id);
 		vimConnectionInformation.setVimId(id.toString());
+		vciInari = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack-yoga.json"), VimConnectionInformation.class);
+		vciInari.setId(id);
+		vciInari.setVimId(id.toString());
 
+	}
+
+	@Test
+	void dummy() {
+		assertTrue(true);
 	}
 
 	static void testName() throws Exception {
@@ -567,7 +577,6 @@ public class OpenStackTest {
 		assertNotNull("");
 	}
 
-	@Test
 	void testService() {
 		final OSClientV3 os = getVictoriaConnection();
 		os.getSupportedServices().forEach(x -> {
@@ -575,4 +584,10 @@ public class OpenStackTest {
 		});
 	}
 
+	void testMagnum() {
+		final OpenStackVim vim = new OpenStackVim(mapper);
+		final String networkId = null;
+		final String clusterTemplateId = "d5cc3f4d-7df3-4506-8135-2a566df78e88";
+		vim.cnf(vciInari).startK8s(clusterTemplateId, "ovi-dev", 1, "myCluster-TU", 1, networkId);
+	}
 }

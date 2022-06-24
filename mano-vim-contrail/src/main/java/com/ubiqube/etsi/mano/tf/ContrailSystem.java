@@ -100,7 +100,7 @@ public class ContrailSystem implements System<NsSfcTask> {
 		final ServiceTemplateTask serviceTemplateTask = createServiceTemplateTask(task, vnffg);
 		final ServiceTemplateUow stUow = new ServiceTemplateUow(new ServiceTemplateVt(serviceTemplateTask), vim);
 		vnffg.getNfpd().forEach(nfp -> {
-			nfp.getInstancces().stream()
+			nfp.getInstances().stream()
 					.flatMap(x -> x.getPairs().stream())
 					.forEach(x -> {
 						final String name = x.getIngressVl() + "-" + x.getEgressVl();
@@ -147,7 +147,7 @@ public class ContrailSystem implements System<NsSfcTask> {
 	private static List<ListKeyPair> gatherNetworks(final VnffgDescriptor vnffg) {
 		final AtomicInteger i = new AtomicInteger();
 		return vnffg.getNfpd().stream()
-				.flatMap(x -> x.getInstancces().stream())
+				.flatMap(x -> x.getInstances().stream())
 				.flatMap(x -> x.getPairs().stream())
 				.map(x -> Arrays.asList(x.getIngressVl(), x.getEgressVl()))
 				.flatMap(List::stream)
@@ -190,7 +190,7 @@ public class ContrailSystem implements System<NsSfcTask> {
 			return null;
 		}
 		final List<NfpDescriptor> nfpds = vnffg.getNfpd();
-		final List<VnffgInstance> insts = nfpds.get(nfpds.size() - 1).getInstancces();
+		final List<VnffgInstance> insts = nfpds.get(nfpds.size() - 1).getInstances();
 		if (insts.isEmpty()) {
 			return null;
 		}
@@ -209,7 +209,7 @@ public class ContrailSystem implements System<NsSfcTask> {
 		if (vnffg.getNfpd().isEmpty()) {
 			return null;
 		}
-		final List<VnffgInstance> insts = vnffg.getNfpd().get(0).getInstancces();
+		final List<VnffgInstance> insts = vnffg.getNfpd().get(0).getInstances();
 		if (insts.isEmpty()) {
 			return null;
 		}

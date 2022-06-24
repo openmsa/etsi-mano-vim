@@ -45,6 +45,7 @@ import net.juniper.contrail.api.types.VirtualNetwork;
  */
 public class ContrailApi {
 
+	private static final String DEFAULT_PROJECT = "admin";
 	private final ContrailFacade facade;
 
 	public ContrailApi() {
@@ -69,7 +70,7 @@ public class ContrailApi {
 
 	public String createServiceInstance(final SystemConnections vimConnectionInformation, final String name, final String serviceTemplateId, final String left, final String right) {
 		final Project prj = new Project();
-		prj.setName("admin");
+		prj.setName(DEFAULT_PROJECT);
 		final ServiceInstance root = new ServiceInstance();
 		root.setParent(prj);
 		root.setName(name);
@@ -97,7 +98,7 @@ public class ContrailApi {
 		final VirtualMachineInterface vmi = new VirtualMachineInterface();
 		vmi.setUuid(uuid);
 		final Project prj = new Project();
-		prj.setName("admin");
+		prj.setName(DEFAULT_PROJECT);
 		vmi.setParent(prj);
 		final VirtualMachineInterfacePropertiesType virtualMachineInterfaceProperties = new VirtualMachineInterfacePropertiesType();
 		virtualMachineInterfaceProperties.setServiceInterfaceType(mode);
@@ -128,7 +129,7 @@ public class ContrailApi {
 	public String createNetworkPolicy(final SystemConnections vimConnectionInformation, final String name, final Classifier classifier, final String serviceInstance, final String left, final String right) {
 		final NetworkPolicy root = new NetworkPolicy();
 		final Project prj = new Project();
-		prj.setName("admin");
+		prj.setName(DEFAULT_PROJECT);
 		root.setParent(prj);
 		root.setName(name);
 		final String leftFq = facade.uuidToFq(vimConnectionInformation, VirtualNetwork.class, left);
