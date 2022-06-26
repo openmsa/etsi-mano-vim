@@ -83,7 +83,6 @@ class ContrailTest {
 		return st;
 	}
 
-	@Test
 	void testConnection() throws IOException {
 		final ApiConnector conn = getConnection();
 		final List<? extends ApiObjectBase> res = conn.list(PortTuple.class, List.of());

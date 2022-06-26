@@ -85,7 +85,7 @@ public class OpenStackVim implements Vim {
 	public OpenStackVim(final MapperFacade mapper) {
 		this.mapper = mapper;
 		LOG.info("""
-				Booting Openstack VIM.\n" +
+				Booting Openstack VIM.
 				   ___  ___   __   _____ __  __
 				  / _ \\/ __|__\\ \\ / /_ _|  \\/
 				 | (_) \\__ \\___\\ V / | || |\\/|

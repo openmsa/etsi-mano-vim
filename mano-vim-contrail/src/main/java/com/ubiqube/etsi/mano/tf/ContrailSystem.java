@@ -16,13 +16,10 @@
  */
 package com.ubiqube.etsi.mano.tf;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -30,21 +27,18 @@ import javax.transaction.Transactional.TxType;
 
 import org.springframework.stereotype.Service;
 
-import com.ubiqube.etsi.mano.dao.mano.ChangeType;
-import com.ubiqube.etsi.mano.dao.mano.ResourceTypeEnum;
 import com.ubiqube.etsi.mano.dao.mano.common.ListKeyPair;
 import com.ubiqube.etsi.mano.dao.mano.nsd.CpPair;
 import com.ubiqube.etsi.mano.dao.mano.nsd.NfpDescriptor;
 import com.ubiqube.etsi.mano.dao.mano.nsd.VnffgDescriptor;
 import com.ubiqube.etsi.mano.dao.mano.nsd.VnffgInstance;
-import com.ubiqube.etsi.mano.dao.mano.v2.PlanStatusType;
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsSfcTask;
-import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 import com.ubiqube.etsi.mano.orchestrator.OrchestrationService;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.service.graph.TaskUtils;
 import com.ubiqube.etsi.mano.service.sys.System;
 import com.ubiqube.etsi.mano.tf.config.ContrailConfig;
 import com.ubiqube.etsi.mano.tf.entities.NetworkPolicyTask;
@@ -99,35 +93,33 @@ public class ContrailSystem implements System<NsSfcTask> {
 		// Service Template.
 		final ServiceTemplateTask serviceTemplateTask = createServiceTemplateTask(task, vnffg);
 		final ServiceTemplateUow stUow = new ServiceTemplateUow(new ServiceTemplateVt(serviceTemplateTask), vim);
-		vnffg.getNfpd().forEach(nfp -> {
-			nfp.getInstances().stream()
-					.flatMap(x -> x.getPairs().stream())
-					.forEach(x -> {
-						final String name = x.getIngressVl() + "-" + x.getEgressVl();
-						final ServiceInstanceTask siTask = createServiceInstance(task, x, name, "st-" + vnffg.getName());
-						final ServiceInstanceUow siUow = new ServiceInstanceUow(new ServiceInstanceVt(siTask), vim);
-						// Policy Task.
-						final NetworkPolicyTask networkPolicyTask = createNetworkPolicyTask(task, vnffg, siTask, name);
-						final NetworkPolicyUow npUow = new NetworkPolicyUow(new NetworkPolicyVt(networkPolicyTask), vim);
-						builder.add(siUow, npUow);
-						builder.add(stUow, siUow);
-						final PortTupleTask ptt = createPortTuple(task, x, siTask);
-						final PortTupleUow ptUow = new PortTupleUow(new PortTupleVt(ptt), vim);
-						builder.add(siUow, ptUow);
-						final PtLinkTask ptLinkTask = createTask(PtLinkTask::new, task);
-						ptLinkTask.setToscaName("pt-" + ptt.getToscaName());
-						ptLinkTask.setLeftPortId(ptt.getLeftPortId());
-						ptLinkTask.setRightPortId(ptt.getRightPortId());
-						ptLinkTask.setPortTupleName(ptt.getToscaName());
-						final PtLinkUow ptlUow = new PtLinkUow(new PtLinkVt(ptLinkTask), vim);
-						builder.add(ptUow, ptlUow);
-					});
-		});
+		vnffg.getNfpd().forEach(nfp -> nfp.getInstances().stream()
+				.flatMap(x -> x.getPairs().stream())
+				.forEach(x -> {
+					final String name = x.getIngressVl() + "-" + x.getEgressVl();
+					final ServiceInstanceTask siTask = createServiceInstance(task, x, name, "st-" + vnffg.getName());
+					final ServiceInstanceUow siUow = new ServiceInstanceUow(new ServiceInstanceVt(siTask), vim);
+					// Policy Task.
+					final NetworkPolicyTask networkPolicyTask = createNetworkPolicyTask(task, vnffg, siTask, name);
+					final NetworkPolicyUow npUow = new NetworkPolicyUow(new NetworkPolicyVt(networkPolicyTask), vim);
+					builder.add(siUow, npUow);
+					builder.add(stUow, siUow);
+					final PortTupleTask ptt = createPortTuple(task, x, siTask);
+					final PortTupleUow ptUow = new PortTupleUow(new PortTupleVt(ptt), vim);
+					builder.add(siUow, ptUow);
+					final PtLinkTask ptLinkTask = TaskUtils.createTask(PtLinkTask::new, task);
+					ptLinkTask.setToscaName("pt-" + ptt.getToscaName());
+					ptLinkTask.setLeftPortId(ptt.getLeftPortId());
+					ptLinkTask.setRightPortId(ptt.getRightPortId());
+					ptLinkTask.setPortTupleName(ptt.getToscaName());
+					final PtLinkUow ptlUow = new PtLinkUow(new PtLinkVt(ptLinkTask), vim);
+					builder.add(ptUow, ptlUow);
+				}));
 		return builder;
 	}
 
 	private PortTupleTask createPortTuple(final NsSfcTask task, final CpPair tuple, final ServiceInstanceTask serviceInstanceTask) {
-		final PortTupleTask ptt = createTask(PortTupleTask::new, task);
+		final PortTupleTask ptt = TaskUtils.createTask(PortTupleTask::new, task);
 		ptt.setToscaName(tuple.getToscaName());
 		ptt.setServiceInstanceName(serviceInstanceTask.getToscaName());
 		ptt.setLeftPortId(tuple.getIngress());
@@ -136,7 +128,7 @@ public class ContrailSystem implements System<NsSfcTask> {
 	}
 
 	private ServiceInstanceTask createServiceInstance(final NsSfcTask task, final CpPair left, final String string, final String vnffgName) {
-		final ServiceInstanceTask serviceInstanceTask = createTask(ServiceInstanceTask::new, task);
+		final ServiceInstanceTask serviceInstanceTask = TaskUtils.createTask(ServiceInstanceTask::new, task);
 		serviceInstanceTask.setToscaName("si-" + string);
 		serviceInstanceTask.setServiceTemplateId(vnffgName);
 		// Not sure it's correct.
@@ -158,31 +150,19 @@ public class ContrailSystem implements System<NsSfcTask> {
 	}
 
 	private ServiceTemplateTask createServiceTemplateTask(final NsSfcTask task, final VnffgDescriptor vnffg) {
-		final ServiceTemplateTask serviceTemplateTask = createTask(ServiceTemplateTask::new, task);
+		final ServiceTemplateTask serviceTemplateTask = TaskUtils.createTask(ServiceTemplateTask::new, task);
 		serviceTemplateTask.setToscaName("st-" + vnffg.getName());
 		return nsTaskJpa.save(serviceTemplateTask);
 	}
 
 	private NetworkPolicyTask createNetworkPolicyTask(final NsSfcTask task, final VnffgDescriptor vnffg, final ServiceInstanceTask serviceInstanceTask, final String string) {
-		final NetworkPolicyTask networkPolicyTask = createTask(NetworkPolicyTask::new, task);
+		final NetworkPolicyTask networkPolicyTask = TaskUtils.createTask(NetworkPolicyTask::new, task);
 		networkPolicyTask.setClassifier(vnffg.getClassifier());
 		networkPolicyTask.setToscaName("np-" + string);
 		networkPolicyTask.setLeftId(getLogicalSourceVl(vnffg));
 		networkPolicyTask.setRightId(getLogicalDestinationVl(vnffg));
 		networkPolicyTask.setServiceInstance(serviceInstanceTask.getToscaName());
 		return nsTaskJpa.save(networkPolicyTask);
-	}
-
-	protected static <U extends NsTask> U createTask(final Supplier<U> newInstance, final NsSfcTask toscaEntity) {
-		final U task = newInstance.get();
-		task.setId(UUID.randomUUID());
-		task.setStartDate(LocalDateTime.now());
-		task.setStatus(PlanStatusType.NOT_STARTED);
-		task.setChangeType(ChangeType.ADDED);
-		task.setToscaName(toscaEntity.getToscaName());
-		task.setAlias(toscaEntity.getToscaName());
-		task.setType(ResourceTypeEnum.VNFFG);
-		return task;
 	}
 
 	private static String getLogicalDestinationVl(final VnffgDescriptor vnffg) {

@@ -149,14 +149,14 @@ public class OsStorage implements Storage {
 	}
 
 	private static void checkResult(final ActionResponse action) {
-		if (!action.isSuccess() && action.getCode() != 404) {
+		if (!action.isSuccess() && (action.getCode() != 404)) {
 			throw new VimException(action.getCode() + " " + action.getFault());
 		}
 	}
 
 	private static void waitForVolumeCompletion(final BlockVolumeService volumes, final Volume volume) {
 		Volume localVolume = volume;
-		while (localVolume.getStatus() == org.openstack4j.model.storage.block.Volume.Status.CREATING || localVolume.getStatus() == org.openstack4j.model.storage.block.Volume.Status.DOWNLOADING) {
+		while ((localVolume.getStatus() == org.openstack4j.model.storage.block.Volume.Status.CREATING) || (localVolume.getStatus() == org.openstack4j.model.storage.block.Volume.Status.DOWNLOADING)) {
 			LOG.info("Waiting for volume: {}", volume.getId());
 			try {
 				Thread.sleep(500);
@@ -199,12 +199,15 @@ public class OsStorage implements Storage {
 		final String hash = image.getAdditionalPropertyValue("os_hash_value");
 		return Checksum.builder()
 				.md5(image.getChecksum())
-				.algorithm(getAlgorithm(hash))
+				.algorithm(getAlgorithm(hash, osAlg))
 				.hash(hash)
 				.build();
 	}
 
-	private static String getAlgorithm(@Nullable final String checksum) {
+	private static String getAlgorithm(@Nullable final String checksum, final String osAlg) {
+		if (osAlg != null) {
+			return osAlg;
+		}
 		if (checksum == null) {
 			return null;
 		}
