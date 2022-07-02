@@ -89,4 +89,6 @@ public interface Vim {
 	String createFlavor(VimConnectionInformation vimConnectionInformation, String toscaName, long numVirtualCpu, long virtualMemSize, long disk, Map<String, String> add);
 
 	Cnf cnf(VimConnectionInformation vimConnectionInformation);
+
+	boolean isEqualMemFlavor(final long tosca, final long os);
 }

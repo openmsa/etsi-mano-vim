@@ -222,6 +222,7 @@ public class OpenStackVim implements Vim {
 	}
 
 	private static Flavor createFlavor(final OSClientV3 os, final String name, final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
+		LOG.debug("Flavor mem={} disk={}", virtualMemorySize / MEGA, disk / GIGA);
 		final Flavor flavor = os.compute()
 				.flavors()
 				.create(Builders.flavor()
@@ -533,6 +534,13 @@ public class OpenStackVim implements Vim {
 		f.setSwap(fIn.getSwap());
 		f.setVcpus(fIn.getVcpus());
 		return f;
+	}
+
+	@Override
+	public boolean isEqualMemFlavor(final long tosca, final long os) {
+		final long l = tosca / MEGA;
+		final long r = os / MEGA;
+		return r == l;
 	}
 
 	@Override
