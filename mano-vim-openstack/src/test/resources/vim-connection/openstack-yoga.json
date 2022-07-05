@@ -1,0 +1,15 @@
+{
+  "id": "a43a5e2e-1f96-43e1-93c2-37597b2a20d1",
+  "vimType": "OPENSTACK_V3",
+  "interfaceInfo": {
+    "endpoint": "http://10.31.1.108:5000/v3"
+  },
+  "accessInfo": {
+    "username": "admin",
+    "password": "9f865149f0b64c92",
+    "projectId": "1da4d2fa72dc41dfb71a9972809e50ae",
+    "projectDomain": "Default",
+    "userDomain": "Default",
+    "vim_project": "cbamnso"
+  }
+}
