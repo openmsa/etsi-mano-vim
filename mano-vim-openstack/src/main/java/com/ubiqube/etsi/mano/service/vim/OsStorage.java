@@ -206,7 +206,10 @@ public class OsStorage implements Storage {
 
 	private static String getAlgorithm(@Nullable final String checksum, final String osAlg) {
 		if (osAlg != null) {
-			return osAlg;
+			if (osAlg.equals("sha512")) {
+				return "SHA-512";
+			}
+			throw new VimException("Unknown algorithm: " + osAlg);
 		}
 		if (checksum == null) {
 			return null;
