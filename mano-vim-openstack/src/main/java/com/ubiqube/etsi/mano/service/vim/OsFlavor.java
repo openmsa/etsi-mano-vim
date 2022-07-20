@@ -22,22 +22,26 @@ import org.openstack4j.api.OSClient;
 
 import com.ubiqube.etsi.mano.vim.dto.Flavor;
 
+/**
+ *
+ * @author olivier
+ *
+ */
 public class OsFlavor extends Flavor {
 
 	private final OSClient<?> os;
 
 	public OsFlavor(final OSClient<?> os) {
-		super();
 		this.os = os;
 	}
 
 	@Override
 	public Map<String, String> getAdditional() {
-		if (null == getAdditional()) {
+		if (null == super.getAdditional()) {
 			final Map<String, String> add = os.compute().flavors().listExtraSpecs(getId());
 			setAdditional(add);
 		}
-		return getAdditional();
+		return super.getAdditional();
 	}
 
 }
