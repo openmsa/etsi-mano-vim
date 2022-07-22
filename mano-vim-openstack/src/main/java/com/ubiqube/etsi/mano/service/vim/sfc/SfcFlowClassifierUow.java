@@ -16,11 +16,15 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnfInstantiateNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
@@ -60,4 +64,17 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 		return null;
 	}
 
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+		final List<NamedDependency> ret = new ArrayList<>();
+		final Classifier classifier = task.getClassifier();
+		Optional.ofNullable(classifier.getLogicalSourcePort()).map(x -> new NamedDependency(VnfInstantiateNode.class, x)).ifPresent(ret::add);
+		Optional.ofNullable(classifier.getLogicalDestinationPort()).map(x -> new NamedDependency(VnfInstantiateNode.class, x)).ifPresent(ret::add);
+		return ret;
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of(new NamedDependency(getNode(), task.getToscaName()));
+	}
 }

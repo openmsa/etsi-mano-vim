@@ -16,7 +16,10 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc;
 
+import java.util.List;
+
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
@@ -53,6 +56,17 @@ public class SfcPortPairUow extends AbstractUnitOfWork<SfcPortPairTask> {
 	public String rollback(final Context context) {
 		sfc.deletePortPair(vimConnectionInformation, task.getVimResourceId());
 		return null;
+	}
+
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+		return List.of(new NamedDependency(VnfPortNode.class, task.getEgressId()),
+				new NamedDependency(VnfPortNode.class, task.getIngressId()));
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of(new NamedDependency(getNode(), task.getToscaName()));
 	}
 
 }

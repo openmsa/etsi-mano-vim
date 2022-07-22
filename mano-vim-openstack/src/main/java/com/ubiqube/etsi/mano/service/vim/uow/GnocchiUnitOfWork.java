@@ -16,8 +16,11 @@
  */
 package com.ubiqube.etsi.mano.service.vim.uow;
 
+import java.util.List;
+
 import com.ubiqube.etsi.mano.dao.mano.v2.MonitoringTask;
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.Task;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
@@ -46,6 +49,16 @@ public class GnocchiUnitOfWork implements UnitOfWork<MonitoringTask> {
 	public Class<? extends Node> getNode() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+		return List.of();
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of();
 	}
 
 }

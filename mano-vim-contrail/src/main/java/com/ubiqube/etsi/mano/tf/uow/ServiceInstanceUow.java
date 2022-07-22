@@ -16,7 +16,10 @@
  */
 package com.ubiqube.etsi.mano.tf.uow;
 
+import java.util.List;
+
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.Network;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
@@ -44,7 +47,7 @@ public class ServiceInstanceUow extends AbstractUnitOfWork<ServiceInstanceTask> 
 	@Override
 	public String execute(final Context context) {
 		final ContrailApi api = new ContrailApi();
-		final String serviceTemplateId = context.get(ServiceTemplateNode.class, getTask().getParameters().getServiceTemplateId());
+		final String serviceTemplateId = context.get(ServiceTemplateNode.class, task.getServiceTemplateId());
 		final String left = context.get(Network.class, task.getCpPorts().getIngressVl());
 		final String right = context.get(Network.class, task.getCpPorts().getEgressVl());
 		return api.createServiceInstance(vimConnectionInformation, getTask().getParameters().getToscaName(), serviceTemplateId, left, right);
@@ -55,6 +58,19 @@ public class ServiceInstanceUow extends AbstractUnitOfWork<ServiceInstanceTask> 
 		final ContrailApi api = new ContrailApi();
 		api.deleteServiceInstance(vimConnectionInformation, task.getVimResourceId());
 		return null;
+	}
+
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+
+		return List.of(new NamedDependency(ServiceTemplateNode.class, task.getServiceTemplateId()),
+				new NamedDependency(Network.class, task.getCpPorts().getIngressVl()),
+				new NamedDependency(Network.class, task.getCpPorts().getEgressVl()));
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of(new NamedDependency(getNode(), task.getAlias()));
 	}
 
 }

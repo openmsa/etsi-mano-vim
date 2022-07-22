@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.tf.uow;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
@@ -56,6 +57,16 @@ public class PortTupleUow extends AbstractUnitOfWork<PortTupleTask> {
 		final ContrailApi api = new ContrailApi();
 		api.deletePortTuple(vimConnectionInformation, task.getVimResourceId());
 		return null;
+	}
+
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+		return List.of(new NamedDependency(ServiceInstanceNode.class, task.getServiceInstanceName()));
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of(new NamedDependency(getNode(), task.getAlias()));
 	}
 
 }

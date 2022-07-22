@@ -16,7 +16,10 @@
  */
 package com.ubiqube.etsi.mano.tf.uow;
 
+import java.util.List;
+
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
@@ -55,6 +58,18 @@ public class PtLinkUow extends AbstractUnitOfWork<PtLinkTask> {
 	@Override
 	public String rollback(final Context context) {
 		return null;
+	}
+
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+		return List.of(new NamedDependency(VnfPortNode.class, task.getLeftPortId()),
+				new NamedDependency(PortTupleNode.class, task.getPortTupleName()),
+				new NamedDependency(VnfPortNode.class, task.getRightPortId()));
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of(new NamedDependency(getNode(), task.getAlias()));
 	}
 
 }

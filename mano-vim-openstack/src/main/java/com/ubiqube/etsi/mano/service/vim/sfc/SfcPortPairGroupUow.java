@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.service.vim.sfc;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
@@ -54,6 +55,16 @@ public class SfcPortPairGroupUow extends AbstractUnitOfWork<SfcPortPairGroupTask
 	public String rollback(final Context context) {
 		sfc.deletePortPairGroup(vimConnectionInformation, task.getVimResourceId());
 		return null;
+	}
+
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+		return task.getPortPair().stream().map(x -> new NamedDependency(PortPairNode.class, x)).toList();
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of(new NamedDependency(getNode(), task.getToscaName()));
 	}
 
 }

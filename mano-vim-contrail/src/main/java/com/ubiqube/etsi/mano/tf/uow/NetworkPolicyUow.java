@@ -16,7 +16,10 @@
  */
 package com.ubiqube.etsi.mano.tf.uow;
 
+import java.util.List;
+
 import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.Network;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
@@ -34,10 +37,12 @@ import com.ubiqube.etsi.mano.tf.node.ServiceInstanceNode;
 public class NetworkPolicyUow extends AbstractUnitOfWork<NetworkPolicyTask> {
 
 	private final SystemConnections vimConnectionInformation;
+	private final NetworkPolicyTask task;
 
 	public NetworkPolicyUow(final VirtualTask<NetworkPolicyTask> task, final SystemConnections vimConnectionInformation) {
 		super(task, NetworkPolicyNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
+		this.task = task.getParameters();
 	}
 
 	@Override
@@ -55,6 +60,17 @@ public class NetworkPolicyUow extends AbstractUnitOfWork<NetworkPolicyTask> {
 		final ContrailApi api = new ContrailApi();
 		api.deleteNetworkPolicy(vimConnectionInformation, getTask().getParameters().getVimResourceId());
 		return null;
+	}
+
+	@Override
+	public List<NamedDependency> getNameDependencies() {
+		return List.of(new NamedDependency(ServiceInstanceNode.class, task.getServiceInstance()),
+				new NamedDependency(Network.class, task.getLeftId()), new NamedDependency(Network.class, task.getRightId()));
+	}
+
+	@Override
+	public List<NamedDependency> getNamedProduced() {
+		return List.of(new NamedDependency(getNode(), task.getAlias()));
 	}
 
 }
