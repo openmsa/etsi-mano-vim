@@ -24,7 +24,8 @@ import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnfInstantiateNode;
+import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfContextExtractorNode;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
@@ -67,9 +68,9 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> ret = new ArrayList<>();
-		final Classifier classifier = task.getClassifier();
-		Optional.ofNullable(classifier.getLogicalSourcePort()).map(x -> new NamedDependency(VnfInstantiateNode.class, x)).ifPresent(ret::add);
-		Optional.ofNullable(classifier.getLogicalDestinationPort()).map(x -> new NamedDependency(VnfInstantiateNode.class, x)).ifPresent(ret::add);
+		ret.add(new NamedDependency(VnfContextExtractorNode.class, "extract-" + task.getSrcPort()));
+		ret.add(new NamedDependency(VnfContextExtractorNode.class, "extract-" + task.getDstPort()));
+		task.getElement().stream().map(x -> new NamedDependency(VnffgLoadbalancerNode.class, x)).forEach(ret::add);
 		return ret;
 	}
 

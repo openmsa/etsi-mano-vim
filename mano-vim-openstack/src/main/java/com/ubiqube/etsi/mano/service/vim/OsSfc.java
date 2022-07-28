@@ -18,6 +18,7 @@ package com.ubiqube.etsi.mano.service.vim;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.openstack4j.api.Builders;
@@ -93,12 +94,12 @@ public class OsSfc {
 		final FlowClassifier flowClassifier = Builders.flowClassifier()
 				.name(classifier.getClassifierName())
 				.destinationIpPrefix(classifier.getDestinationIpAddressPrefix())
-				.destinationPortRangeMax(Math.toIntExact(classifier.getDestinationPortRangeMax()))
-				.destinationPortRangeMin(Math.toIntExact(classifier.getDestinationPortRangeMin()))
+				.destinationPortRangeMax(Optional.ofNullable(classifier.getDestinationPortRangeMax()).map(Math::toIntExact).orElse(null))
+				.destinationPortRangeMin(Optional.ofNullable(classifier.getDestinationPortRangeMin()).map(Math::toIntExact).orElse(null))
 				.ethertype(Ethertype.forValue(classifier.getEtherType()))
 				.sourceIpPrefix(classifier.getSourceIpAddressPrefix())
-				.sourcePortRangeMax(Math.toIntExact(classifier.getSourcePortRangeMax()))
-				.sourcePortRangeMin(Math.toIntExact(classifier.getSourcePortRangeMin()))
+				.sourcePortRangeMax(Optional.ofNullable(classifier.getSourcePortRangeMax()).map(Math::toIntExact).orElse(null))
+				.sourcePortRangeMin(Optional.ofNullable(classifier.getSourcePortRangeMin()).map(Math::toIntExact).orElse(null))
 				.protocol(classifier.getProtocol())
 				.logicalSourcePort(src)
 				.logicalDestinationPort(dst)

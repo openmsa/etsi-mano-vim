@@ -18,36 +18,37 @@ package com.ubiqube.etsi.mano.service.vim.sfc;
 
 import java.util.List;
 
+import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgLoadbalancerTask;
 import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
-import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcPortPairGroupTask;
-import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairGroupNode;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairNode;
 
 /**
  *
- * @author Olivier Vignaud <ovi@ubiqube.com>
+ * @author olivier
  *
  */
-public class SfcPortPairGroupUow extends AbstractUnitOfWork<SfcPortPairGroupTask> {
+public class SfcLoadBalancerUow extends AbstractUnitOfWork<VnffgLoadbalancerTask> {
+
 	private final SystemConnections vimConnectionInformation;
 	private final OsSfc sfc;
-	private final SfcPortPairGroupTask task;
+	private final VnffgLoadbalancerTask task;
 
-	protected SfcPortPairGroupUow(final VirtualTask<SfcPortPairGroupTask> task, final SystemConnections vimConnectionInformation) {
-		super(task, PortPairGroupNode.class);
+	public SfcLoadBalancerUow(final VirtualTask<VnffgLoadbalancerTask> task, final SystemConnections vimConnectionInformation) {
+		super(task, VnffgLoadbalancerNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
-		sfc = new OsSfc();
+		this.sfc = new OsSfc();
 		this.task = task.getParameters();
 	}
 
 	@Override
 	public String execute(final Context context) {
-		final List<String> portPairs = task.getPortPair().stream().map(x -> context.get(PortPairNode.class, x)).toList();
+		final List<String> portPairs = task.getConstituant().stream().map(x -> context.get(PortPairNode.class, x.getValue())).toList();
 		return sfc.createPortPairGroup(vimConnectionInformation, task.getToscaName(), portPairs);
 	}
 
@@ -59,7 +60,7 @@ public class SfcPortPairGroupUow extends AbstractUnitOfWork<SfcPortPairGroupTask
 
 	@Override
 	public List<NamedDependency> getNameDependencies() {
-		return task.getPortPair().stream().map(x -> new NamedDependency(PortPairNode.class, x)).toList();
+		return task.getConstituant().stream().map(x -> new NamedDependency(PortPairNode.class, x.getValue())).toList();
 	}
 
 	@Override

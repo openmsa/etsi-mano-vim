@@ -23,7 +23,6 @@ import java.util.function.Supplier;
 import com.ubiqube.etsi.mano.dao.mano.ChangeType;
 import com.ubiqube.etsi.mano.dao.mano.ResourceTypeEnum;
 import com.ubiqube.etsi.mano.dao.mano.v2.PlanStatusType;
-import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsSfcTask;
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 
 /**
@@ -36,7 +35,7 @@ public class TaskUtils {
 		// Nothing.
 	}
 
-	public static <U extends NsTask> U createTask(final Supplier<U> newInstance, final NsSfcTask toscaEntity) {
+	public static <U extends NsTask> U createTask(final Supplier<U> newInstance, final NsTask toscaEntity) {
 		final U task = newInstance.get();
 		task.setId(UUID.randomUUID());
 		task.setStartDate(LocalDateTime.now());

@@ -75,4 +75,8 @@ public abstract class NsVtBase<U extends NsTask> implements VirtualTask<U> {
 		return nt.getAlias();
 	}
 
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName() + "(" + getName() + ", " + getAlias() + ")";
+	}
 }

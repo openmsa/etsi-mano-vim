@@ -19,23 +19,23 @@ package com.ubiqube.etsi.mano.service.vim.sfc.vt;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPostTask;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
-import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcPortChainTask;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortChainNode;
-import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairGroupNode;
 
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-public class SfcPortChainVt extends NsVtBase<SfcPortChainTask> {
+public class SfcPortChainVt extends NsVtBase<VnffgPostTask> {
 
-	private final SfcPortChainTask task;
+	private final VnffgPostTask task;
 
-	public SfcPortChainVt(final SfcPortChainTask nt) {
+	public SfcPortChainVt(final VnffgPostTask nt) {
 		super(nt);
 		this.task = nt;
 	}
@@ -43,8 +43,8 @@ public class SfcPortChainVt extends NsVtBase<SfcPortChainTask> {
 	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final ArrayList<NamedDependency> ret = new ArrayList<>();
-		task.getFlowClassifier().forEach(x -> ret.add(new NamedDependency(FlowClassifierNode.class, x)));
-		task.getPortPairGroups().forEach(x -> ret.add(new NamedDependency(PortPairGroupNode.class, x)));
+		ret.add(new NamedDependency(FlowClassifierNode.class, task.getClassifier().getClassifierName()));
+		task.getChain().forEach(x -> ret.add(new NamedDependency(VnffgLoadbalancerNode.class, x.getValue())));
 		return ret;
 	}
 
@@ -55,12 +55,12 @@ public class SfcPortChainVt extends NsVtBase<SfcPortChainTask> {
 
 	@Override
 	public String getFactoryProviderId() {
-		return "SFC-PORT-CHAIN";
+		return "VNFFG-LOADBALANCER";
 	}
 
 	@Override
 	public String getVimProviderId() {
-		return "OPENSTACK_V3";
+		return "VNFFG-LOADBALANCER";
 	}
 
 }

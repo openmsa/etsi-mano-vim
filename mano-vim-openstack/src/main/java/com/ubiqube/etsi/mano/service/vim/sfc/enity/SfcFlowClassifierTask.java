@@ -16,9 +16,11 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc.enity;
 
+import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -48,4 +50,10 @@ public class SfcFlowClassifierTask extends NsTask {
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private Classifier classifier;
 
+	private String srcPort;
+
+	private String dstPort;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Set<String> element;
 }

@@ -21,29 +21,29 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPostTask;
 import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
-import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcPortChainTask;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortChainNode;
-import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairGroupNode;
 
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-public class SfcPortChainUow extends AbstractUnitOfWork<SfcPortChainTask> {
+public class SfcPortChainUow extends AbstractUnitOfWork<VnffgPostTask> {
 
 	private final SystemConnections vci;
 	private final OsSfc sfc;
-	private final SfcPortChainTask task;
+	private final VnffgPostTask task;
 
-	protected SfcPortChainUow(final VirtualTask<SfcPortChainTask> task, final SystemConnections vci) {
+	public SfcPortChainUow(final VirtualTask<VnffgPostTask> task, final SystemConnections vci) {
 		super(task, PortChainNode.class);
 		this.vci = vci;
 		sfc = new OsSfc();
@@ -52,9 +52,9 @@ public class SfcPortChainUow extends AbstractUnitOfWork<SfcPortChainTask> {
 
 	@Override
 	public String execute(final Context context) {
-		final Set<String> flows = task.getFlowClassifier().stream().map(x -> context.get(FlowClassifierNode.class, x)).collect(Collectors.toSet());
-		final Set<String> ppg = task.getPortPairGroups().stream().map(x -> context.get(PortPairGroupNode.class, x)).collect(Collectors.toSet());
-		return sfc.createPortChain(vci, task.getToscaName(), flows, ppg);
+		final String flows = context.get(FlowClassifierNode.class, task.getClassifier().getClassifierName());
+		final Set<String> ppg = task.getChain().stream().map(x -> context.get(VnffgLoadbalancerNode.class, x.getValue())).collect(Collectors.toSet());
+		return sfc.createPortChain(vci, task.getToscaName(), Set.of(flows), ppg);
 	}
 
 	@Override
@@ -66,8 +66,8 @@ public class SfcPortChainUow extends AbstractUnitOfWork<SfcPortChainTask> {
 	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> ret = new ArrayList<>();
-		task.getFlowClassifier().stream().map(x -> new NamedDependency(FlowClassifierNode.class, x)).forEach(ret::add);
-		task.getPortPairGroups().stream().map(x -> new NamedDependency(PortPairGroupNode.class, x)).forEach(ret::add);
+		ret.add(new NamedDependency(FlowClassifierNode.class, task.getClassifier().getClassifierName()));
+		task.getChain().stream().map(x -> new NamedDependency(VnffgLoadbalancerNode.class, x.getValue())).forEach(ret::add);
 		return ret;
 	}
 
