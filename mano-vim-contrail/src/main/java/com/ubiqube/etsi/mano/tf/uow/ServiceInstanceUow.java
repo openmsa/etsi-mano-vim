@@ -20,8 +20,10 @@ import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.Network;
+import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.tf.ContrailApi;
@@ -62,7 +64,6 @@ public class ServiceInstanceUow extends AbstractUnitOfWork<ServiceInstanceTask> 
 
 	@Override
 	public List<NamedDependency> getNameDependencies() {
-
 		return List.of(new NamedDependency(ServiceTemplateNode.class, task.getServiceTemplateId()),
 				new NamedDependency(Network.class, task.getCpPorts().getIngressVl()),
 				new NamedDependency(Network.class, task.getCpPorts().getEgressVl()));
@@ -71,6 +72,13 @@ public class ServiceInstanceUow extends AbstractUnitOfWork<ServiceInstanceTask> 
 	@Override
 	public List<NamedDependency> getNamedProduced() {
 		return List.of(new NamedDependency(getNode(), task.getAlias()));
+	}
+
+	@Override
+	public List<NamedDependency2d> get2dDependencies() {
+		return List.of(new NamedDependency2d(ServiceTemplateNode.class, task.getServiceTemplateId(), Relation.MANY_TO_ONE),
+				new NamedDependency2d(Network.class, task.getCpPorts().getIngressVl(), Relation.MANY_TO_ONE),
+				new NamedDependency2d(Network.class, task.getCpPorts().getEgressVl(), Relation.MANY_TO_ONE));
 	}
 
 }

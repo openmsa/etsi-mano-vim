@@ -24,8 +24,10 @@ import java.util.stream.Collectors;
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPostTask;
 import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
+import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
@@ -74,5 +76,13 @@ public class SfcPortChainUow extends AbstractUnitOfWork<VnffgPostTask> {
 	@Override
 	public List<NamedDependency> getNamedProduced() {
 		return List.of(new NamedDependency(getNode(), task.getToscaName()));
+	}
+
+	@Override
+	public List<NamedDependency2d> get2dDependencies() {
+		final List<NamedDependency2d> ret = new ArrayList<>();
+		ret.add(new NamedDependency2d(FlowClassifierNode.class, task.getClassifier().getClassifierName(), Relation.ONE_TO_ONE));
+		task.getChain().stream().map(x -> new NamedDependency2d(VnffgLoadbalancerNode.class, x.getValue(), Relation.ONE_TO_MANY)).forEach(ret::add);
+		return ret;
 	}
 }

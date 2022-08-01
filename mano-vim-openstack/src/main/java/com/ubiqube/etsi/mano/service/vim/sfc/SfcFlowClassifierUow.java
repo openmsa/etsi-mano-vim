@@ -23,10 +23,12 @@ import java.util.Optional;
 import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfContextExtractorNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
+import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
@@ -77,5 +79,14 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	@Override
 	public List<NamedDependency> getNamedProduced() {
 		return List.of(new NamedDependency(getNode(), task.getToscaName()));
+	}
+
+	@Override
+	public List<NamedDependency2d> get2dDependencies() {
+		final List<NamedDependency2d> ret = new ArrayList<>();
+		ret.add(new NamedDependency2d(VnfContextExtractorNode.class, "extract-" + task.getSrcPort(), Relation.ONE_TO_ONE));
+		ret.add(new NamedDependency2d(VnfContextExtractorNode.class, "extract-" + task.getDstPort(), Relation.ONE_TO_ONE));
+		task.getElement().stream().map(x -> new NamedDependency2d(VnffgLoadbalancerNode.class, x, Relation.MANY_TO_ONE)).forEach(ret::add);
+		return ret;
 	}
 }
