@@ -67,7 +67,7 @@ public abstract class NsVtBase<U extends NsTask> implements VirtualTask<U> {
 
 	@Override
 	public final String getName() {
-		return nt.getToscaName();
+		return nt.getAlias();
 	}
 
 	@Override
