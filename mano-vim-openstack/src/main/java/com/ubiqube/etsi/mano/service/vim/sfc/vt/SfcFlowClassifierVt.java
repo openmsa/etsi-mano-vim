@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgPostNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcFlowClassifierTask;
@@ -39,7 +40,6 @@ public class SfcFlowClassifierVt extends NsVtBase<SfcFlowClassifierTask> {
 		this.task = nt;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> l = new ArrayList<>();
 		if (task.getClassifier().getLogicalDestinationPort() != null) {
@@ -51,19 +51,13 @@ public class SfcFlowClassifierVt extends NsVtBase<SfcFlowClassifierTask> {
 		return l;
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
 		return List.of(new NamedDependency(FlowClassifierNode.class, task.getToscaName()));
 	}
 
 	@Override
-	public String getFactoryProviderId() {
-		return "SFC-FLOW-CLASSIFIER";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "OPENSTACK_V3";
+	public Class<?> getType() {
+		return VnffgPostNode.class;
 	}
 
 }

@@ -19,40 +19,43 @@ package com.ubiqube.etsi.mano.service.graph.vt;
 import com.ubiqube.etsi.mano.dao.mano.ChangeType;
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-public abstract class NsVtBase<U extends NsTask> implements VirtualTask<U> {
+@Getter
+@Setter
+public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 
-	private U nt;
+	private final U nt;
 	private SystemBuilder db;
+	private int rank;
+
+	private U TemplateParameters;
 
 	protected NsVtBase(final U nt) {
 		this.nt = nt;
 	}
 
 	@Override
-	public final U getParameters() {
-		return nt;
+	public void setName(final String name) {
+		nt.setToscaName(name);
 	}
 
 	@Override
-	public void setParameters(final U u) {
-		nt = u;
+	public void setAlias(final String alias) {
+		nt.setAlias(alias);
 	}
 
 	@Override
-	public final void setSystemBuilder(final SystemBuilder db) {
-		this.db = db;
-	}
-
-	@Override
-	public final SystemBuilder getSystemBuilder() {
-		return db;
+	public void setDelete(final boolean del) {
+		nt.setChangeType(ChangeType.REMOVED);
 	}
 
 	@Override

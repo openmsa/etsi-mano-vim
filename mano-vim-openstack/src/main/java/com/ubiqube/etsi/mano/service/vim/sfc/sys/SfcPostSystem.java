@@ -27,13 +27,13 @@ import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
 import com.ubiqube.etsi.mano.dao.mano.nsd.VnffgDescriptor;
 import com.ubiqube.etsi.mano.dao.mano.nsd.VnffgInstance;
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPostTask;
-import com.ubiqube.etsi.mano.orchestrator.OrchestrationService;
+import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.TaskUtils;
-import com.ubiqube.etsi.mano.service.sys.System;
+import com.ubiqube.etsi.mano.service.sys.SystemV3;
 import com.ubiqube.etsi.mano.service.vim.sfc.SfcFlowClassifierUow;
 import com.ubiqube.etsi.mano.service.vim.sfc.SfcPortChainUow;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcFlowClassifierTask;
@@ -47,7 +47,7 @@ import com.ubiqube.etsi.mano.vim.jpa.NsTaskJpa;
  *
  */
 @Service
-public class SfcPostSystem implements System<VnffgPostTask> {
+public class SfcPostSystem implements SystemV3<VnffgPostTask> {
 	private final NsTaskJpa nsTaskJpa;
 
 	public SfcPostSystem(final NsTaskJpa nsTaskJpa) {
@@ -55,14 +55,9 @@ public class SfcPostSystem implements System<VnffgPostTask> {
 	}
 
 	@Override
-	public String getProviderId() {
-		return "SFC";
-	}
-
-	@Override
-	public SystemBuilder<UnitOfWork<VnffgPostTask>> getImplementation(final OrchestrationService<VnffgPostTask> orchestrationService, final VirtualTask<VnffgPostTask> virtualTask, final SystemConnections vim) {
+	public SystemBuilder<UnitOfWorkV3<VnffgPostTask>> getImplementation(final OrchestrationServiceV3<VnffgPostTask> orchestrationService, final VirtualTaskV3<VnffgPostTask> virtualTask, final SystemConnections vim) {
 		final SystemBuilder builder = orchestrationService.createEmptySystemBuilder();
-		final VnffgPostTask task = virtualTask.getParameters();
+		final VnffgPostTask task = virtualTask.getTemplateParameters();
 		final SfcFlowClassifierTask flowTask = createFlowTask(task);
 		final SfcFlowClassifierUow flowUow = new SfcFlowClassifierUow(new SfcFlowClassifierVt(flowTask), vim);
 		final VnffgPostTask chainTask = createChainPortTask(task, task.getClassifier());
@@ -104,6 +99,11 @@ public class SfcPostSystem implements System<VnffgPostTask> {
 		chainTask.setAlias(task.getAlias());
 		chainTask.setType(ResourceTypeEnum.VNFFG);
 		return nsTaskJpa.save(chainTask);
+	}
+
+	@Override
+	public String getVimType() {
+		return "OPENSTACK_V3";
 	}
 
 }

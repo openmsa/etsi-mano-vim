@@ -45,4 +45,11 @@ public class ServiceTemplateTask extends NsTask {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private UUID id;
 
+	@Override
+	public NsTask copy() {
+		final ServiceInstanceTask task = new ServiceInstanceTask();
+		super.copy(task);
+		return task;
+	}
+
 }

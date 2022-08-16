@@ -23,6 +23,7 @@ import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.tf.entities.PtLinkTask;
 import com.ubiqube.etsi.mano.tf.node.PortTupleNode;
+import com.ubiqube.etsi.mano.tf.node.PtLinkNode;
 
 /**
  *
@@ -35,26 +36,19 @@ public class PtLinkVt extends NsVtBase<PtLinkTask> {
 		super(ptLinkTask);
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
-		return List.of(new NamedDependency(PortTupleNode.class, getParameters().getToscaName()),
-				new NamedDependency(VnfPortNode.class, getParameters().getLeftPortId()),
-				new NamedDependency(VnfPortNode.class, getParameters().getRightPortId()));
+		return List.of(new NamedDependency(PortTupleNode.class, getTemplateParameters().getToscaName()),
+				new NamedDependency(VnfPortNode.class, getTemplateParameters().getLeftPortId()),
+				new NamedDependency(VnfPortNode.class, getTemplateParameters().getRightPortId()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
 		return List.of();
 	}
 
 	@Override
-	public String getFactoryProviderId() {
-		return "CONTRAIL";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "PT-LINK";
+	public Class<?> getType() {
+		return PtLinkNode.class;
 	}
 
 }

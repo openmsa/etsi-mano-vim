@@ -19,12 +19,12 @@ package com.ubiqube.etsi.mano.service.vim.sfc.sys;
 import org.springframework.stereotype.Service;
 
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPortPairTask;
-import com.ubiqube.etsi.mano.orchestrator.OrchestrationService;
+import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
-import com.ubiqube.etsi.mano.service.sys.System;
+import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
+import com.ubiqube.etsi.mano.service.sys.SystemV3;
 import com.ubiqube.etsi.mano.service.vim.sfc.SfcPortPairUow;
 
 /**
@@ -33,16 +33,16 @@ import com.ubiqube.etsi.mano.service.vim.sfc.SfcPortPairUow;
  *
  */
 @Service
-public class SfcPortPairSystem implements System<VnffgPortPairTask> {
+public class SfcPortPairSystem implements SystemV3<VnffgPortPairTask> {
 
 	@Override
-	public String getProviderId() {
-		return "VNFFG-PORT-PAIR";
+	public SystemBuilder<UnitOfWorkV3<VnffgPortPairTask>> getImplementation(final OrchestrationServiceV3<VnffgPortPairTask> orchestrationService, final VirtualTaskV3<VnffgPortPairTask> virtualTask, final SystemConnections vim) {
+		return orchestrationService.systemBuilderOf(new SfcPortPairUow(virtualTask, vim));
 	}
 
 	@Override
-	public SystemBuilder<UnitOfWork<VnffgPortPairTask>> getImplementation(final OrchestrationService<VnffgPortPairTask> orchestrationService, final VirtualTask<VnffgPortPairTask> virtualTask, final SystemConnections vim) {
-		return orchestrationService.systemBuilderOf(new SfcPortPairUow(virtualTask, vim));
+	public String getVimType() {
+		return "OPENSTACK_V3";
 	}
 
 }

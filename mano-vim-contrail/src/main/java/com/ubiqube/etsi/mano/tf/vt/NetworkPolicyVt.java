@@ -16,16 +16,9 @@
  */
 package com.ubiqube.etsi.mano.tf.vt;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
-import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.Network;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.tf.entities.NetworkPolicyTask;
 import com.ubiqube.etsi.mano.tf.node.NetworkPolicyNode;
-import com.ubiqube.etsi.mano.tf.node.ServiceInstanceNode;
 
 /**
  *
@@ -42,27 +35,7 @@ public class NetworkPolicyVt extends NsVtBase<NetworkPolicyTask> {
 	}
 
 	@Override
-	public List<NamedDependency> getNameDependencies() {
-		final List<NamedDependency> ret = new ArrayList<>();
-		ret.add(new NamedDependency(Network.class, task.getLeftId()));
-		ret.add(new NamedDependency(Network.class, task.getRightId()));
-		ret.add(new NamedDependency(ServiceInstanceNode.class, task.getServiceInstance()));
-		return ret;
+	public Class<?> getType() {
+		return NetworkPolicyNode.class;
 	}
-
-	@Override
-	public List<NamedDependency> getNamedProduced() {
-		return Arrays.asList(new NamedDependency(NetworkPolicyNode.class, task.getToscaName()));
-	}
-
-	@Override
-	public String getFactoryProviderId() {
-		return "CONTRAIL-NETXORK-POLICY";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "CONTRAIL";
-	}
-
 }

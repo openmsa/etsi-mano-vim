@@ -19,12 +19,12 @@ package com.ubiqube.etsi.mano.service.vim.sfc.sys;
 import org.springframework.stereotype.Service;
 
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgLoadbalancerTask;
-import com.ubiqube.etsi.mano.orchestrator.OrchestrationService;
+import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
-import com.ubiqube.etsi.mano.service.sys.System;
+import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
+import com.ubiqube.etsi.mano.service.sys.SystemV3;
 import com.ubiqube.etsi.mano.service.vim.sfc.SfcLoadBalancerUow;
 
 /**
@@ -33,16 +33,16 @@ import com.ubiqube.etsi.mano.service.vim.sfc.SfcLoadBalancerUow;
  *
  */
 @Service
-public class SfcLoadbalancerSystem implements System<VnffgLoadbalancerTask> {
+public class SfcLoadbalancerSystem implements SystemV3<VnffgLoadbalancerTask> {
 
 	@Override
-	public String getProviderId() {
-		return "VNFFG-LOADBALANCER";
+	public SystemBuilder<UnitOfWorkV3<VnffgLoadbalancerTask>> getImplementation(final OrchestrationServiceV3<VnffgLoadbalancerTask> orchestrationService, final VirtualTaskV3<VnffgLoadbalancerTask> virtualTask, final SystemConnections vim) {
+		return orchestrationService.systemBuilderOf(new SfcLoadBalancerUow(virtualTask, vim));
 	}
 
 	@Override
-	public SystemBuilder<UnitOfWork<VnffgLoadbalancerTask>> getImplementation(final OrchestrationService<VnffgLoadbalancerTask> orchestrationService, final VirtualTask<VnffgLoadbalancerTask> virtualTask, final SystemConnections vim) {
-		return orchestrationService.systemBuilderOf(new SfcLoadBalancerUow(virtualTask, vim));
+	public String getVimType() {
+		return "OPENSTACK_V3";
 	}
 
 }

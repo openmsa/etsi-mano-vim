@@ -20,14 +20,14 @@ import java.util.List;
 
 import com.ubiqube.etsi.mano.dao.mano.nsd.CpPair;
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPortPairTask;
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfExtractorNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairNode;
@@ -43,38 +43,35 @@ public class SfcPortPairUow extends AbstractUnitOfWork<VnffgPortPairTask> {
 	private final VnffgPortPairTask task;
 	private final CpPair cpPair;
 
-	public SfcPortPairUow(final VirtualTask<VnffgPortPairTask> task, final SystemConnections vimConnectionInformation) {
+	public SfcPortPairUow(final VirtualTaskV3<VnffgPortPairTask> task, final SystemConnections vimConnectionInformation) {
 		super(task, PortPairNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
 		sfc = new OsSfc();
-		this.task = task.getParameters();
-		this.cpPair = task.getParameters().getCpPair();
+		this.task = task.getTemplateParameters();
+		this.cpPair = task.getTemplateParameters().getCpPair();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final String egress = context.get(VnfPortNode.class, cpPair.getEgress());
 		final String igress = context.get(VnfPortNode.class, cpPair.getIngress());
 		return sfc.createPortPair(vimConnectionInformation, task.getToscaName(), egress, igress);
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		sfc.deletePortPair(vimConnectionInformation, task.getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getVnfAlias()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getToscaName()));
+		return List.of(new NamedDependency(getType(), task.getToscaName()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		return List.of(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getVnfAlias(), Relation.ONE_TO_ONE));
 	}

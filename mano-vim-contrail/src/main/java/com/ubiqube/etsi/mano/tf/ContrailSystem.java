@@ -33,13 +33,13 @@ import com.ubiqube.etsi.mano.dao.mano.nsd.NfpDescriptor;
 import com.ubiqube.etsi.mano.dao.mano.nsd.VnffgDescriptor;
 import com.ubiqube.etsi.mano.dao.mano.nsd.VnffgInstance;
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsSfcTask;
-import com.ubiqube.etsi.mano.orchestrator.OrchestrationService;
+import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.TaskUtils;
-import com.ubiqube.etsi.mano.service.sys.System;
+import com.ubiqube.etsi.mano.service.sys.SystemV3;
 import com.ubiqube.etsi.mano.tf.config.ContrailConfig;
 import com.ubiqube.etsi.mano.tf.entities.NetworkPolicyTask;
 import com.ubiqube.etsi.mano.tf.entities.PortTupleTask;
@@ -64,7 +64,7 @@ import com.ubiqube.etsi.mano.vim.jpa.NsTaskJpa;
  *
  */
 @Service
-public class ContrailSystem implements System<NsSfcTask> {
+public class ContrailSystem implements SystemV3<NsSfcTask> {
 	private final NsTaskJpa nsTaskJpa;
 	private final ContrailConfig contrailConfig;
 
@@ -73,14 +73,9 @@ public class ContrailSystem implements System<NsSfcTask> {
 		this.contrailConfig = cfg;
 	}
 
-	@Override
-	public String getProviderId() {
-		return "SFC";
-	}
-
 	@Transactional(TxType.NOT_SUPPORTED)
 	@Override
-	public SystemBuilder<UnitOfWork<NsSfcTask>> getImplementation(final OrchestrationService<NsSfcTask> orchestrationService, final VirtualTask<NsSfcTask> virtualTask, final SystemConnections vim2) {
+	public SystemBuilder<UnitOfWorkV3<NsSfcTask>> getImplementation(final OrchestrationServiceV3<NsSfcTask> orchestrationService, final VirtualTaskV3<NsSfcTask> virtualTask, final SystemConnections vim2) {
 		final SystemConnections vim = new SystemConnections();
 		vim.setInterfaceInfo(new HashMap<>());
 		vim.getInterfaceInfo().put("endpoint", contrailConfig.getEndpoint());
@@ -88,8 +83,8 @@ public class ContrailSystem implements System<NsSfcTask> {
 		vim.getAccessInfo().put("username", contrailConfig.getUsername());
 		vim.getAccessInfo().put("password", contrailConfig.getPassword());
 		final SystemBuilder builder = orchestrationService.createEmptySystemBuilder();
-		final NsSfcTask task = virtualTask.getParameters();
-		final VnffgDescriptor vnffg = virtualTask.getParameters().getVnffg();
+		final NsSfcTask task = virtualTask.getTemplateParameters();
+		final VnffgDescriptor vnffg = virtualTask.getTemplateParameters().getVnffg();
 		// Service Template.
 		final ServiceTemplateTask serviceTemplateTask = createServiceTemplateTask(task, vnffg);
 		final ServiceTemplateUow stUow = new ServiceTemplateUow(new ServiceTemplateVt(serviceTemplateTask), vim);
@@ -198,6 +193,11 @@ public class ContrailSystem implements System<NsSfcTask> {
 			return null;
 		}
 		return pairs.get(0).getIngressVl();
+	}
+
+	@Override
+	public String getVimType() {
+		return "CONTRAIL";
 	}
 
 }

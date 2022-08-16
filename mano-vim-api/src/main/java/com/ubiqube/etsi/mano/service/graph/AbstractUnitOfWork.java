@@ -17,31 +17,30 @@
 package com.ubiqube.etsi.mano.service.graph;
 
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
-import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 
 /**
  *
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-public abstract class AbstractUnitOfWork<U> implements UnitOfWork<U> {
-	private final VirtualTask<U> task;
+public abstract class AbstractUnitOfWork<U> implements UnitOfWorkV3<U> {
+	private final VirtualTaskV3<U> task;
 	private final Class<? extends Node> node;
 
-	protected AbstractUnitOfWork(final VirtualTask<U> task, final Class<? extends Node> node) {
-		super();
+	protected AbstractUnitOfWork(final VirtualTaskV3<U> task, final Class<? extends Node> node) {
 		this.task = task;
 		this.node = node;
 	}
 
 	@Override
-	public final VirtualTask<U> getTask() {
+	public final VirtualTaskV3<U> getTask() {
 		return task;
 	}
 
 	@Override
-	public final Class<? extends Node> getNode() {
+	public final Class<? extends Node> getType() {
 		return node;
 	}
 

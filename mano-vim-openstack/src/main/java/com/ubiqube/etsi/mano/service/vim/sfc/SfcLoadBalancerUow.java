@@ -19,13 +19,13 @@ package com.ubiqube.etsi.mano.service.vim.sfc;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgLoadbalancerTask;
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairNode;
@@ -41,36 +41,33 @@ public class SfcLoadBalancerUow extends AbstractUnitOfWork<VnffgLoadbalancerTask
 	private final OsSfc sfc;
 	private final VnffgLoadbalancerTask task;
 
-	public SfcLoadBalancerUow(final VirtualTask<VnffgLoadbalancerTask> task, final SystemConnections vimConnectionInformation) {
+	public SfcLoadBalancerUow(final VirtualTaskV3<VnffgLoadbalancerTask> task, final SystemConnections vimConnectionInformation) {
 		super(task, VnffgLoadbalancerNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
 		this.sfc = new OsSfc();
-		this.task = task.getParameters();
+		this.task = task.getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final List<String> portPairs = task.getConstituant().stream().map(x -> context.get(PortPairNode.class, x.getValue())).toList();
 		return sfc.createPortPairGroup(vimConnectionInformation, task.getToscaName(), portPairs);
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		sfc.deletePortPairGroup(vimConnectionInformation, task.getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return task.getConstituant().stream().map(x -> new NamedDependency(PortPairNode.class, x.getValue())).toList();
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getToscaName()));
+		return List.of(new NamedDependency(this.getType(), task.getToscaName()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		return task.getConstituant().stream().map(x -> new NamedDependency2d(PortPairNode.class, x.getValue(), Relation.ONE_TO_MANY)).toList();
 	}

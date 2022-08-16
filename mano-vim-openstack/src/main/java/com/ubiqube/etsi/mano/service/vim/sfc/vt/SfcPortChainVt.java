@@ -40,7 +40,6 @@ public class SfcPortChainVt extends NsVtBase<VnffgPostTask> {
 		this.task = nt;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final ArrayList<NamedDependency> ret = new ArrayList<>();
 		ret.add(new NamedDependency(FlowClassifierNode.class, task.getClassifier().getClassifierName()));
@@ -48,19 +47,13 @@ public class SfcPortChainVt extends NsVtBase<VnffgPostTask> {
 		return ret;
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
 		return List.of(new NamedDependency(PortChainNode.class, task.getToscaName()));
 	}
 
 	@Override
-	public String getFactoryProviderId() {
-		return "VNFFG-LOADBALANCER";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "VNFFG-LOADBALANCER";
+	public Class<?> getType() {
+		return VnffgLoadbalancerNode.class;
 	}
 
 }

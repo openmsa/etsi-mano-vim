@@ -18,12 +18,12 @@ package com.ubiqube.etsi.mano.tf.uow;
 
 import java.util.List;
 
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.tf.ContrailApi;
 import com.ubiqube.etsi.mano.tf.entities.PortTupleTask;
@@ -41,37 +41,34 @@ public class PortTupleUow extends AbstractUnitOfWork<PortTupleTask> {
 
 	private final PortTupleTask task;
 
-	public PortTupleUow(final VirtualTask<PortTupleTask> task, final SystemConnections vimConnectionInformation) {
+	public PortTupleUow(final VirtualTaskV3<PortTupleTask> task, final SystemConnections vimConnectionInformation) {
 		super(task, PortTupleNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
-		this.task = task.getParameters();
+		this.task = task.getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
 		final List<String> serviceInstanceId = context.getParent(ServiceInstanceNode.class, task.getServiceInstanceName());
 		return api.createPortTuple(vimConnectionInformation, task.getToscaName(), serviceInstanceId.get(0));
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
 		api.deletePortTuple(vimConnectionInformation, task.getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of(new NamedDependency(ServiceInstanceNode.class, task.getServiceInstanceName()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getAlias()));
+		return List.of(new NamedDependency(getType(), task.getAlias()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		return List.of(new NamedDependency2d(ServiceInstanceNode.class, task.getServiceInstanceName(), Relation.MANY_TO_ONE));
 	}

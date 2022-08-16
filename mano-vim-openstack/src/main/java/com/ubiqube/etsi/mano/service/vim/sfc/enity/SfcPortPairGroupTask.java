@@ -42,4 +42,12 @@ public class SfcPortPairGroupTask extends NsTask {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> portPair;
+
+	@Override
+	public NsTask copy() {
+		final SfcPortPairGroupTask task = new SfcPortPairGroupTask();
+		super.copy(task);
+		task.setPortPair(portPair);
+		return task;
+	}
 }

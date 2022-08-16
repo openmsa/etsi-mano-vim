@@ -51,4 +51,13 @@ public class ServiceInstanceTask extends NsTask {
 	@OneToOne
 	private CpPair cpPorts;
 
+	@Override
+	public NsTask copy() {
+		final ServiceInstanceTask task = new ServiceInstanceTask();
+		super.copy(task);
+		task.setServiceTemplateId(serviceTemplateId);
+		task.setCpPorts(cpPorts);
+		return task;
+	}
+
 }

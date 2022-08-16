@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgPostNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.Network;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.tf.entities.ServiceInstanceTask;
@@ -37,28 +38,21 @@ public class ServiceInstanceVt extends NsVtBase<ServiceInstanceTask> {
 		super(nt);
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> ret = new ArrayList<>();
-		ret.add(new NamedDependency(ServiceTemplateNode.class, getParameters().getToscaName()));
-		ret.add(new NamedDependency(Network.class, getParameters().getCpPorts().getIngressVl()));
-		ret.add(new NamedDependency(Network.class, getParameters().getCpPorts().getEgressVl()));
+		ret.add(new NamedDependency(ServiceTemplateNode.class, getTemplateParameters().getToscaName()));
+		ret.add(new NamedDependency(Network.class, getTemplateParameters().getCpPorts().getIngressVl()));
+		ret.add(new NamedDependency(Network.class, getTemplateParameters().getCpPorts().getEgressVl()));
 		return ret;
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(ServiceInstanceNode.class, getParameters().getToscaName()));
+		return List.of(new NamedDependency(ServiceInstanceNode.class, getTemplateParameters().getToscaName()));
 	}
 
 	@Override
-	public String getFactoryProviderId() {
-		return "CONTRAIL";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "SERVICE-INSTANCE";
+	public Class<?> getType() {
+		return VnffgPostNode.class;
 	}
 
 }

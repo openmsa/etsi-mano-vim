@@ -1,5 +1,5 @@
 /**
- *     Copyright (C) 2019-2020 Ubiqube.
+s *     Copyright (C) 2019-2020 Ubiqube.
  *
  *     This program is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
@@ -29,7 +29,7 @@ import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfExtractorNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcFlowClassifierTask;
@@ -46,15 +46,15 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	private final OsSfc sfc;
 	private final SfcFlowClassifierTask task;
 
-	public SfcFlowClassifierUow(final VirtualTask<SfcFlowClassifierTask> task, final SystemConnections vimConnectionInformation) {
+	public SfcFlowClassifierUow(final VirtualTaskV3<SfcFlowClassifierTask> task, final SystemConnections vimConnectionInformation) {
 		super(task, FlowClassifierNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
 		sfc = new OsSfc();
-		this.task = task.getParameters();
+		this.task = task.getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final Classifier classifier = task.getClassifier();
 		final String src = Optional.ofNullable(classifier.getLogicalSourcePort()).map(x -> context.get(VnfPortNode.class, x)).orElse(null);
 		final String dst = Optional.ofNullable(classifier.getLogicalDestinationPort()).map(x -> context.get(VnfPortNode.class, x)).orElse(null);
@@ -62,12 +62,11 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		sfc.deleteFlowClassifier(vimConnectionInformation, task.getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> ret = new ArrayList<>();
 		ret.add(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getSrcPort()));
@@ -76,12 +75,10 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 		return ret;
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getToscaName()));
+		return List.of(new NamedDependency(getType(), task.getToscaName()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		final List<NamedDependency2d> ret = new ArrayList<>();
 		ret.add(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getSrcPort(), Relation.ONE_TO_ONE));
@@ -89,4 +86,5 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 		task.getElement().stream().map(x -> new NamedDependency2d(VnffgLoadbalancerNode.class, x, Relation.MANY_TO_ONE)).forEach(ret::add);
 		return ret;
 	}
+
 }

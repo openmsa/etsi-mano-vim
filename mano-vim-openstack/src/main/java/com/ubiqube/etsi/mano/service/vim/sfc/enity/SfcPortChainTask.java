@@ -55,4 +55,14 @@ public class SfcPortChainTask extends NsTask {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> flowClassifier;
+
+	@Override
+	public NsTask copy() {
+		final SfcPortChainTask task = new SfcPortChainTask();
+		super.copy(task);
+		task.setToscaName(toscaName);
+		task.setPortPairGroups(portPairGroups);
+		task.setFlowClassifier(flowClassifier);
+		return task;
+	}
 }

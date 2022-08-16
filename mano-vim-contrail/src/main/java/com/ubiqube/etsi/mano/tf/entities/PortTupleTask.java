@@ -48,4 +48,14 @@ public class PortTupleTask extends NsTask {
 	private String serviceInstanceName;
 	private String leftPortId;
 	private String rightPortId;
+
+	@Override
+	public NsTask copy() {
+		final PortTupleTask task = new PortTupleTask();
+		super.copy(task);
+		task.setServiceInstanceName(serviceInstanceName);
+		task.setLeftPortId(leftPortId);
+		task.setRightPortId(rightPortId);
+		return task;
+	}
 }

@@ -38,24 +38,17 @@ public class SfcPortPairVt extends NsVtBase<SfcPortPairTask> {
 		this.task = nt;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of(new NamedDependency(VnfPortNode.class, task.getIngressId()), new NamedDependency(VnfPortNode.class, task.getEgressId()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
 		return List.of(new NamedDependency(PortPairNode.class, task.getToscaName()));
 	}
 
 	@Override
-	public String getFactoryProviderId() {
-		return "SFC-PORT-PAIR";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "OPENSTACK_V3";
+	public Class<?> getType() {
+		return PortPairNode.class;
 	}
 
 }

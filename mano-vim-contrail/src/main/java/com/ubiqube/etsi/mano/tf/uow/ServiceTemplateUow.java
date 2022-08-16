@@ -18,11 +18,11 @@ package com.ubiqube.etsi.mano.tf.uow;
 
 import java.util.List;
 
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.tf.ContrailApi;
 import com.ubiqube.etsi.mano.tf.entities.ServiceTemplateTask;
@@ -32,36 +32,33 @@ public class ServiceTemplateUow extends AbstractUnitOfWork<ServiceTemplateTask> 
 	private final SystemConnections vimConnectionInformation;
 	private final ServiceTemplateTask task;
 
-	public ServiceTemplateUow(final VirtualTask<ServiceTemplateTask> task, final SystemConnections vimConnectionInformation) {
+	public ServiceTemplateUow(final VirtualTaskV3<ServiceTemplateTask> task, final SystemConnections vimConnectionInformation) {
 		super(task, ServiceTemplateNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
-		this.task = getTask().getParameters();
+		this.task = getTask().getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
 		return api.createServiceTemplate(vimConnectionInformation, task.getToscaName());
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
 		api.deleteServiceTemplate(vimConnectionInformation, task.getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of();
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getAlias()));
+		return List.of(new NamedDependency(getType(), task.getAlias()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		return List.of();
 	}

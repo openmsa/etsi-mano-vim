@@ -18,13 +18,13 @@ package com.ubiqube.etsi.mano.tf.uow;
 
 import java.util.List;
 
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.Network;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.tf.ContrailApi;
 import com.ubiqube.etsi.mano.tf.entities.ServiceInstanceTask;
@@ -40,41 +40,38 @@ public class ServiceInstanceUow extends AbstractUnitOfWork<ServiceInstanceTask> 
 	private final SystemConnections vimConnectionInformation;
 	private final ServiceInstanceTask task;
 
-	public ServiceInstanceUow(final VirtualTask<ServiceInstanceTask> task, final SystemConnections vim) {
+	public ServiceInstanceUow(final VirtualTaskV3<ServiceInstanceTask> task, final SystemConnections vim) {
 		super(task, ServiceInstanceNode.class);
 		this.vimConnectionInformation = vim;
-		this.task = task.getParameters();
+		this.task = task.getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
 		final String serviceTemplateId = context.get(ServiceTemplateNode.class, task.getServiceTemplateId());
 		final String left = context.get(Network.class, task.getCpPorts().getIngressVl());
 		final String right = context.get(Network.class, task.getCpPorts().getEgressVl());
-		return api.createServiceInstance(vimConnectionInformation, getTask().getParameters().getToscaName(), serviceTemplateId, left, right);
+		return api.createServiceInstance(vimConnectionInformation, getTask().getTemplateParameters().getToscaName(), serviceTemplateId, left, right);
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
 		api.deleteServiceInstance(vimConnectionInformation, task.getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of(new NamedDependency(ServiceTemplateNode.class, task.getServiceTemplateId()),
 				new NamedDependency(Network.class, task.getCpPorts().getIngressVl()),
 				new NamedDependency(Network.class, task.getCpPorts().getEgressVl()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getAlias()));
+		return List.of(new NamedDependency(getType(), task.getAlias()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		return List.of(new NamedDependency2d(ServiceTemplateNode.class, task.getServiceTemplateId(), Relation.MANY_TO_ONE),
 				new NamedDependency2d(Network.class, task.getCpPorts().getIngressVl(), Relation.MANY_TO_ONE),

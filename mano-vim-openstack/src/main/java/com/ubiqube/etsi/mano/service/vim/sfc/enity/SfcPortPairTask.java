@@ -38,4 +38,13 @@ public class SfcPortPairTask extends NsTask {
 
 	private String egressId;
 	private String ingressId;
+
+	@Override
+	public NsTask copy() {
+		final SfcPortPairTask task = new SfcPortPairTask();
+		super.copy(task);
+		task.setEgressId(egressId);
+		task.setIngressId(ingressId);
+		return task;
+	}
 }

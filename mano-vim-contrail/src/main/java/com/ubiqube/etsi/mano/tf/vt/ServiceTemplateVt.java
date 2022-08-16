@@ -34,24 +34,17 @@ public class ServiceTemplateVt extends NsVtBase<ServiceTemplateTask> {
 		super(nt);
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of();
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(ServiceTemplateNode.class, getParameters().getToscaName()));
+		return List.of(new NamedDependency(ServiceTemplateNode.class, getTemplateParameters().getToscaName()));
 	}
 
 	@Override
-	public String getFactoryProviderId() {
-		return "CONTRAIL";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "SERVICE-TEMPLATE";
+	public Class<?> getType() {
+		return ServiceTemplateNode.class;
 	}
 
 }

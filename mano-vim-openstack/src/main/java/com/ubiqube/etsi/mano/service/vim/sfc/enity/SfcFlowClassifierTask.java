@@ -56,4 +56,15 @@ public class SfcFlowClassifierTask extends NsTask {
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> element;
+
+	@Override
+	public NsTask copy() {
+		final SfcFlowClassifierTask task = new SfcFlowClassifierTask();
+		super.copy(task);
+		task.setClassifier(classifier);
+		task.setSrcPort(srcPort);
+		task.setDstPort(dstPort);
+		task.setElement(element);
+		return task;
+	}
 }

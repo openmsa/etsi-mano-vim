@@ -18,7 +18,7 @@ package com.ubiqube.etsi.mano.tf.uow;
 
 import java.util.List;
 
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
@@ -43,11 +43,11 @@ public class PtLinkUow extends AbstractUnitOfWork<PtLinkTask> {
 	public PtLinkUow(final PtLinkVt ptLinkVt, final SystemConnections vim) {
 		super(ptLinkVt, PtLinkNode.class);
 		this.vimConnectionInformation = vim;
-		this.task = ptLinkVt.getParameters();
+		this.task = ptLinkVt.getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
 		final String leftUuid = context.get(VnfPortNode.class, task.getLeftPortId());
 		final String portTupleId = context.get(PortTupleNode.class, task.getPortTupleName());
@@ -58,23 +58,20 @@ public class PtLinkUow extends AbstractUnitOfWork<PtLinkTask> {
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of(new NamedDependency(VnfPortNode.class, task.getLeftPortId()),
 				new NamedDependency(PortTupleNode.class, task.getPortTupleName()),
 				new NamedDependency(VnfPortNode.class, task.getRightPortId()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getAlias()));
+		return List.of(new NamedDependency(getType(), task.getAlias()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		return List.of(new NamedDependency2d(VnfPortNode.class, task.getLeftPortId(), Relation.ONE_TO_ONE),
 				new NamedDependency2d(PortTupleNode.class, task.getPortTupleName(), Relation.ONE_TO_ONE),

@@ -22,13 +22,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPostTask;
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
@@ -45,27 +45,26 @@ public class SfcPortChainUow extends AbstractUnitOfWork<VnffgPostTask> {
 	private final OsSfc sfc;
 	private final VnffgPostTask task;
 
-	public SfcPortChainUow(final VirtualTask<VnffgPostTask> task, final SystemConnections vci) {
+	public SfcPortChainUow(final VirtualTaskV3<VnffgPostTask> task, final SystemConnections vci) {
 		super(task, PortChainNode.class);
 		this.vci = vci;
 		sfc = new OsSfc();
-		this.task = task.getParameters();
+		this.task = task.getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final String flows = context.get(FlowClassifierNode.class, task.getClassifier().getClassifierName());
 		final Set<String> ppg = task.getChain().stream().map(x -> context.get(VnffgLoadbalancerNode.class, x.getValue())).collect(Collectors.toSet());
 		return sfc.createPortChain(vci, task.getToscaName(), Set.of(flows), ppg);
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		sfc.deletePortChain(vci, task.getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> ret = new ArrayList<>();
 		ret.add(new NamedDependency(FlowClassifierNode.class, task.getClassifier().getClassifierName()));
@@ -73,12 +72,10 @@ public class SfcPortChainUow extends AbstractUnitOfWork<VnffgPostTask> {
 		return ret;
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getToscaName()));
+		return List.of(new NamedDependency(getType(), task.getToscaName()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		final List<NamedDependency2d> ret = new ArrayList<>();
 		ret.add(new NamedDependency2d(FlowClassifierNode.class, task.getClassifier().getClassifierName(), Relation.ONE_TO_ONE));

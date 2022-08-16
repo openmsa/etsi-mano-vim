@@ -35,24 +35,17 @@ public class PortTupleVt extends NsVtBase<PortTupleTask> {
 		super(nt);
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
-		return List.of(new NamedDependency(ServiceInstanceNode.class, getParameters().getServiceInstanceName()));
+		return List.of(new NamedDependency(ServiceInstanceNode.class, getTemplateParameters().getServiceInstanceName()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(PortTupleNode.class, getParameters().getToscaName()));
+		return List.of(new NamedDependency(PortTupleNode.class, getTemplateParameters().getToscaName()));
 	}
 
 	@Override
-	public String getFactoryProviderId() {
-		return "CONTRAIL";
-	}
-
-	@Override
-	public String getVimProviderId() {
-		return "PORT-TUPLE";
+	public Class<?> getType() {
+		return PortTupleNode.class;
 	}
 
 }

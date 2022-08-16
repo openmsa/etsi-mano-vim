@@ -18,13 +18,13 @@ package com.ubiqube.etsi.mano.tf.uow;
 
 import java.util.List;
 
-import com.ubiqube.etsi.mano.orchestrator.Context;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.Network;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
 import com.ubiqube.etsi.mano.tf.ContrailApi;
 import com.ubiqube.etsi.mano.tf.entities.NetworkPolicyTask;
@@ -41,16 +41,16 @@ public class NetworkPolicyUow extends AbstractUnitOfWork<NetworkPolicyTask> {
 	private final SystemConnections vimConnectionInformation;
 	private final NetworkPolicyTask task;
 
-	public NetworkPolicyUow(final VirtualTask<NetworkPolicyTask> task, final SystemConnections vimConnectionInformation) {
+	public NetworkPolicyUow(final VirtualTaskV3<NetworkPolicyTask> task, final SystemConnections vimConnectionInformation) {
 		super(task, NetworkPolicyNode.class);
 		this.vimConnectionInformation = vimConnectionInformation;
-		this.task = task.getParameters();
+		this.task = task.getTemplateParameters();
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
-		final NetworkPolicyTask p = getTask().getParameters();
+		final NetworkPolicyTask p = getTask().getTemplateParameters();
 		final String serviceInstance = context.get(ServiceInstanceNode.class, p.getServiceInstance());
 		final String left = context.get(Network.class, p.getLeftId());
 		final String right = context.get(Network.class, p.getRightId());
@@ -58,24 +58,21 @@ public class NetworkPolicyUow extends AbstractUnitOfWork<NetworkPolicyTask> {
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		final ContrailApi api = new ContrailApi();
-		api.deleteNetworkPolicy(vimConnectionInformation, getTask().getParameters().getVimResourceId());
+		api.deleteNetworkPolicy(vimConnectionInformation, getTask().getTemplateParameters().getVimResourceId());
 		return null;
 	}
 
-	@Override
 	public List<NamedDependency> getNameDependencies() {
 		return List.of(new NamedDependency(ServiceInstanceNode.class, task.getServiceInstance()),
 				new NamedDependency(Network.class, task.getLeftId()), new NamedDependency(Network.class, task.getRightId()));
 	}
 
-	@Override
 	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getNode(), task.getAlias()));
+		return List.of(new NamedDependency(getType(), task.getAlias()));
 	}
 
-	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		return List.of(new NamedDependency2d(ServiceInstanceNode.class, task.getServiceInstance(), Relation.MANY_TO_ONE),
 				new NamedDependency2d(Network.class, task.getLeftId(), Relation.MANY_TO_ONE),

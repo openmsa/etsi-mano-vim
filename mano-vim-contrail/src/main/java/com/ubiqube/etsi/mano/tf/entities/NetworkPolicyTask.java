@@ -61,4 +61,15 @@ public class NetworkPolicyTask extends NsTask {
 	 * Tosca name.
 	 */
 	private String rightId;
+
+	@Override
+	public NsTask copy() {
+		final NetworkPolicyTask task = new NetworkPolicyTask();
+		super.copy(task);
+		task.setClassifier(classifier);
+		task.setServiceInstance(serviceInstance);
+		task.setLeftId(leftId);
+		task.setRightId(rightId);
+		return task;
+	}
 }
