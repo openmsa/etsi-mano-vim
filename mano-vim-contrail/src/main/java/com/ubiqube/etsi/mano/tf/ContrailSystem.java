@@ -36,6 +36,8 @@ import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsSfcTask;
 import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
+import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.PortPairNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.TaskUtils;
@@ -200,4 +202,8 @@ public class ContrailSystem implements SystemV3<NsSfcTask> {
 		return "CONTRAIL";
 	}
 
+	@Override
+	public Class<? extends Node> getType() {
+		return PortPairNode.class;
+	}
 }

@@ -22,6 +22,8 @@ import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgLoadbalancerTask;
 import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
+import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.sys.SystemV3;
@@ -45,4 +47,8 @@ public class SfcLoadbalancerSystem implements SystemV3<VnffgLoadbalancerTask> {
 		return "OPENSTACK_V3";
 	}
 
+	@Override
+	public Class<? extends Node> getType() {
+		return VnffgLoadbalancerNode.class;
+	}
 }

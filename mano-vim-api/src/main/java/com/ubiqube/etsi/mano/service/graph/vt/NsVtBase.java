@@ -33,49 +33,49 @@ import lombok.Setter;
 @Setter
 public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 
-	private final U nt;
-	private SystemBuilder db;
 	private int rank;
 
-	private U TemplateParameters;
+	private U templateParameters;
+
+	private SystemBuilder<U> systemBuilder;
 
 	protected NsVtBase(final U nt) {
-		this.nt = nt;
+		this.templateParameters = nt;
 	}
 
 	@Override
 	public void setName(final String name) {
-		nt.setToscaName(name);
+		templateParameters.setToscaName(name);
 	}
 
 	@Override
 	public void setAlias(final String alias) {
-		nt.setAlias(alias);
+		templateParameters.setAlias(alias);
 	}
 
 	@Override
 	public void setDelete(final boolean del) {
-		nt.setChangeType(ChangeType.REMOVED);
+		templateParameters.setChangeType(ChangeType.REMOVED);
 	}
 
 	@Override
 	public final boolean isDeleteTask() {
-		return nt.getChangeType() == ChangeType.REMOVED;
+		return templateParameters.getChangeType() == ChangeType.REMOVED;
 	}
 
 	@Override
 	public final String getVimConnectionId() {
-		return nt.getVimConnectionId();
+		return templateParameters.getVimConnectionId();
 	}
 
 	@Override
 	public final String getName() {
-		return nt.getAlias();
+		return templateParameters.getAlias();
 	}
 
 	@Override
 	public final String getAlias() {
-		return nt.getAlias();
+		return templateParameters.getAlias();
 	}
 
 	@Override
