@@ -24,7 +24,7 @@ import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfContextExtractorNode;
+import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfExtractorNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
@@ -66,7 +66,7 @@ public class SfcPortPairUow extends AbstractUnitOfWork<VnffgPortPairTask> {
 
 	@Override
 	public List<NamedDependency> getNameDependencies() {
-		return List.of(new NamedDependency(VnfContextExtractorNode.class, "extract-" + task.getVnfAlias()));
+		return List.of(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getVnfAlias()));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class SfcPortPairUow extends AbstractUnitOfWork<VnffgPortPairTask> {
 
 	@Override
 	public List<NamedDependency2d> get2dDependencies() {
-		return List.of(new NamedDependency2d(VnfContextExtractorNode.class, "extract-" + task.getVnfAlias(), Relation.ONE_TO_ONE));
+		return List.of(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getVnfAlias(), Relation.ONE_TO_ONE));
 	}
 
 }

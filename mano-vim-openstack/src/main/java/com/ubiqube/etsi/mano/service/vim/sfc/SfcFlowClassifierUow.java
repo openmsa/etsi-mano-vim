@@ -25,7 +25,7 @@ import com.ubiqube.etsi.mano.orchestrator.Context;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfContextExtractorNode;
+import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfExtractorNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
@@ -70,8 +70,8 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	@Override
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> ret = new ArrayList<>();
-		ret.add(new NamedDependency(VnfContextExtractorNode.class, "extract-" + task.getSrcPort()));
-		ret.add(new NamedDependency(VnfContextExtractorNode.class, "extract-" + task.getDstPort()));
+		ret.add(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getSrcPort()));
+		ret.add(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getDstPort()));
 		task.getElement().stream().map(x -> new NamedDependency(VnffgLoadbalancerNode.class, x)).forEach(ret::add);
 		return ret;
 	}
@@ -84,8 +84,8 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	@Override
 	public List<NamedDependency2d> get2dDependencies() {
 		final List<NamedDependency2d> ret = new ArrayList<>();
-		ret.add(new NamedDependency2d(VnfContextExtractorNode.class, "extract-" + task.getSrcPort(), Relation.ONE_TO_ONE));
-		ret.add(new NamedDependency2d(VnfContextExtractorNode.class, "extract-" + task.getDstPort(), Relation.ONE_TO_ONE));
+		ret.add(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getSrcPort(), Relation.ONE_TO_ONE));
+		ret.add(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getDstPort(), Relation.ONE_TO_ONE));
 		task.getElement().stream().map(x -> new NamedDependency2d(VnffgLoadbalancerNode.class, x, Relation.MANY_TO_ONE)).forEach(ret::add);
 		return ret;
 	}
