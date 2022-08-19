@@ -16,6 +16,7 @@
  */
 package com.ubiqube.etsi.mano.tf.vt;
 
+import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.tf.entities.NetworkPolicyTask;
 import com.ubiqube.etsi.mano.tf.node.NetworkPolicyNode;
@@ -35,7 +36,7 @@ public class NetworkPolicyVt extends NsVtBase<NetworkPolicyTask> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<? extends Node> getType() {
 		return NetworkPolicyNode.class;
 	}
 }

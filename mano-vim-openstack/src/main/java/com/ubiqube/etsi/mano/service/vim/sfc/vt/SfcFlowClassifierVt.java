@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgPostNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
@@ -56,7 +57,7 @@ public class SfcFlowClassifierVt extends NsVtBase<SfcFlowClassifierTask> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<? extends Node> getType() {
 		return VnffgPostNode.class;
 	}
 

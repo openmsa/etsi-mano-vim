@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.tf.vt;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.tf.entities.PortTupleTask;
 import com.ubiqube.etsi.mano.tf.node.PortTupleNode;
@@ -44,7 +45,7 @@ public class PortTupleVt extends NsVtBase<PortTupleTask> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<? extends Node> getType() {
 		return PortTupleNode.class;
 	}
 

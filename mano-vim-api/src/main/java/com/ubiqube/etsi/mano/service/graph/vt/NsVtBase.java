@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.service.graph.vt;
 
+import java.util.UUID;
+
 import com.ubiqube.etsi.mano.dao.mano.ChangeType;
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
@@ -55,7 +57,11 @@ public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 
 	@Override
 	public void setDelete(final boolean del) {
-		templateParameters.setChangeType(ChangeType.REMOVED);
+		if (del) {
+			templateParameters.setChangeType(ChangeType.REMOVED);
+		} else {
+			templateParameters.setChangeType(ChangeType.ADDED);
+		}
 	}
 
 	@Override
@@ -79,7 +85,28 @@ public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 	}
 
 	@Override
+	public String getVimResourceId() {
+		return templateParameters.getVimResourceId();
+	}
+
+	@Override
+	public void setVimResourceId(final String res) {
+		templateParameters.setVimResourceId(res);
+	}
+
+	@Override
+	public void setRemovedLiveInstanceId(final UUID liveInstanceId) {
+		templateParameters.setRemovedLiveInstance(liveInstanceId);
+	}
+
+	@Override
+	public String getToscaName() {
+		return templateParameters.getToscaName();
+	}
+
+	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + "(" + getName() + ", " + getAlias() + ")";
 	}
+
 }

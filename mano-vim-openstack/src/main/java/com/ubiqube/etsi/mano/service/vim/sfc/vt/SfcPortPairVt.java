@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.service.vim.sfc.vt;
 import java.util.List;
 
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
+import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcPortPairTask;
@@ -47,7 +48,7 @@ public class SfcPortPairVt extends NsVtBase<SfcPortPairTask> {
 	}
 
 	@Override
-	public Class<?> getType() {
+	public Class<? extends Node> getType() {
 		return PortPairNode.class;
 	}
 

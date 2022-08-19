@@ -44,4 +44,10 @@ public abstract class AbstractUnitOfWork<U> implements UnitOfWorkV3<U> {
 		return node;
 	}
 
+	@Override
+	public void setResource(final String res) {
+		task.setVimResourceId(res);
+
+	}
+
 }
