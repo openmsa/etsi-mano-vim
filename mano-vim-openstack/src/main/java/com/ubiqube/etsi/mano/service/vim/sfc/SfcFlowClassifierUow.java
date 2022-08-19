@@ -42,6 +42,7 @@ import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
  */
 public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTask> {
 
+	private static final String EXTRACT = "extract-";
 	private final SystemConnections vimConnectionInformation;
 	private final OsSfc sfc;
 	private final SfcFlowClassifierTask task;
@@ -69,8 +70,8 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 
 	public List<NamedDependency> getNameDependencies() {
 		final List<NamedDependency> ret = new ArrayList<>();
-		ret.add(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getSrcPort()));
-		ret.add(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getDstPort()));
+		ret.add(new NamedDependency(VnfExtractorNode.class, EXTRACT + task.getSrcPort()));
+		ret.add(new NamedDependency(VnfExtractorNode.class, EXTRACT + task.getDstPort()));
 		task.getElement().stream().map(x -> new NamedDependency(VnffgLoadbalancerNode.class, x)).forEach(ret::add);
 		return ret;
 	}
@@ -81,8 +82,8 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 
 	public List<NamedDependency2d> get2dDependencies() {
 		final List<NamedDependency2d> ret = new ArrayList<>();
-		ret.add(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getSrcPort(), Relation.ONE_TO_ONE));
-		ret.add(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getDstPort(), Relation.ONE_TO_ONE));
+		ret.add(new NamedDependency2d(VnfExtractorNode.class, EXTRACT + task.getSrcPort(), Relation.ONE_TO_ONE));
+		ret.add(new NamedDependency2d(VnfExtractorNode.class, EXTRACT + task.getDstPort(), Relation.ONE_TO_ONE));
 		task.getElement().stream().map(x -> new NamedDependency2d(VnffgLoadbalancerNode.class, x, Relation.MANY_TO_ONE)).forEach(ret::add);
 		return ret;
 	}

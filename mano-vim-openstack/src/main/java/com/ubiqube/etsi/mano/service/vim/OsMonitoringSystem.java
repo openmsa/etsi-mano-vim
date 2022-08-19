@@ -33,10 +33,10 @@ import org.openstack4j.openstack.telemetry.domain.CeilometerAlarm;
 import org.openstack4j.openstack.telemetry.domain.CeilometerAlarm.CeilometerGnocchiResourcesThresholdRule;
 
 import com.ubiqube.etsi.mano.dao.mano.VnfMonitoringParameter;
-import com.ubiqube.etsi.mano.orchestrator.OrchestrationService;
+import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 
 public class OsMonitoringSystem {
 
@@ -70,8 +70,8 @@ public class OsMonitoringSystem {
 		return "OS-GNOCCHI-V1";
 	}
 
-	public SystemBuilder getImplementation(final OrchestrationService orchestrationService, final VirtualTask<VnfMonitoringParameter> virtualTask, final SystemConnections vim) {
-		final VnfMonitoringParameter mp = virtualTask.getParameters();
+	public SystemBuilder getImplementation(final OrchestrationServiceV3 orchestrationService, final VirtualTaskV3<VnfMonitoringParameter> virtualTask, final SystemConnections vim) {
+		final VnfMonitoringParameter mp = virtualTask.getTemplateParameters();
 		// final MonitoringTask task = createTask(MonitoringTask::new);
 		// task.setVnfCompute(mp.getVnfCompute());
 		// task.setAlias(mp.getName());

@@ -45,7 +45,7 @@ public class K8sTillerClient implements K8sClient {
 
 	@Override
 	public void undeploy(final String vimResourceId) {
-		// TODO Auto-generated method stub
+		// To do.
 
 	}
 

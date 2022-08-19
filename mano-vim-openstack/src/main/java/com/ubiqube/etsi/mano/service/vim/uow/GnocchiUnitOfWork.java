@@ -16,55 +16,42 @@
  */
 package com.ubiqube.etsi.mano.service.vim.uow;
 
-import java.util.List;
-
 import com.ubiqube.etsi.mano.dao.mano.v2.MonitoringTask;
-import com.ubiqube.etsi.mano.orchestrator.Context;
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
-import com.ubiqube.etsi.mano.orchestrator.Task;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
-import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWork;
+import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 
-public class GnocchiUnitOfWork implements UnitOfWork<MonitoringTask> {
+public class GnocchiUnitOfWork implements UnitOfWorkV3<MonitoringTask> {
 
 	@Override
-	public Task<MonitoringTask> getTask() {
+	public VirtualTaskV3<MonitoringTask> getTask() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String execute(final Context context) {
+	public String execute(final Context3d context) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String rollback(final Context context) {
+	public String rollback(final Context3d context) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Class<? extends Node> getNode() {
+	public Class<? extends Node> getType() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<NamedDependency> getNameDependencies() {
-		return List.of();
-	}
+	public void setResource(final String res) {
+		// TODO Auto-generated method stub
 
-	@Override
-	public List<NamedDependency> getNamedProduced() {
-		return List.of();
-	}
-
-	@Override
-	public List<NamedDependency2d> get2dDependencies() {
-		return List.of();
 	}
 
 }
