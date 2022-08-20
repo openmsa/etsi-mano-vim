@@ -24,9 +24,9 @@ import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
-import com.ubiqube.etsi.mano.orchestrator.uow.Relation;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
+import com.ubiqube.etsi.mano.service.graph.Relation;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairNode;
 
@@ -50,7 +50,7 @@ public class SfcLoadBalancerUow extends AbstractUnitOfWork<VnffgLoadbalancerTask
 
 	@Override
 	public String execute(final Context3d context) {
-		final List<String> portPairs = task.getConstituant().stream().map(x -> context.get(PortPairNode.class, x.getValue())).toList();
+		final List<String> portPairs = context.get(PortPairNode.class);
 		return sfc.createPortPairGroup(vimConnectionInformation, task.getToscaName(), portPairs);
 	}
 
