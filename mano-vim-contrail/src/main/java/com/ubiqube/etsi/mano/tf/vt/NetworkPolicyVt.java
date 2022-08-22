@@ -28,11 +28,8 @@ import com.ubiqube.etsi.mano.tf.node.NetworkPolicyNode;
  */
 public class NetworkPolicyVt extends NsVtBase<NetworkPolicyTask> {
 
-	private final NetworkPolicyTask task;
-
 	public NetworkPolicyVt(final NetworkPolicyTask nt) {
 		super(nt);
-		this.task = nt;
 	}
 
 	@Override
