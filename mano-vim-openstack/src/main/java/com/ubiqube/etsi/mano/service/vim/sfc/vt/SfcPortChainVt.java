@@ -16,16 +16,10 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc.vt;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPostTask;
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
-import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
-import com.ubiqube.etsi.mano.service.vim.sfc.node.PortChainNode;
 
 /**
  *
@@ -39,17 +33,6 @@ public class SfcPortChainVt extends NsVtBase<VnffgPostTask> {
 	public SfcPortChainVt(final VnffgPostTask nt) {
 		super(nt);
 		this.task = nt;
-	}
-
-	public List<NamedDependency> getNameDependencies() {
-		final ArrayList<NamedDependency> ret = new ArrayList<>();
-		ret.add(new NamedDependency(FlowClassifierNode.class, task.getClassifier().getClassifierName()));
-		task.getChain().forEach(x -> ret.add(new NamedDependency(VnffgLoadbalancerNode.class, x.getValue())));
-		return ret;
-	}
-
-	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(PortChainNode.class, task.getToscaName()));
 	}
 
 	@Override

@@ -17,12 +17,19 @@
 package com.ubiqube.etsi.mano.tf;
 
 import java.util.List;
+import java.util.function.Predicate;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
+import net.juniper.contrail.api.ApiPropertyBase;
+import net.juniper.contrail.api.ObjectReference;
 import net.juniper.contrail.api.types.ActionListType;
 import net.juniper.contrail.api.types.AddressType;
+import net.juniper.contrail.api.types.InstanceIp;
 import net.juniper.contrail.api.types.NetworkPolicy;
 import net.juniper.contrail.api.types.PolicyEntriesType;
 import net.juniper.contrail.api.types.PolicyRuleType;
@@ -44,6 +51,7 @@ import net.juniper.contrail.api.types.VirtualNetwork;
  *
  */
 public class ContrailApi {
+	private static final Logger LOG = LoggerFactory.getLogger(ContrailApi.class);
 
 	private static final String DEFAULT_PROJECT = "admin";
 	private final ContrailFacade facade;
@@ -103,8 +111,10 @@ public class ContrailApi {
 		final VirtualMachineInterfacePropertiesType virtualMachineInterfaceProperties = new VirtualMachineInterfacePropertiesType();
 		virtualMachineInterfaceProperties.setServiceInterfaceType(mode);
 		vmi.setProperties(virtualMachineInterfaceProperties);
-		final PortTuple pt = facade.findById(vimConnectionInformation, PortTuple.class, portTupleId);
-		vmi.setPortTuple(pt);
+		if (null != portTupleId) {
+			final PortTuple pt = facade.findById(vimConnectionInformation, PortTuple.class, portTupleId);
+			vmi.setPortTuple(pt);
+		}
 		facade.update(vimConnectionInformation, vmi);
 	}
 
@@ -169,5 +179,26 @@ public class ContrailApi {
 		final NetworkPolicy root = new NetworkPolicy();
 		root.setUuid(vimResourceId);
 		facade.delete(vimConnectionInformation, root);
+	}
+
+	public void rollbackVmi(final SystemConnections vimConnectionInformation, final String portTupleId) {
+		final PortTuple pt = facade.findById(vimConnectionInformation, PortTuple.class, portTupleId);
+		if (null == pt) {
+			return;
+		}
+		pt.getVirtualMachineInterfaceBackRefs().forEach(x -> deleteVmi(vimConnectionInformation, x.getUuid()));
+	}
+
+	private void deleteVmi(final SystemConnections vimConnectionInformation, final String uuid) {
+		final Predicate<ObjectReference<ApiPropertyBase>> dontMatchLeftRight = x -> !x.getReferredName().get(0).contains("-left-") && !x.getReferredName().get(0).contains("-right-");
+		final VirtualMachineInterface vmi = facade.findById(vimConnectionInformation, VirtualMachineInterface.class, uuid);
+		vmi.getInstanceIpBackRefs().stream().filter(dontMatchLeftRight).forEach(x -> {
+			final InstanceIp ii = new InstanceIp();
+			ii.setUuid(x.getUuid());
+			LOG.debug("Deleting instance-ip: {}", x.getUuid());
+			facade.delete(vimConnectionInformation, ii);
+		});
+		LOG.debug("Deleting virtual-macine-interface: {}", vmi.getParentUuid());
+		facade.delete(vimConnectionInformation, vmi);
 	}
 }

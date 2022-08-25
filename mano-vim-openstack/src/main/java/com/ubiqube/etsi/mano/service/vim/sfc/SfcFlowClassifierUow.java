@@ -16,21 +16,14 @@ s *     Copyright (C) 2019-2020 Ubiqube.
  */
 package com.ubiqube.etsi.mano.service.vim.sfc;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.Context3d;
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfExtractorNode;
-import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgLoadbalancerNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
-import com.ubiqube.etsi.mano.service.graph.Relation;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcFlowClassifierTask;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
@@ -66,26 +59,6 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	public String rollback(final Context3d context) {
 		sfc.deleteFlowClassifier(vimConnectionInformation, task.getVimResourceId());
 		return null;
-	}
-
-	public List<NamedDependency> getNameDependencies() {
-		final List<NamedDependency> ret = new ArrayList<>();
-		ret.add(new NamedDependency(VnfExtractorNode.class, EXTRACT + task.getSrcPort()));
-		ret.add(new NamedDependency(VnfExtractorNode.class, EXTRACT + task.getDstPort()));
-		task.getElement().stream().map(x -> new NamedDependency(VnffgLoadbalancerNode.class, x)).forEach(ret::add);
-		return ret;
-	}
-
-	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getType(), task.getToscaName()));
-	}
-
-	public List<NamedDependency2d> get2dDependencies() {
-		final List<NamedDependency2d> ret = new ArrayList<>();
-		ret.add(new NamedDependency2d(VnfExtractorNode.class, EXTRACT + task.getSrcPort(), Relation.ONE_TO_ONE));
-		ret.add(new NamedDependency2d(VnfExtractorNode.class, EXTRACT + task.getDstPort(), Relation.ONE_TO_ONE));
-		task.getElement().stream().map(x -> new NamedDependency2d(VnffgLoadbalancerNode.class, x, Relation.MANY_TO_ONE)).forEach(ret::add);
-		return ret;
 	}
 
 }

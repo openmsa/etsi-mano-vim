@@ -16,11 +16,7 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc.vt;
 
-import java.util.List;
-
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
-import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcPortPairTask;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairNode;
@@ -37,14 +33,6 @@ public class SfcPortPairVt extends NsVtBase<SfcPortPairTask> {
 	public SfcPortPairVt(final SfcPortPairTask nt) {
 		super(nt);
 		this.task = nt;
-	}
-
-	public List<NamedDependency> getNameDependencies() {
-		return List.of(new NamedDependency(VnfPortNode.class, task.getIngressId()), new NamedDependency(VnfPortNode.class, task.getEgressId()));
-	}
-
-	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(PortPairNode.class, task.getToscaName()));
 	}
 
 	@Override

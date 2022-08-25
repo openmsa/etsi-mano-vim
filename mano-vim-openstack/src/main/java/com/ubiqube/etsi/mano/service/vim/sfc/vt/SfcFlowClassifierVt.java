@@ -16,13 +16,7 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc.vt;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
-import com.ubiqube.etsi.mano.orchestrator.nodes.nfvo.VnffgPostNode;
-import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcFlowClassifierTask;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
@@ -41,24 +35,9 @@ public class SfcFlowClassifierVt extends NsVtBase<SfcFlowClassifierTask> {
 		this.task = nt;
 	}
 
-	public List<NamedDependency> getNameDependencies() {
-		final List<NamedDependency> l = new ArrayList<>();
-		if (task.getClassifier().getLogicalDestinationPort() != null) {
-			l.add(new NamedDependency(VnfPortNode.class, task.getClassifier().getLogicalDestinationPort()));
-		}
-		if (task.getClassifier().getLogicalSourcePort() != null) {
-			l.add(new NamedDependency(VnfPortNode.class, task.getClassifier().getLogicalSourcePort()));
-		}
-		return l;
-	}
-
-	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(FlowClassifierNode.class, task.getToscaName()));
-	}
-
 	@Override
 	public Class<? extends Node> getType() {
-		return VnffgPostNode.class;
+		return FlowClassifierNode.class;
 	}
 
 }

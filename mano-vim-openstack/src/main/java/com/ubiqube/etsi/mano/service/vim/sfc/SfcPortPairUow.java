@@ -16,19 +16,13 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc;
 
-import java.util.List;
-
 import com.ubiqube.etsi.mano.dao.mano.nsd.CpPair;
 import com.ubiqube.etsi.mano.dao.mano.vnffg.VnffgPortPairTask;
 import com.ubiqube.etsi.mano.orchestrator.Context3d;
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency;
-import com.ubiqube.etsi.mano.orchestrator.NamedDependency2d;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
-import com.ubiqube.etsi.mano.orchestrator.nodes.mec.VnfExtractorNode;
 import com.ubiqube.etsi.mano.orchestrator.nodes.vnfm.VnfPortNode;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 import com.ubiqube.etsi.mano.service.graph.AbstractUnitOfWork;
-import com.ubiqube.etsi.mano.service.graph.Relation;
 import com.ubiqube.etsi.mano.service.vim.OsSfc;
 import com.ubiqube.etsi.mano.service.vim.sfc.node.PortPairNode;
 
@@ -62,18 +56,6 @@ public class SfcPortPairUow extends AbstractUnitOfWork<VnffgPortPairTask> {
 	public String rollback(final Context3d context) {
 		sfc.deletePortPair(vimConnectionInformation, task.getVimResourceId());
 		return null;
-	}
-
-	public List<NamedDependency> getNameDependencies() {
-		return List.of(new NamedDependency(VnfExtractorNode.class, "extract-" + task.getVnfAlias()));
-	}
-
-	public List<NamedDependency> getNamedProduced() {
-		return List.of(new NamedDependency(getType(), task.getToscaName()));
-	}
-
-	public List<NamedDependency2d> get2dDependencies() {
-		return List.of(new NamedDependency2d(VnfExtractorNode.class, "extract-" + task.getVnfAlias(), Relation.ONE_TO_ONE));
 	}
 
 }
