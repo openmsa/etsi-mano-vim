@@ -109,4 +109,9 @@ public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 		return this.getClass().getSimpleName() + "(" + getName() + ", " + getAlias() + ")";
 	}
 
+	@Override
+	public void setVimConnectionId(final String conn) {
+		templateParameters.setVimConnectionId(conn);
+	}
+
 }

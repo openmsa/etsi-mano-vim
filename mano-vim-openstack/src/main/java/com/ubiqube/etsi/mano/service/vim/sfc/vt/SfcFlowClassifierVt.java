@@ -16,6 +16,7 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc.vt;
 
+import com.ubiqube.etsi.mano.orchestrator.ResultType;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.service.graph.vt.NsVtBase;
 import com.ubiqube.etsi.mano.service.vim.sfc.enity.SfcFlowClassifierTask;
@@ -38,6 +39,12 @@ public class SfcFlowClassifierVt extends NsVtBase<SfcFlowClassifierTask> {
 	@Override
 	public Class<? extends Node> getType() {
 		return FlowClassifierNode.class;
+	}
+
+	@Override
+	public ResultType getStatus() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
