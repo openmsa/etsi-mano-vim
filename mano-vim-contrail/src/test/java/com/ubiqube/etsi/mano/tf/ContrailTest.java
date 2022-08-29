@@ -33,10 +33,12 @@ import net.juniper.contrail.api.ApiConnector;
 import net.juniper.contrail.api.ApiConnectorFactory;
 import net.juniper.contrail.api.ApiObjectBase;
 import net.juniper.contrail.api.Status;
+import net.juniper.contrail.api.types.InstanceIp;
 import net.juniper.contrail.api.types.IpamSubnetType;
 import net.juniper.contrail.api.types.IpamSubnets;
 import net.juniper.contrail.api.types.NetworkIpam;
 import net.juniper.contrail.api.types.PortTuple;
+import net.juniper.contrail.api.types.Project;
 import net.juniper.contrail.api.types.ServiceInstance;
 import net.juniper.contrail.api.types.ServiceTemplate;
 import net.juniper.contrail.api.types.ServiceTemplateInterfaceType;
@@ -52,6 +54,7 @@ import net.juniper.contrail.api.types.VnSubnetsType;
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
+@SuppressWarnings("static-method")
 class ContrailTest {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ContrailTest.class);
@@ -204,6 +207,62 @@ class ContrailTest {
 		final ContrailFacade cf = new ContrailFacade();
 		final VirtualMachineInterface obj = cf.findById(vimConnectionInformation, VirtualMachineInterface.class, "4880c971-0359-43f4-a2a1-d63ad72dbab4");
 		LOG.debug("{}", obj);
+	}
+
+	void testInstanceIp() {
+		final ContrailFacade cf = new ContrailFacade();
+		final InstanceIp ii = new InstanceIp();
+		ii.setUuid("3f2b990f-bb57-4e60-a6a6-7d856f9cf37d");
+		cf.delete(vimConnectionInformation, ii);
+	}
+
+	void testVmiUPdate() {
+		final ContrailFacade cf = new ContrailFacade();
+		final VirtualMachineInterface vmi = cf.findById(vimConnectionInformation, VirtualMachineInterface.class, "cae3cb37-4006-4a4d-aaa4-0f3d59a9b7bb");
+		vmi.clearVirtualMachineInterface();
+		cf.update(vimConnectionInformation, vmi);
+	}
+
+	void testVmiDelete() {
+		final ContrailFacade cf = new ContrailFacade();
+		final VirtualMachineInterface vmi = cf.findById(vimConnectionInformation, VirtualMachineInterface.class, "cae3cb37-4006-4a4d-aaa4-0f3d59a9b7bb");
+		vmi.clearVirtualMachineInterface();
+		cf.delete(vimConnectionInformation, vmi);
+	}
+
+	void testUpdatePortTuple() {
+		final ContrailFacade cf = new ContrailFacade();
+		final PortTuple pt = cf.findById(vimConnectionInformation, PortTuple.class, "edf523f2-8237-4fa3-9bdd-0ad43a8d6d08");
+		pt.clearVirtualNetwork();
+		cf.update(vimConnectionInformation, pt);
+	}
+
+	void deletePortTuple() {
+		final ContrailFacade cf = new ContrailFacade();
+		final PortTuple pt = new PortTuple();
+		final Project prj = new Project();
+		prj.setName("admin");
+		// pt.setParent(prj);
+		pt.setUuid("edf523f2-8237-4fa3-9bdd-0ad43a8d6d08");
+		cf.delete(vimConnectionInformation, pt);
+	}
+
+	void deletePt2() {
+		final ContrailFacade cf = new ContrailFacade();
+		final PortTuple pt = cf.findById(vimConnectionInformation, PortTuple.class, "edf523f2-8237-4fa3-9bdd-0ad43a8d6d08");
+		pt.getVirtualMachineInterfaceBackRefs().forEach(x -> deleteVmi(x.getUuid()));
+		cf.delete(vimConnectionInformation, pt);
+	}
+
+	private void deleteVmi(final String uuid) {
+		final ContrailFacade cf = new ContrailFacade();
+		final VirtualMachineInterface vmi = cf.findById(vimConnectionInformation, VirtualMachineInterface.class, uuid);
+		vmi.getInstanceIpBackRefs().stream().filter(x -> !x.getReferredName().get(0).contains("-left-")).forEach(x -> {
+			final InstanceIp ii = new InstanceIp();
+			ii.setUuid(x.getUuid());
+			cf.delete(vimConnectionInformation, ii);
+		});
+		cf.delete(vimConnectionInformation, vmi);
 	}
 
 	@Test
