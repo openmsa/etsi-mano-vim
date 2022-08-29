@@ -35,7 +35,6 @@ import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
  */
 public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTask> {
 
-	private static final String EXTRACT = "extract-";
 	private final SystemConnections vimConnectionInformation;
 	private final OsSfc sfc;
 	private final SfcFlowClassifierTask task;
@@ -50,8 +49,8 @@ public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTa
 	@Override
 	public String execute(final Context3d context) {
 		final Classifier classifier = task.getClassifier();
-		final String src = Optional.ofNullable(classifier.getLogicalSourcePort()).map(x -> context.get(VnfPortNode.class, x)).orElse(null);
-		final String dst = Optional.ofNullable(classifier.getLogicalDestinationPort()).map(x -> context.get(VnfPortNode.class, x)).orElse(null);
+		final String src = Optional.ofNullable(classifier.getLogicalSourcePort()).map(x -> context.get(VnfPortNode.class, x)).orElseThrow();
+		final String dst = Optional.ofNullable(classifier.getLogicalDestinationPort()).map(x -> context.get(VnfPortNode.class, x)).orElseThrow();
 		return sfc.createFlowClassifier(vimConnectionInformation, classifier, src, dst);
 	}
 
