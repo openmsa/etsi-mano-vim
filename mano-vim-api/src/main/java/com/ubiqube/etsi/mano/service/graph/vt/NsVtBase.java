@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import com.ubiqube.etsi.mano.dao.mano.ChangeType;
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
+import com.ubiqube.etsi.mano.orchestrator.ResultType;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 
@@ -112,6 +113,17 @@ public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 	@Override
 	public void setVimConnectionId(final String conn) {
 		templateParameters.setVimConnectionId(conn);
+	}
+
+	@Override
+	public ResultType getStatus() {
+		return switch (templateParameters.getStatus()) {
+		case FAILED -> ResultType.ERRORED;
+		case NOT_STARTED -> ResultType.NOT_STARTED;
+		case SUCCESS -> ResultType.SUCCESS;
+		case STARTED -> ResultType.NOT_STARTED;
+		default -> throw new IllegalArgumentException("Unexpected value: " + templateParameters.getStatus());
+		};
 	}
 
 }
