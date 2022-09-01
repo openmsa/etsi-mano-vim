@@ -154,6 +154,7 @@ public class OpenStackVim implements Vim {
 	@Override
 	public void allocateResources(final VimConnectionInformation vimConnectionInformation, final GrantInformationExt grantInformation) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
+		os.placement();
 		// XXX Do placement with blazar.
 	}
 
