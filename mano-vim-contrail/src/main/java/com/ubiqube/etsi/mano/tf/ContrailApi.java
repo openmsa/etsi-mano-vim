@@ -183,7 +183,7 @@ public class ContrailApi {
 
 	public void rollbackVmi(final SystemConnections vimConnectionInformation, final String portTupleId) {
 		final PortTuple pt = facade.findById(vimConnectionInformation, PortTuple.class, portTupleId);
-		if (null == pt) {
+		if ((null == pt) || (null == pt.getVirtualMachineInterfaceBackRefs())) {
 			return;
 		}
 		pt.getVirtualMachineInterfaceBackRefs().forEach(x -> deleteVmi(vimConnectionInformation, x.getUuid()));
