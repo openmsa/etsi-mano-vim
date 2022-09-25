@@ -588,6 +588,6 @@ public class OpenStackTest {
 		final OpenStackVim vim = new OpenStackVim(mapper);
 		final String networkId = null;
 		final String clusterTemplateId = "d5cc3f4d-7df3-4506-8135-2a566df78e88";
-		vim.cnf(vciInari).startK8s(clusterTemplateId, "ovi-dev", 1, "myCluster-TU", 1, networkId);
+		vim.cnf(vciInari).createK8sCluster(clusterTemplateId, "ovi-dev", 1, "myCluster-TU", 1, networkId);
 	}
 }
