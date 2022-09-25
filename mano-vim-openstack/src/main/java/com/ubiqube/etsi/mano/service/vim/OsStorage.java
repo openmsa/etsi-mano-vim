@@ -119,15 +119,17 @@ public class OsStorage implements Storage {
 
 	@Override
 	public String createStorage(final VnfStorage vnfStorage, final String aliasName) {
-		final Object imgName = vnfStorage.getSoftwareImage().getName();
-		final Image image = os.imagesV2().list().stream()
-				.filter(x -> x.getName().equals(imgName) || x.getId().equals(imgName))
-				.findFirst()
-				.orElseThrow(() -> new VimException("Image " + vnfStorage.getSoftwareImage().getName() + " not found"));
 		final VolumeBuilder bv = Builders.volume();
 		bv.size((int) (vnfStorage.getSize() / GIGA));
 		bv.name(aliasName);
-		bv.imageRef(image.getId());
+		if (vnfStorage.getSoftwareImage() != null) {
+			final Object imgName = vnfStorage.getSoftwareImage().getName();
+			final Image image = os.imagesV2().list().stream()
+					.filter(x -> x.getName().equals(imgName) || x.getId().equals(imgName))
+					.findFirst()
+					.orElseThrow(() -> new VimException("Image " + vnfStorage.getSoftwareImage().getName() + " not found"));
+			bv.imageRef(image.getId());
+		}
 		final Volume res = os.blockStorage().volumes().create(bv.build());
 		waitForVolumeCompletion(os.blockStorage().volumes(), res);
 		return res.getId();
@@ -206,7 +208,7 @@ public class OsStorage implements Storage {
 
 	private static String getAlgorithm(@Nullable final String checksum, final String osAlg) {
 		if (osAlg != null) {
-			if (osAlg.equals("sha512")) {
+			if ("sha512".equals(osAlg)) {
 				return "SHA-512";
 			}
 			throw new VimException("Unknown algorithm: " + osAlg);
