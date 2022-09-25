@@ -43,7 +43,7 @@ public class OsCnf implements Cnf {
 	}
 
 	@Override
-	public String startK8s(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount, final String networkId) {
+	public String createK8sCluster(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount, final String networkId) {
 		final Cluster cluster = MagnumCluster.builder()
 				.clusterTemplateId(clusterTemplateId)
 				.keypair(keypair)

@@ -25,7 +25,7 @@ import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
  */
 public interface Cnf {
 
-	String startK8s(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount, String networkId);
+	String createK8sCluster(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount, String networkId);
 
 	void deleteK8s(String vimResourceId);
 
