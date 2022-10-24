@@ -16,11 +16,11 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.springframework.stereotype.Service;
-
+import com.ubiqube.etsi.mano.dao.mano.config.Servers;
 import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
 import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.service.vim.k8s.K8sClient;
@@ -30,13 +30,12 @@ import com.ubiqube.etsi.mano.service.vim.k8s.K8sClient;
  * @author Olivier Vignaud <ovi@ubiqube.com>
  *
  */
-@Service
 public class K8sTillerClient implements K8sClient {
 
 	@Override
-	public String deploy(final K8sServers server, final String userKey, final String file) {
+	public String deploy(final Servers srv, final K8sServers server, final String userKey, final File file, final String name) {
 		try {
-			final TillerClient cli = TillerClient.ofCerts(new URL(server.getApiAddress()), server.getCaPem(), server.getUserCrt(), userKey);
+			final TillerClient cli = TillerClient.ofCerts(new URL(server.getApiAddress()), server.getCaPem().getBytes(), server.getUserCrt().getBytes(), userKey, name);
 			return cli.deploy(file);
 		} catch (final MalformedURLException e) {
 			throw new VimException(e);
@@ -44,9 +43,8 @@ public class K8sTillerClient implements K8sClient {
 	}
 
 	@Override
-	public void undeploy(final String vimResourceId) {
+	public void undeploy(final Servers server, final K8sServers k8s, final String userKey, final String vimResourceId) {
 		// To do.
-
 	}
 
 }

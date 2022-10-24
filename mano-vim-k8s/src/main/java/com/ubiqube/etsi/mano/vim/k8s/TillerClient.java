@@ -16,6 +16,7 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,12 +52,15 @@ public class TillerClient {
 
 	private final DefaultKubernetesClient client;
 	private final Tiller tiller;
+
+	private final String name;
 	private static final long TIMEOUT = 300L;
 
-	private TillerClient(final Config config) {
+	private TillerClient(final Config config, final String name) {
 		this.client = new DefaultKubernetesClient(config);
+		this.name = name;
 		try {
-			this.tiller = new Tiller(client);
+			this.tiller = new Tiller(client, "magnum-tiller");
 		} catch (final MalformedURLException e) {
 			throw new VimException(e);
 		}
@@ -68,28 +72,37 @@ public class TillerClient {
 				.withCaCertData(ca);
 	}
 
-	public static TillerClient ofCerts(final URL url, final String ca, final String clientCert, final String clientKey) {
-		final Config c = getBaseBuilder(url, ca)
-				.withClientCertData(clientCert)
-				.withClientKeyData(clientKey)
+	/**
+	 *
+	 * @param url
+	 * @param ca   base64 String of the DER
+	 * @param crt  base64 String of the DER
+	 * @param uk   Full PEM key
+	 * @param name
+	 * @return
+	 */
+	public static TillerClient ofCerts(final URL url, final byte[] ca, final byte[] crt, final String uk, final String name) {
+		final Config c = getBaseBuilder(url, new String(ca))
+				.withClientCertData(new String(crt))
+				.withClientKeyData(uk)
 				.build();
-		return new TillerClient(c);
+		return new TillerClient(c, name);
 	}
 
-	public static TillerClient ofToken(final URL url, final String ca, final String username, final String token) {
+	public static TillerClient ofToken(final URL url, final String ca, final String username, final String token, final String name) {
 		final Config c = getBaseBuilder(url, ca)
 				.withUsername(username)
 				.withOauthToken(token)
 				.build();
-		return new TillerClient(c);
+		return new TillerClient(c, name);
 	}
 
-	public String deploy(final String file) {
+	public String deploy(final File file) {
 		try (final ReleaseManager releaseManager = new ReleaseManager(tiller)) {
 			final Chart.Builder chart = getChart(file);
 			final InstallReleaseRequest.Builder requestBuilder = InstallReleaseRequest.newBuilder();
 			requestBuilder.setTimeout(TIMEOUT);
-			requestBuilder.setName("test-charts"); // Set the Helm release name
+			requestBuilder.setName(name); // Set the Helm release name
 			requestBuilder.setWait(true); // Wait for Pods to be ready
 			requestBuilder.setNamespace(UUID.randomUUID().toString());
 			final Future<InstallReleaseResponse> releaseFuture = releaseManager.install(requestBuilder, chart);
@@ -105,9 +118,9 @@ public class TillerClient {
 		return null;
 	}
 
-	private static Builder getChart(final String file) {
+	private static Builder getChart(final File file) {
 		try (final URLChartLoader chartLoader = new URLChartLoader()) {
-			return chartLoader.load(new URL(file));
+			return chartLoader.load(file.toURI().toURL());
 		} catch (final IOException e) {
 			throw new VimException(e);
 		}
