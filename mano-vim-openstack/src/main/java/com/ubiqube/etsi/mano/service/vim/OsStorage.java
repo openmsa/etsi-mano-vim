@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -79,7 +80,7 @@ public class OsStorage implements Storage {
 	@Override
 	public Optional<SwImage> getSwImageMatching(final SoftwareImage img) {
 		// XXX: Checksum is not checked, and checksum exist in os.image()
-		final Optional<? extends Image> image = os.imagesV2().list().stream()
+		final Optional<? extends Image> image = os.imagesV2().list(Map.of("limit", "500")).stream()
 				.filter(x -> x.getName().equals(img.getName()))
 				.findFirst();
 		if (image.isPresent()) {
@@ -124,7 +125,7 @@ public class OsStorage implements Storage {
 		bv.name(aliasName);
 		if (vnfStorage.getSoftwareImage() != null) {
 			final Object imgName = vnfStorage.getSoftwareImage().getName();
-			final Image image = os.imagesV2().list().stream()
+			final Image image = os.imagesV2().list(Map.of("limit", "500")).stream()
 					.filter(x -> x.getName().equals(imgName) || x.getId().equals(imgName))
 					.findFirst()
 					.orElseThrow(() -> new VimException("Image " + vnfStorage.getSoftwareImage().getName() + " not found"));
@@ -145,7 +146,7 @@ public class OsStorage implements Storage {
 	@Override
 	@Nonnull
 	public SysImage getImagesInformations(final String name) {
-		final List<? extends Image> images = os.imagesV2().list();
+		final List<? extends Image> images = os.imagesV2().list(Map.of("limit", "500"));
 		final Image image = images.stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst().orElseThrow(() -> new VimException("Image " + name + " Cannot be found on Vim."));
 		return mapper.map(image, SysImage.class);
 	}
@@ -173,7 +174,7 @@ public class OsStorage implements Storage {
 
 	@Override
 	public List<SwImage> getImageList() {
-		final List<? extends Image> images = os.imagesV2().list();
+		final List<? extends Image> images = os.imagesV2().list(Map.of("limit", "500"));
 		return images.stream().map(x -> new SwImage(x.getId())).toList();
 	}
 
