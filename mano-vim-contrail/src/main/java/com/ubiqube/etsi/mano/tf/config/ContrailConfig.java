@@ -35,8 +35,12 @@ public class ContrailConfig {
 
 	private String endpoint;
 
+	private String authEndpoint;
+
 	private String username;
 
 	private String password;
+
+	private String tenant;
 
 }
