@@ -464,7 +464,7 @@ public class OpenStackVim implements Vim {
 	}
 
 	@Override
-	public com.ubiqube.etsi.mano.service.vim.Network network(final VimConnectionInformation vimConnectionInformation) {
+	public Network network(final VimConnectionInformation vimConnectionInformation) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
 		return new OsNetwork(os, vimConnectionInformation);
 	}
