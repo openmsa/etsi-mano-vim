@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -63,10 +64,15 @@ class ContrailTest {
 	public ContrailTest() {
 		vimConnectionInformation = new SystemConnections();
 		vimConnectionInformation.setInterfaceInfo(new HashMap<>());
-		vimConnectionInformation.getInterfaceInfo().put("endpoint", "http://192.168.1.36:8082");
+		// vimConnectionInformation.getInterfaceInfo().put("endpoint",
+		// "http://192.168.1.36:8082");
+		vimConnectionInformation.getInterfaceInfo().put("endpoint", "https://10.242.228.221:8082");
+		vimConnectionInformation.getInterfaceInfo().put("auth-endpoint", "https://10.242.228.250:5000/v3");
 		vimConnectionInformation.setAccessInfo(new HashMap<>());
-		vimConnectionInformation.getAccessInfo().put("username", "ncroot");
-		vimConnectionInformation.getAccessInfo().put("password", "password");
+		vimConnectionInformation.getAccessInfo().put("username", "admin");
+		vimConnectionInformation.getAccessInfo().put("password", "uoleiChai8no6yai");
+		vimConnectionInformation.getAccessInfo().put("projectId", "44009ebe33d34d5f81b22a9354661abf");
+		vimConnectionInformation.getAccessInfo().put("projectDomain", "admin_domain");
 	}
 
 	@Test
@@ -263,6 +269,17 @@ class ContrailTest {
 			cf.delete(vimConnectionInformation, ii);
 		});
 		cf.delete(vimConnectionInformation, vmi);
+	}
+
+	void simpleConnectionTest() {
+		System.getProperties().put("proxySet", "true");
+		System.getProperties().put("socksProxyHost", "127.0.0.1");
+		System.getProperties().put("socksProxyPort", "3128");
+		final ContrailApi ca = new ContrailApi();
+		// Old Token TM LAB
+		// gAAAAABja79seW3S42kHGIJX3TWxXP-jvDy5AXcWMQEwJNks0hx08F4mejRQEajNBWDLjGi0YVKf_I2dwqEgP_0KvTn4-sxEyIK7Oio6U7qiIVoM9HYGfHNJJkQpZGsGqGyPN60thtqrc5wKz1pz-uWacuFZBSYoaA
+		ca.deleteServiceTemplate(vimConnectionInformation, UUID.randomUUID().toString());
+		assertTrue(true);
 	}
 
 	@Test
