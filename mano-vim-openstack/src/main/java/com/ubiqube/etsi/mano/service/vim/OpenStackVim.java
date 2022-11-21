@@ -50,6 +50,7 @@ import org.openstack4j.model.compute.AbsoluteLimit;
 import org.openstack4j.model.compute.Action;
 import org.openstack4j.model.compute.BlockDeviceMappingCreate;
 import org.openstack4j.model.compute.Flavor;
+import org.openstack4j.model.compute.RebootType;
 import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.compute.builder.ServerCreateBuilder;
 import org.openstack4j.model.compute.ext.AvailabilityZone;
@@ -302,6 +303,12 @@ public class OpenStackVim implements Vim {
 	public void stopServer(final VimConnectionInformation vimConnectionInformation, final String resourceId) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
 		os.compute().servers().action(resourceId, Action.STOP);
+	}
+	
+	@Override
+	public void rebootServer(final VimConnectionInformation vimConnectionInformation, final String resourceId) {
+		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
+		os.compute().servers().reboot(resourceId, RebootType.HARD);
 	}
 
 	@Override

@@ -61,6 +61,8 @@ public interface Vim {
 	void startServer(VimConnectionInformation vimConnectionInformation, String resourceId);
 
 	void stopServer(VimConnectionInformation vimConnectionInformation, String resourceId);
+	
+	void rebootServer(VimConnectionInformation vimConnectionInformation, String resourceId);
 
 	List<ServerGroup> getServerGroup(final VimConnectionInformation vimConnectionInformation);
 
