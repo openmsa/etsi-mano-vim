@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.tf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,22 +58,26 @@ import net.juniper.contrail.api.types.VnSubnetsType;
  */
 @SuppressWarnings("static-method")
 class ContrailTest {
-
 	private static final Logger LOG = LoggerFactory.getLogger(ContrailTest.class);
 	private final SystemConnections vimConnectionInformation;
 
 	public ContrailTest() {
+		System.getProperties().put("proxySet", "true");
+		System.getProperties().put("socksProxyHost", "10.31.1.29");
+		System.getProperties().put("socksProxyPort", "3128");
 		vimConnectionInformation = new SystemConnections();
 		vimConnectionInformation.setInterfaceInfo(new HashMap<>());
 		// vimConnectionInformation.getInterfaceInfo().put("endpoint",
 		// "http://192.168.1.36:8082");
-		vimConnectionInformation.getInterfaceInfo().put("endpoint", "https://10.242.228.221:8082");
-		vimConnectionInformation.getInterfaceInfo().put("auth-endpoint", "https://10.242.228.250:5000/v3");
+		vimConnectionInformation.getInterfaceInfo().put("sdn-endpoint", "https://10.242.228.221:8082");
+		vimConnectionInformation.getInterfaceInfo().put("endpoint", "https://10.242.228.250:5000/v3");
 		vimConnectionInformation.setAccessInfo(new HashMap<>());
 		vimConnectionInformation.getAccessInfo().put("username", "admin");
 		vimConnectionInformation.getAccessInfo().put("password", "uoleiChai8no6yai");
 		vimConnectionInformation.getAccessInfo().put("projectId", "44009ebe33d34d5f81b22a9354661abf");
 		vimConnectionInformation.getAccessInfo().put("projectDomain", "admin_domain");
+		vimConnectionInformation.getAccessInfo().put("userDomain", "admin_domain");
+		vimConnectionInformation.getAccessInfo().put("sdnDomain", "admin");
 	}
 
 	@Test
@@ -81,7 +86,8 @@ class ContrailTest {
 	}
 
 	private final static ApiConnector getConnection() {
-		return ApiConnectorFactory.build("192.168.1.36", 8082).credentials("", "");
+		final URI url = URI.create("http://192.168.1.36:8082");
+		return ApiConnectorFactory.build(url).credentials("", "");
 	}
 
 	private static Status executeCreate(final ApiObjectBase obj) throws IOException {
@@ -271,15 +277,31 @@ class ContrailTest {
 		cf.delete(vimConnectionInformation, vmi);
 	}
 
+	@Test
+	void createServiceTemplate() {
+		final ContrailApi ca = new ContrailApi();
+		ca.createServiceTemplate(vimConnectionInformation, "ju-test");
+	}
+
+	void createServiceInstance02() {
+		final ContrailApi ca = new ContrailApi();
+		final String templateId = "38322b75-c73a-491e-9aab-e264bbd1e6c7";
+		final String left = "6c309e70-7324-4e89-8673-ad38a68d4fc4";
+		final String right = "6c309e70-7324-4e89-8673-ad38a68d4fc4";
+		ca.createServiceInstance(vimConnectionInformation, "ju-service-instance", templateId, left, right);
+	}
+
 	void simpleConnectionTest() {
-		System.getProperties().put("proxySet", "true");
-		System.getProperties().put("socksProxyHost", "127.0.0.1");
-		System.getProperties().put("socksProxyPort", "3128");
 		final ContrailApi ca = new ContrailApi();
 		// Old Token TM LAB
 		// gAAAAABja79seW3S42kHGIJX3TWxXP-jvDy5AXcWMQEwJNks0hx08F4mejRQEajNBWDLjGi0YVKf_I2dwqEgP_0KvTn4-sxEyIK7Oio6U7qiIVoM9HYGfHNJJkQpZGsGqGyPN60thtqrc5wKz1pz-uWacuFZBSYoaA
 		ca.deleteServiceTemplate(vimConnectionInformation, UUID.randomUUID().toString());
 		assertTrue(true);
+	}
+
+	void testApiServiceInstance() {
+		final ContrailApi api = new ContrailApi();
+		api.createServiceInstance(vimConnectionInformation, "test", "300b630b-a8d2-4707-9153-1b0493c51986", "6c309e70-7324-4e89-8673-ad38a68d4fc4", "6c309e70-7324-4e89-8673-ad38a68d4fc4");
 	}
 
 	@Test

@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.tf;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,7 @@ public class ContrailFacade {
 
 	public String uuidToFq(final SystemConnections vimConnectionInformation, final Class<? extends ApiObjectBase> class1, final String uuid) {
 		final ApiObjectBase obj = findById(vimConnectionInformation, class1, uuid);
+		Objects.requireNonNull(obj, "Could not find " + class1 + " with id " + uuid);
 		final List<String> qn = obj.getQualifiedName();
 		return qn.stream().collect(Collectors.joining(":"));
 	}
@@ -101,7 +103,7 @@ public class ContrailFacade {
 		final URI url = URI.create(endpoint);
 		final String username = vimConnectionInformation.getAccessInfo().get("username");
 		final String password = vimConnectionInformation.getAccessInfo().get("password");
-		final ApiConnector apiConnector = ApiConnectorFactory.build(url.getHost(), url.getPort()).credentials(username, password);
+		final ApiConnector apiConnector = ApiConnectorFactory.build(url).credentials(username, password);
 		Optional.ofNullable(vimConnectionInformation.getAccessInfo().get("projectDomain")).ifPresent(apiConnector::domainName);
 		Optional.ofNullable(vimConnectionInformation.getAccessInfo().get("projectId")).ifPresent(apiConnector::tenantId);
 		Optional.ofNullable(vimConnectionInformation.getInterfaceInfo().get("endpoint")).ifPresent(x -> apiConnector.authServer("keystonev3", x));

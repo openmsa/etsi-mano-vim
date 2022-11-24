@@ -17,6 +17,7 @@
 package com.ubiqube.etsi.mano.tf;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import org.slf4j.Logger;
@@ -64,6 +65,7 @@ public class ContrailApi {
 		final ServiceTemplate root = new ServiceTemplate();
 		root.setDisplayName(name);
 		root.setName(name);
+		// root.setParent(createProject(vimConnectionInformation));
 		final ServiceTemplateType props = new ServiceTemplateType();
 		props.setServiceVirtualizationType("virtual-machine"); // Any of [‘virtual-machine’, ‘network-namespace’, ‘vrouter-instance’,
 																// ‘physical-device’]
@@ -77,12 +79,11 @@ public class ContrailApi {
 	}
 
 	public String createServiceInstance(final SystemConnections vimConnectionInformation, final String name, final String serviceTemplateId, final String left, final String right) {
-		final Project prj = new Project();
-		prj.setName(DEFAULT_PROJECT);
 		final ServiceInstance root = new ServiceInstance();
-		root.setParent(prj);
+		root.setParent(createProject());
 		root.setName(name);
 		final ServiceTemplate st = facade.findById(vimConnectionInformation, ServiceTemplate.class, serviceTemplateId);
+		Objects.requireNonNull(st, "Could not find ServiceTemplate " + serviceTemplateId);
 		root.setServiceTemplate(st);
 		final ServiceInstanceType serviceInstanceProperties = new ServiceInstanceType();
 		final String l = facade.uuidToFq(vimConnectionInformation, VirtualNetwork.class, left);
@@ -105,9 +106,7 @@ public class ContrailApi {
 	public void updatePort(final SystemConnections vimConnectionInformation, final String uuid, final String portTupleId, final String mode) {
 		final VirtualMachineInterface vmi = new VirtualMachineInterface();
 		vmi.setUuid(uuid);
-		final Project prj = new Project();
-		prj.setName(DEFAULT_PROJECT);
-		vmi.setParent(prj);
+		vmi.setParent(createProject());
 		final VirtualMachineInterfacePropertiesType virtualMachineInterfaceProperties = new VirtualMachineInterfacePropertiesType();
 		virtualMachineInterfaceProperties.setServiceInterfaceType(mode);
 		vmi.setProperties(virtualMachineInterfaceProperties);
@@ -138,9 +137,7 @@ public class ContrailApi {
 
 	public String createNetworkPolicy(final SystemConnections vimConnectionInformation, final String name, final Classifier classifier, final String serviceInstance, final String left, final String right) {
 		final NetworkPolicy root = new NetworkPolicy();
-		final Project prj = new Project();
-		prj.setName(DEFAULT_PROJECT);
-		root.setParent(prj);
+		root.setParent(createProject());
 		root.setName(name);
 		final String leftFq = facade.uuidToFq(vimConnectionInformation, VirtualNetwork.class, left);
 		final String rightFq = facade.uuidToFq(vimConnectionInformation, VirtualNetwork.class, right);
@@ -200,5 +197,11 @@ public class ContrailApi {
 		});
 		LOG.debug("Deleting virtual-macine-interface: {}", vmi.getParentUuid());
 		facade.delete(vimConnectionInformation, vmi);
+	}
+
+	private static Project createProject() {
+		final Project prj = new ManoTfProject("default-domain");
+		prj.setName("default-project");
+		return prj;
 	}
 }

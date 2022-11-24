@@ -50,6 +50,7 @@ import org.openstack4j.model.dns.v2.Zone;
 import org.openstack4j.model.dns.v2.ZoneType;
 import org.openstack4j.model.identity.v3.Endpoint;
 import org.openstack4j.model.identity.v3.Service;
+import org.openstack4j.model.network.Network;
 import org.openstack4j.model.network.Port;
 import org.openstack4j.model.network.Router;
 import org.openstack4j.model.network.RouterInterface;
@@ -130,7 +131,7 @@ public class OpenStackTest {
 				.authenticate();
 
 		final List<? extends Service> ep = os.identity().serviceEndpoints().list();
-		final Optional<? extends Service> l = ep.stream().filter(x -> x.getType().equals("placement")).findFirst();
+		final Optional<? extends Service> l = ep.stream().filter(x -> "placement".equals(x.getType())).findFirst();
 		System.out.println("l=" + l.get());
 		final Service service = l.get();
 		final Endpoint endpoint = os.identity().serviceEndpoints().getEndpoint(service.getId());
@@ -307,6 +308,21 @@ public class OpenStackTest {
 				.authenticate();
 	}
 
+	private static OSClientV3 getTmLabConnection() {
+		System.getProperties().put("proxySet", "true");
+		System.getProperties().put("socksProxyHost", "10.31.1.29");
+		System.getProperties().put("socksProxyPort", "3128");
+
+		final Identifier domainIdentifier = Identifier.byName("admin_domain");
+		return OSFactory.builderV3()
+				.withConfig(Config.newConfig()/* .withEndpointNATResolution("localhost") */
+						.withSSLVerificationDisabled())
+				.endpoint("https://10.242.226.250:5000/v3")
+				.credentials("admin", "uoleiChai8no6yai", domainIdentifier)
+				.scopeToProject(Identifier.byId("44009ebe33d34d5f81b22a9354661abf"))
+				.authenticate();
+	}
+
 	private static OSClientV3 getYogaConnection() {
 		final Identifier domainIdentifier = Identifier.byName("Default");
 		return OSFactory.builderV3()
@@ -329,7 +345,7 @@ public class OpenStackTest {
 	void testTrain() {
 		final OSClientV3 os = getVictoriaConnection();
 		final List<? extends Service> ep = os.identity().serviceEndpoints().list();
-		final Optional<? extends Service> l = ep.stream().filter(x -> x.getType().equals("placement")).findFirst();
+		final Optional<? extends Service> l = ep.stream().filter(x -> "placement".equals(x.getType())).findFirst();
 		System.out.println("l=" + l.get());
 		os.networking().agent().list().forEach(x -> {
 			System.out.println("" + x.getBinary());
@@ -340,7 +356,7 @@ public class OpenStackTest {
 	void testQueens() {
 		final OSClientV3 os = getWallabyConnection();
 		final List<? extends Service> ep = os.identity().serviceEndpoints().list();
-		final Optional<? extends Service> l = ep.stream().filter(x -> x.getType().equals("placement")).findFirst();
+		final Optional<? extends Service> l = ep.stream().filter(x -> "placement".equals(x.getType())).findFirst();
 		System.out.println("l=" + l.get());
 		os.networking().agent().list().forEach(x -> {
 			System.out.println("" + x.getBinary());
@@ -362,11 +378,11 @@ public class OpenStackTest {
 		final Router router = os.networking().router().get(device);
 		final List<? extends Port> routerList = os.networking().port().list();
 		routerList.stream()
-				.filter(x -> x.getDeviceId().equals(device))
+				.filter(x -> device.equals(x.getDeviceId()))
 				.forEach(System.out::println);
 		final List<RouterInterface> ret = routerList.stream()
-				.filter(x -> x.getDeviceId().equals(device))
-				.filter(x -> !x.getDeviceOwner().equals("network:router_gateway"))
+				.filter(x -> device.equals(x.getDeviceId()))
+				.filter(x -> !"network:router_gateway".equals(x.getDeviceOwner()))
 				.map(Port::getId)
 				.map(x -> os.networking().router().detachInterface(device, null, x))
 				.collect(Collectors.toList());
@@ -589,5 +605,21 @@ public class OpenStackTest {
 		final String networkId = null;
 		final String clusterTemplateId = "d5cc3f4d-7df3-4506-8135-2a566df78e88";
 		vim.cnf(vciInari).createK8sCluster(clusterTemplateId, "ovi-dev", 1, "myCluster-TU", 1, networkId);
+	}
+
+	void testList() {
+		final OSClientV3 conn = getTmLabConnection();
+		conn.imagesV2().list(Map.of("limit", "500")).forEach(x -> {
+			System.out.println("" + x.getChecksum() + " | " + x.getName());
+		});
+	}
+
+	void testNetworkList() {
+		final OSClientV3 conn = getTmLabConnection();
+		conn.networking().network().list().stream()
+				.filter(Network::isRouterExternal)
+				.forEach(x -> {
+					System.out.println("" + x.getName() + " | " + x.getId());
+				});
 	}
 }
