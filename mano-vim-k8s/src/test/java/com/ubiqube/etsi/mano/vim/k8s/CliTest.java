@@ -22,11 +22,11 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import com.ubiqube.etsi.mano.dao.mano.AuthParamOauth2;
-import com.ubiqube.etsi.mano.dao.mano.AuthentificationInformations;
-import com.ubiqube.etsi.mano.dao.mano.OAuth2GrantType;
 import com.ubiqube.etsi.mano.dao.mano.config.Servers;
 import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
+import com.ubiqube.etsi.mano.service.event.model.AuthParamOauth2;
+import com.ubiqube.etsi.mano.service.event.model.AuthentificationInformations;
+import com.ubiqube.etsi.mano.service.event.model.OAuth2GrantType;
 
 @SuppressWarnings("static-method")
 class CliTest {
