@@ -47,7 +47,7 @@ public class SfcFlowClassifierTask extends NsTask {
 	@Id
 	private UUID id;
 
-	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private Classifier classifier;
 
 	private String srcPort;
