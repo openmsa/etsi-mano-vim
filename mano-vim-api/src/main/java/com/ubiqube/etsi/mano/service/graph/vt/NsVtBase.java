@@ -36,8 +36,6 @@ import lombok.Setter;
 @Setter
 public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 
-	private int rank;
-
 	private U templateParameters;
 
 	private SystemBuilder<U> systemBuilder;
@@ -113,6 +111,16 @@ public abstract class NsVtBase<U extends NsTask> implements VirtualTaskV3<U> {
 	@Override
 	public void setVimConnectionId(final String conn) {
 		templateParameters.setVimConnectionId(conn);
+	}
+
+	@Override
+	public void setRank(final int i) {
+		templateParameters.setRank(i);
+	}
+
+	@Override
+	public int getRank() {
+		return templateParameters.getRank();
 	}
 
 	@Override
