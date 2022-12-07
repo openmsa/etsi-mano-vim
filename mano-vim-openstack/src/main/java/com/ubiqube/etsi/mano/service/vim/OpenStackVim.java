@@ -304,7 +304,7 @@ public class OpenStackVim implements Vim {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
 		os.compute().servers().action(resourceId, Action.STOP);
 	}
-	
+
 	@Override
 	public void rebootServer(final VimConnectionInformation vimConnectionInformation, final String resourceId) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
@@ -391,6 +391,7 @@ public class OpenStackVim implements Vim {
 		case TELEMETRY_AODH -> VimCapability.HAVE_ALARMING;
 		case NETWORK -> VimCapability.HAVE_NETWORK;
 		case COMPUTE -> VimCapability.HAVE_COMPUTE;
+		case DNS -> VimCapability.HAVE_DNS;
 		default -> null;
 		};
 	}
@@ -426,6 +427,7 @@ public class OpenStackVim implements Vim {
 	}
 
 	private VimCapability convertExtenstionToCaps(final Extension ext) {
+		LOG.info(ext.getAlias());
 		if ("dns-integration".equals(ext.getAlias())) {
 			return VimCapability.HAVE_DNS;
 		}
