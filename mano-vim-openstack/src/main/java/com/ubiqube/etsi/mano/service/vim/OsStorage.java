@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.annotation.Nonnull;
@@ -181,6 +182,7 @@ public class OsStorage implements Storage {
 	@Override
 	public SoftwareImage getImageDetail(final String id) {
 		final Image image = os.imagesV2().get(id);
+		Objects.requireNonNull(image, "Could not fetch image " + id);
 		final SoftwareImage si = new SoftwareImage();
 		si.setArchitecture(image.getArchitecture());
 		si.setChecksum(buildChecksum(image));
