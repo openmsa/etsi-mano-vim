@@ -455,7 +455,7 @@ public class OpenStackVim implements Vim {
 		if ("trunk".equals(ext.getAlias())) {
 			return VimCapability.HAVE_TRUNK;
 		}
-
+		// Should we do contrail here ?
 		return null;
 	}
 
