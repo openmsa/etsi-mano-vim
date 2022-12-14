@@ -277,7 +277,6 @@ class ContrailTest {
 		cf.delete(vimConnectionInformation, vmi);
 	}
 
-	@Test
 	void createServiceTemplate() {
 		final ContrailApi ca = new ContrailApi();
 		ca.createServiceTemplate(vimConnectionInformation, "ju-test");

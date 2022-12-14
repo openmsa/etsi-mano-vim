@@ -54,7 +54,6 @@ import net.juniper.contrail.api.types.VirtualNetwork;
 public class ContrailApi {
 	private static final Logger LOG = LoggerFactory.getLogger(ContrailApi.class);
 
-	private static final String DEFAULT_PROJECT = "admin";
 	private final ContrailFacade facade;
 
 	public ContrailApi() {
@@ -65,7 +64,7 @@ public class ContrailApi {
 		final ServiceTemplate root = new ServiceTemplate();
 		root.setDisplayName(name);
 		root.setName(name);
-		// root.setParent(createProject(vimConnectionInformation));
+		// root.setParent(createProject(vimConnectionInformation))
 		final ServiceTemplateType props = new ServiceTemplateType();
 		props.setServiceVirtualizationType("virtual-machine"); // Any of [‘virtual-machine’, ‘network-namespace’, ‘vrouter-instance’,
 																// ‘physical-device’]

@@ -54,6 +54,8 @@ import ma.glasnost.orika.MapperFacade;
 
 public class OsStorage implements Storage {
 
+	private static final String LIMIT = "limit";
+
 	private static final Logger LOG = LoggerFactory.getLogger(OsStorage.class);
 
 	private static final long GIGA = 1024 * 1024 * 1024L;
@@ -81,7 +83,7 @@ public class OsStorage implements Storage {
 	@Override
 	public Optional<SwImage> getSwImageMatching(final SoftwareImage img) {
 		// XXX: Checksum is not checked, and checksum exist in os.image()
-		final Optional<? extends Image> image = os.imagesV2().list(Map.of("limit", "500")).stream()
+		final Optional<? extends Image> image = os.imagesV2().list(Map.of(LIMIT, "500")).stream()
 				.filter(x -> x.getName().equals(img.getName()))
 				.findFirst();
 		if (image.isPresent()) {
@@ -126,7 +128,7 @@ public class OsStorage implements Storage {
 		bv.name(aliasName);
 		if (vnfStorage.getSoftwareImage() != null) {
 			final Object imgName = vnfStorage.getSoftwareImage().getName();
-			final Image image = os.imagesV2().list(Map.of("limit", "500")).stream()
+			final Image image = os.imagesV2().list(Map.of(LIMIT, "500")).stream()
 					.filter(x -> x.getName().equals(imgName) || x.getId().equals(imgName))
 					.findFirst()
 					.orElseThrow(() -> new VimException("Image " + vnfStorage.getSoftwareImage().getName() + " not found"));
@@ -147,7 +149,7 @@ public class OsStorage implements Storage {
 	@Override
 	@Nonnull
 	public SysImage getImagesInformations(final String name) {
-		final List<? extends Image> images = os.imagesV2().list(Map.of("limit", "500"));
+		final List<? extends Image> images = os.imagesV2().list(Map.of(LIMIT, "500"));
 		final Image image = images.stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst().orElseThrow(() -> new VimException("Image " + name + " Cannot be found on Vim."));
 		return mapper.map(image, SysImage.class);
 	}
@@ -175,7 +177,7 @@ public class OsStorage implements Storage {
 
 	@Override
 	public List<SwImage> getImageList() {
-		final List<? extends Image> images = os.imagesV2().list(Map.of("limit", "500"));
+		final List<? extends Image> images = os.imagesV2().list(Map.of(LIMIT, "500"));
 		return images.stream().map(x -> new SwImage(x.getId())).toList();
 	}
 

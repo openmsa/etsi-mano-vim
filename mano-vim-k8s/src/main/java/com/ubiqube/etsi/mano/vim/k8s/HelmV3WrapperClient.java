@@ -18,7 +18,6 @@ package com.ubiqube.etsi.mano.vim.k8s;
 
 import java.io.File;
 import java.util.Base64;
-import java.util.UUID;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
@@ -39,7 +38,6 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class HelmV3WrapperClient implements K8sClient {
-	private final String id = UUID.randomUUID().toString();
 
 	@Override
 	public String deploy(final Servers server, final K8sServers k8s, final String userKey, final File file, final String name) {
