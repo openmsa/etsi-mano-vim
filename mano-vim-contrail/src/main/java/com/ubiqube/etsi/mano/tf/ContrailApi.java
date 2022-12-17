@@ -158,9 +158,13 @@ public class ContrailApi {
 		rule.setActionList(actionList);
 		classifier.setDscp(classifier.getDscp());
 		rule.addDstAddresses(makeAddress(leftFq));
-		rule.addDstPorts(classifier.getDestinationPortRangeMin().intValue(), classifier.getDestinationPortRangeMax().intValue());
+		if ((classifier.getDestinationPortRangeMin() != null) && (classifier.getDestinationPortRangeMax() != null)) {
+			rule.addDstPorts(classifier.getDestinationPortRangeMin().intValue(), classifier.getDestinationPortRangeMax().intValue());
+		}
 		rule.addSrcAddresses(makeAddress(rightFq));
-		rule.addSrcPorts(classifier.getSourcePortRangeMin().intValue(), classifier.getSourcePortRangeMax().intValue());
+		if ((classifier.getSourcePortRangeMin() != null) && (classifier.getSourcePortRangeMax() != null)) {
+			rule.addSrcPorts(classifier.getSourcePortRangeMin().intValue(), classifier.getSourcePortRangeMax().intValue());
+		}
 		rule.setEthertype("IPv4");
 		return rule;
 	}
