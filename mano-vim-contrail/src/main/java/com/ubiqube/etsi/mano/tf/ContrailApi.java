@@ -111,6 +111,7 @@ public class ContrailApi {
 		vmi.setProperties(virtualMachineInterfaceProperties);
 		if (null != portTupleId) {
 			final PortTuple pt = facade.findById(vimConnectionInformation, PortTuple.class, portTupleId);
+			Objects.requireNonNull(pt, "unable to find PortTuple: " + portTupleId);
 			vmi.setPortTuple(pt);
 		}
 		facade.update(vimConnectionInformation, vmi);
