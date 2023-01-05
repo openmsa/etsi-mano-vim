@@ -30,11 +30,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.github.openstack4j.core.connectors</groupId>
-			<artifactId>openstack4j-httpclient</artifactId>
+			<artifactId>ubi-openstack4j-httpclient</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.github.openstack4j.core</groupId>
-			<artifactId>openstack4j-core</artifactId>
+			<artifactId>ubi-openstack4j-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
@@ -48,7 +48,7 @@
 		</dependency>
 		<dependency>
 			<groupId>ma.glasnost.orika</groupId>
-			<artifactId>orika-core</artifactId>
+			<artifactId>ubi-orika-core</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

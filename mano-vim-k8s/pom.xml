@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>ma.glasnost.orika</groupId>
-			<artifactId>orika-core</artifactId>
+			<artifactId>ubi-orika-core</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
