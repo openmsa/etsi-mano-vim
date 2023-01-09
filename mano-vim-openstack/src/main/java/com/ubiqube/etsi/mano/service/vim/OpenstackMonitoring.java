@@ -78,8 +78,7 @@ public class OpenstackMonitoring implements VimMonitoring {
 				.gnocchiResourcesThresholdRule(rule)
 				.type(Type.THRESHOLD)
 				.build();
-		os.telemetry().alarms().create(alarm);
-		return null;
+		return os.telemetry().alarms().create(alarm).getAlarmId();
 	}
 
 	@Override
