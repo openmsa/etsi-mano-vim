@@ -153,12 +153,12 @@ public class OpenStackTest {
 		assertNotNull(server);
 	}
 
-	static void testConn() throws Exception {
+	void testConn() throws Exception {
 		final Identifier domainIdentifier = Identifier.byId("default");
-		final Identifier projectIdentifier = Identifier.byId("df1f081bf2d345099e6bb53f6b9407ff");
+		final Identifier projectIdentifier = Identifier.byId("d45cdd393cda4255915f855527f9c98e");
 		final OSClientV3 os = OSFactory.builderV3()
 				.endpoint("http://10.31.1.240:5000/v3")
-				.credentials("admin", "84612d9a2e404ac9", domainIdentifier)
+				.credentials("admin", "13f83cb78a4f4213", domainIdentifier)
 				.scopeToProject(projectIdentifier)
 				.authenticate();
 		System.out.println("GOOD");
