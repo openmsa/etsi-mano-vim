@@ -19,8 +19,7 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-import javax.validation.constraints.NotNull;
+import jakarta.annotation.Nonnull;
 
 import com.ubiqube.etsi.mano.dao.mano.AffinityRule;
 import com.ubiqube.etsi.mano.dao.mano.GrantInformationExt;
@@ -39,16 +38,16 @@ public interface Vim {
 
 	String getType();
 
-	@NotNull
+	@Nonnull
 	Network network(final VimConnectionInformation vimConnectionInformation);
 
-	@NotNull
+	@Nonnull
 	Storage storage(final VimConnectionInformation vimConnectionInformation);
 
-	@NotNull
+	@Nonnull
 	Dns dns(final VimConnectionInformation vimConnectionInformation);
 
-	@NotNull
+	@Nonnull
 	VimMonitoring getMonitoring(VimConnectionInformation vimConnectionInformation);
 
 	@Nonnull
@@ -61,7 +60,7 @@ public interface Vim {
 	void startServer(VimConnectionInformation vimConnectionInformation, String resourceId);
 
 	void stopServer(VimConnectionInformation vimConnectionInformation, String resourceId);
-	
+
 	void rebootServer(VimConnectionInformation vimConnectionInformation, String resourceId);
 
 	List<ServerGroup> getServerGroup(final VimConnectionInformation vimConnectionInformation);

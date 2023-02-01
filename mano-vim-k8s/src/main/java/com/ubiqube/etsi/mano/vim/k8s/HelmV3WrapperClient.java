@@ -84,7 +84,7 @@ public class HelmV3WrapperClient implements K8sClient {
 		final WebClient wc = fr.getWebClient();
 		final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 		builder.part("config", buildInstallMessage(k8s, userKey, vimResourceId), MediaType.APPLICATION_JSON);
-		final Mono<HttpStatus> res = wc.post()
+		final Mono<Object> res = wc.post()
 				.uri(server.getUrl() + "/uninstall/" + vimResourceId)
 				.contentType(MediaType.MULTIPART_FORM_DATA)
 				.body(BodyInserters.fromMultipartData(builder.build()))

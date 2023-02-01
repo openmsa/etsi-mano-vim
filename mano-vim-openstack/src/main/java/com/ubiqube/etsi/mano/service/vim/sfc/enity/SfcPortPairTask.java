@@ -16,7 +16,7 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc.enity;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 

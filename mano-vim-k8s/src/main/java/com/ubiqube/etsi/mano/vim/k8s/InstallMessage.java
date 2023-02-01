@@ -16,8 +16,8 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import lombok.Builder;
 import lombok.Data;
