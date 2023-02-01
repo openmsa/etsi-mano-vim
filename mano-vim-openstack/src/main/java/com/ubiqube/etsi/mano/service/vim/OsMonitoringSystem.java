@@ -66,6 +66,7 @@ public class OsMonitoringSystem {
 		return new Metric(metric[0], MetricFunction.fromValue(metric[1]));
 	}
 
+	@SuppressWarnings("static-method")
 	public String getProviderId() {
 		return "OS-GNOCCHI-V1";
 	}
