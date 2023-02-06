@@ -17,17 +17,12 @@
 package com.ubiqube.etsi.mano.service.vim.sfc.enity;
 
 import java.util.Set;
-import java.util.UUID;
+
+import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,10 +38,6 @@ public class SfcPortChainTask extends NsTask {
 
 	/** Serial. */
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID id;
 
 	private String toscaName;
 

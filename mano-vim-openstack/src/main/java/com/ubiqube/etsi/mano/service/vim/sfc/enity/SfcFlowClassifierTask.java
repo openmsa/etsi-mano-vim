@@ -17,18 +17,15 @@
 package com.ubiqube.etsi.mano.service.vim.sfc.enity;
 
 import java.util.Set;
-import java.util.UUID;
+
+import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
+import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-
-import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
-import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,9 +40,6 @@ import lombok.Setter;
 public class SfcFlowClassifierTask extends NsTask {
 	/** Serial. */
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	private UUID id;
 
 	@ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
 	private Classifier classifier;
