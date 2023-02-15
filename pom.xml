@@ -19,5 +19,6 @@
 		<module>mano-vim-contrail</module>
 		<module>mano-helm</module>
 		<module>mano-vim-k8s</module>
+		<module>openstack-commons</module>
 	</modules>
 </project>
