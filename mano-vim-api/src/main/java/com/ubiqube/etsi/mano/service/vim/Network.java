@@ -19,13 +19,14 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.annotation.Nonnull;
-
 import com.ubiqube.etsi.mano.dao.mano.IpPool;
 import com.ubiqube.etsi.mano.dao.mano.L3Data;
 import com.ubiqube.etsi.mano.dao.mano.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.VlProtocolData;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
+
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 
 /**
  *
@@ -33,7 +34,7 @@ import com.ubiqube.etsi.mano.dao.mano.common.NicType;
  *
  */
 public interface Network {
-	String createNetwork(final VlProtocolData vl, String name, String dnsDomain, String qosPolicyId);
+	String createNetwork(final VlProtocolData vl, String name, @Nullable String dnsDomain, @Nullable String qosPolicyId);
 
 	String createSubnet(final L3Data l3ProtocolData, final IpPool ipAllocationPool, final String networkId);
 
@@ -48,7 +49,7 @@ public interface Network {
 	@Nonnull
 	Map<String, String> getPublicNetworks();
 
-	String createPort(final String name, final String networkId, final String deviceId, String macAddress, NicType nicType);
+	String createPort(final String name, final String networkId, @Nullable final String deviceId, @Nullable String macAddress, NicType nicType);
 
 	void deletePort(final String uuid);
 
