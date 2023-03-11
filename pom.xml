@@ -20,5 +20,6 @@
 		<module>mano-helm</module>
 		<module>mano-vim-k8s</module>
 		<module>openstack-commons</module>
+		<module>mano-vim-dummy</module>
 	</modules>
 </project>
