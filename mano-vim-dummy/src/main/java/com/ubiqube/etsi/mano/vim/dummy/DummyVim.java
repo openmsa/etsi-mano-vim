@@ -37,29 +37,36 @@ import com.ubiqube.etsi.mano.vim.dto.Flavor;
 
 public class DummyVim implements Vim {
 
+	private ResourceQuota quota;
+	private final Storage storage = new DummyStorage();
+	private final Network network = new DummyNetwork();
+	private final Dns dns = new DummyDns();
+	private final VimMonitoring monitoring = new DummyVimMonitoring();
+	private final Cnf cnf = new DummyCnf();
+
 	@Override
 	public String getType() {
-		return "dummy-vum";
+		return "dummy-vim";
 	}
 
 	@Override
 	public Network network(final VimConnectionInformation vimConnectionInformation) {
-		return new DummyNetwork();
+		return network;
 	}
 
 	@Override
 	public Storage storage(final VimConnectionInformation vimConnectionInformation) {
-		return new DummyStorage();
+		return storage;
 	}
 
 	@Override
 	public Dns dns(final VimConnectionInformation vimConnectionInformation) {
-		return new DummyDns();
+		return dns;
 	}
 
 	@Override
 	public VimMonitoring getMonitoring(final VimConnectionInformation vimConnectionInformation) {
-		return new DummyVimMonitoring();
+		return monitoring;
 	}
 
 	@Override
@@ -106,7 +113,11 @@ public class DummyVim implements Vim {
 
 	@Override
 	public ResourceQuota getQuota(final VimConnectionInformation vimConnectionInformation) {
-		return null;
+		return quota;
+	}
+
+	public void setQuota(final ResourceQuota quota) {
+		this.quota = quota;
 	}
 
 	@Override
@@ -164,7 +175,7 @@ public class DummyVim implements Vim {
 
 	@Override
 	public Cnf cnf(final VimConnectionInformation vimConnectionInformation) {
-		return new DummyCnf();
+		return cnf;
 	}
 
 	@Override
