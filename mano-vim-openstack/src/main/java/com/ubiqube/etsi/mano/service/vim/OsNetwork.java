@@ -46,6 +46,8 @@ import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.VlProtocolData;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 
+import jakarta.annotation.Nullable;
+
 public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	private static final Logger LOG = LoggerFactory.getLogger(OsNetwork.class);
 
@@ -74,7 +76,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	}
 
 	@Override
-	public String createSubnet(final L3Data l3ProtocolData, final IpPool ipAllocationPool, final String networkId) {
+	public String createSubnet(final L3Data l3ProtocolData, @Nullable final IpPool ipAllocationPool, final String networkId) {
 		final SubnetBuilder bSub = Builders.subnet()
 				.name(l3ProtocolData.getL3Name());
 		if (null != ipAllocationPool) {
@@ -191,7 +193,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	}
 
 	private static void checkResult(final ActionResponse action) {
-		if (!action.isSuccess() && action.getCode() != 404) {
+		if (!action.isSuccess() && (action.getCode() != 404)) {
 			throw new VimException(action.getCode() + " " + action.getFault());
 		}
 	}

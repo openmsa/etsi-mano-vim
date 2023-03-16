@@ -36,7 +36,7 @@ import jakarta.annotation.Nullable;
 public interface Network {
 	String createNetwork(final VlProtocolData vl, String name, @Nullable String dnsDomain, @Nullable String qosPolicyId);
 
-	String createSubnet(final L3Data l3ProtocolData, final IpPool ipAllocationPool, final String networkId);
+	String createSubnet(final L3Data l3ProtocolData, @Nullable final IpPool ipAllocationPool, final String networkId);
 
 	void deleteSubnet(final String resourceId);
 
