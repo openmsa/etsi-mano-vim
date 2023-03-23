@@ -47,6 +47,10 @@ public class SfcPortChainTask extends NsTask {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> flowClassifier;
 
+	public SfcPortChainTask() {
+		super(null);
+	}
+
 	@Override
 	public NsTask copy() {
 		final SfcPortChainTask task = new SfcPortChainTask();

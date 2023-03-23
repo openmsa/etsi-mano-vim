@@ -16,10 +16,9 @@
  */
 package com.ubiqube.etsi.mano.service.vim.sfc.enity;
 
-import jakarta.persistence.Entity;
-
 import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,6 +37,10 @@ public class SfcPortPairTask extends NsTask {
 
 	private String egressId;
 	private String ingressId;
+
+	public SfcPortPairTask() {
+		super(null);
+	}
 
 	@Override
 	public NsTask copy() {
