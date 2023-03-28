@@ -24,44 +24,44 @@ import com.ubiqube.etsi.mano.service.vim.K8sStatus;
 public class DummyCnf implements Cnf {
 
 	@Override
-	public String createK8sCluster(String clusterTemplateId, String keypair, Integer masterCount, String name, Integer nodeCount, String networkId) {
-		// TODO Auto-generated method stub
+	public String createK8sCluster(final String clusterTemplateId, final String keypair, final Integer masterCount, final String name, final Integer nodeCount, final String networkId) {
+		// Nothing.
 		return null;
 	}
 
 	@Override
-	public void deleteK8s(String vimResourceId) {
-		// TODO Auto-generated method stub
+	public void deleteK8s(final String vimResourceId) {
+		// Nothing.
 
 	}
 
 	@Override
-	public String createContainer(CnfK8sParams params) {
-		// TODO Auto-generated method stub
+	public String createContainer(final CnfK8sParams params) {
+		// Nothing.
 		return null;
 	}
 
 	@Override
-	public String deleteContainer(String clusterInstanceId) {
-		// TODO Auto-generated method stub
+	public String deleteContainer(final String clusterInstanceId) {
+		// Nothing.
 		return null;
 	}
 
 	@Override
-	public K8sStatus k8sStatus(String string) {
-		// TODO Auto-generated method stub
+	public K8sStatus k8sStatus(final String string) {
+		// Nothing.
 		return null;
 	}
 
 	@Override
-	public K8sServers getClusterInformations(String id) {
-		// TODO Auto-generated method stub
+	public K8sServers getClusterInformations(final String id) {
+		// Nothing.
 		return null;
 	}
 
 	@Override
-	public K8sServers sign(String userCn, K8sServers server) {
-		// TODO Auto-generated method stub
+	public K8sServers sign(final String userCn, final K8sServers server) {
+		// Nothing.
 		return null;
 	}
 
