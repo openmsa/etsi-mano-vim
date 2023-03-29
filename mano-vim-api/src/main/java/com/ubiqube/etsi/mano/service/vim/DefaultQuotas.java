@@ -16,7 +16,13 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
-public class OsQuotas implements ResourceQuota {
+/**
+ * Default implementation that is probably not to bound on open stack.
+ *
+ * @author Olivier Vignaud
+ *
+ */
+public class DefaultQuotas implements ResourceQuota {
 
 	private int floatingIpUsed;
 	private int floatingIpMax;

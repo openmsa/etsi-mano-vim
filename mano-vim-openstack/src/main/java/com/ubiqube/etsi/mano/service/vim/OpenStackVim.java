@@ -315,7 +315,7 @@ public class OpenStackVim implements Vim {
 	public ResourceQuota getQuota(final VimConnectionInformation vimConnectionInformation) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
 		final AbsoluteLimit usage = os.compute().quotaSets().limits().getAbsolute();
-		final OsQuotas quotas = new OsQuotas();
+		final DefaultQuotas quotas = new DefaultQuotas();
 		Optional.ofNullable(usage.getMaxSecurityGroups()).ifPresent(quotas::setSecurityGroupsMax);
 		Optional.ofNullable(usage.getSecurityGroupRulesUsed()).ifPresent(quotas::setSecurityGroupsUsed);
 
