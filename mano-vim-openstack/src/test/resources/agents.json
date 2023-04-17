@@ -1,0 +1,36 @@
+{
+  "agents": [
+    {
+      "binary": "ovn-controller",
+      "host": "inari.ubiqube.com",
+      "heartbeat_timestamp": "2023-04-17 15:58:08.166430",
+      "availability_zone": "",
+      "topic": "n/a",
+      "description": "",
+      "configurations": {
+        "chassis_name": "dba6931a-45d8-4a22-904f-0337d07a8036",
+        "bridge-mappings": "extnet:br-ex"
+      },
+      "agent_type": "OVN Controller agent",
+      "id": "dba6931a-45d8-4a22-904f-0337d07a8036",
+      "alive": true,
+      "admin_state_up": true
+    },
+    {
+      "binary": "neutron-ovn-metadata-agent",
+      "host": "inari.ubiqube.com",
+      "heartbeat_timestamp": "2023-04-17 15:58:08.166977",
+      "availability_zone": "",
+      "topic": "n/a",
+      "description": "",
+      "configurations": {
+        "chassis_name": "dba6931a-45d8-4a22-904f-0337d07a8036",
+        "bridge-mappings": "extnet:br-ex"
+      },
+      "agent_type": "OVN Metadata agent",
+      "id": "36e9bad8-2370-5cf2-9fb0-299ca4652ade",
+      "alive": true,
+      "admin_state_up": true
+    }
+  ]
+}

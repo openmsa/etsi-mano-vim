@@ -1,0 +1,494 @@
+{
+	"extensions": [
+		{
+			"name": "Address group",
+			"alias": "address-group",
+			"description": "Support address group",
+			"updated": "2020-07-15T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Address scope",
+			"alias": "address-scope",
+			"description": "Address scopes extension.",
+			"updated": "2015-07-26T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "agent",
+			"alias": "agent",
+			"description": "The agent management extension.",
+			"updated": "2013-02-03T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Allowed Address Pairs",
+			"alias": "allowed-address-pairs",
+			"description": "Provides allowed address pairs",
+			"updated": "2013-07-23T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Auto Allocated Topology Services",
+			"alias": "auto-allocated-topology",
+			"description": "Auto Allocated Topology Services.",
+			"updated": "2016-01-01T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Availability Zone",
+			"alias": "availability_zone",
+			"description": "The availability zone extension.",
+			"updated": "2015-01-01T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Default Subnetpools",
+			"alias": "default-subnetpools",
+			"description": "Provides ability to mark and use a subnetpool as the default.",
+			"updated": "2016-02-18T18:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "DNS Integration",
+			"alias": "dns-integration",
+			"description": "Provides integration with DNS.",
+			"updated": "2015-08-15T18:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "dns_domain for ports",
+			"alias": "dns-domain-ports",
+			"description": "Allows the DNS domain to be specified for a network port.",
+			"updated": "2017-04-24T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "DNS domain names with keywords allowed",
+			"alias": "dns-integration-domain-keywords",
+			"description": "Allows to use keywords like <project_id>, <project_name>, <user_id> and <user_name> as DNS domain name",
+			"updated": "2020-06-15T18:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron external network",
+			"alias": "external-net",
+			"description": "Adds external network attribute to network resource.",
+			"updated": "2013-01-14T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron Extra DHCP options",
+			"alias": "extra_dhcp_opt",
+			"description": "Extra options configuration for DHCP. For example PXE boot options to DHCP clients can be specified (e.g. tftp-server, server-ip-address, bootfile-name)",
+			"updated": "2013-03-17T12:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron Extra Route",
+			"alias": "extraroute",
+			"description": "Extra routes configuration for L3 router",
+			"updated": "2013-02-01T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Filter parameters validation",
+			"alias": "filter-validation",
+			"description": "Provides validation on filter parameters.",
+			"updated": "2018-07-04T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Floating IP Port Details Extension",
+			"alias": "fip-port-details",
+			"description": "Add port_details attribute to Floating IP resource",
+			"updated": "2018-04-09T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron Service Flavors",
+			"alias": "flavors",
+			"description": "Flavor specification for Neutron advanced services.",
+			"updated": "2015-09-17T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Floating IP Pools Extension",
+			"alias": "floatingip-pools",
+			"description": "Provides a floating IP pools API.",
+			"updated": "2018-03-21T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron L3 Router",
+			"alias": "router",
+			"description": "Router abstraction for basic L3 forwarding between L2 Neutron networks and access to external networks via a NAT gateway.",
+			"updated": "2012-07-20T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron L3 Configurable external gateway mode",
+			"alias": "ext-gw-mode",
+			"description": "Extension of the router abstraction for specifying whether SNAT should occur on the external gateway",
+			"updated": "2013-03-28T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Multi Provider Network",
+			"alias": "multi-provider",
+			"description": "Expose mapping of virtual networks to multiple physical networks",
+			"updated": "2013-06-27T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Network MTU",
+			"alias": "net-mtu",
+			"description": "Provides MTU attribute for a network resource.",
+			"updated": "2015-03-25T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Network MTU (writable)",
+			"alias": "net-mtu-writable",
+			"description": "Provides a writable MTU attribute for a network resource.",
+			"updated": "2017-07-12T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Network Availability Zone",
+			"alias": "network_availability_zone",
+			"description": "Availability zone support for network.",
+			"updated": "2015-01-01T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Network IP Availability",
+			"alias": "network-ip-availability",
+			"description": "Provides IP availability data for each network and subnet.",
+			"updated": "2015-09-24T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Pagination support",
+			"alias": "pagination",
+			"description": "Extension that indicates that pagination is enabled.",
+			"updated": "2016-06-12T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Port device profile",
+			"alias": "port-device-profile",
+			"description": "Expose the port device profile (Cyborg)",
+			"updated": "2020-12-17T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron Port MAC address regenerate",
+			"alias": "port-mac-address-regenerate",
+			"description": "Network port MAC address regenerate",
+			"updated": "2018-05-03T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Port NUMA affinity policy",
+			"alias": "port-numa-affinity-policy",
+			"description": "Expose the port NUMA affinity policy",
+			"updated": "2020-07-08T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Port Resource Request",
+			"alias": "port-resource-request",
+			"description": "Expose resource request to Port",
+			"updated": "2018-05-08T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Port Resource Request Groups",
+			"alias": "port-resource-request-groups",
+			"description": "Support requesting multiple groups of resources and traits from the same RP subtree in resource_request",
+			"updated": "2021-08-02T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Port Binding",
+			"alias": "binding",
+			"description": "Expose port bindings of a virtual port to external application",
+			"updated": "2014-02-03T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Port Bindings Extended",
+			"alias": "binding-extended",
+			"description": "Expose port bindings of a virtual port to external application",
+			"updated": "2017-07-17T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Port Security",
+			"alias": "port-security",
+			"description": "Provides port security",
+			"updated": "2012-07-23T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "project_id field enabled",
+			"alias": "project-id",
+			"description": "Extension that indicates that project_id field is enabled.",
+			"updated": "2016-09-09T09:09:09-09:09",
+			"links": []
+		},
+		{
+			"name": "Provider Network",
+			"alias": "provider",
+			"description": "Expose mapping of virtual networks to physical networks",
+			"updated": "2012-09-07T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Quality of Service",
+			"alias": "qos",
+			"description": "The Quality of Service extension.",
+			"updated": "2015-06-08T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Direction for QoS bandwidth limit rule",
+			"alias": "qos-bw-limit-direction",
+			"description": "Allow to configure QoS bandwidth limit rule with specific direction: ingress or egress",
+			"updated": "2017-04-10T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Ingress direction for QoS minimum bandwidth rule",
+			"alias": "qos-bw-minimum-ingress",
+			"description": "Allow to configure QoS minumum bandwidth rule with ingress direction.",
+			"updated": "2018-07-09T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "QoS default policy",
+			"alias": "qos-default",
+			"description": "Expose the QoS default policy per project",
+			"updated": "2017-041-06T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Floating IP QoS",
+			"alias": "qos-fip",
+			"description": "The floating IP Quality of Service extension",
+			"updated": "2017-07-20T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "QoS port network policy ID",
+			"alias": "qos-port-network-policy",
+			"description": "Adds a the QoS network ID to the port definition",
+			"updated": "2019-11-01T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "QoS minimum packet rate rule",
+			"alias": "qos-pps-minimum",
+			"description": "Allow to configure QoS minimum packet rate rule.",
+			"updated": "2021-07-14T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "QoS minimum packet rate rule alias",
+			"alias": "qos-pps-minimum-rule-alias",
+			"description": "API to enable GET, PUT and DELETE operations on QoS minimum packet rate rule without specifying policy ID",
+			"updated": "2021-10-22T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "QoS Rule Type Packet per Second Extension",
+			"alias": "qos-pps",
+			"description": "Add QoS Rule Type Packet per Second",
+			"updated": "2021-05-12T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Details of QoS rule types",
+			"alias": "qos-rule-type-details",
+			"description": "Expose details about QoS rule types supported by loaded backend drivers",
+			"updated": "2017-06-22T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Quality of Service rules alias API",
+			"alias": "qos-rules-alias",
+			"description": "API to enable GET, PUT and DELETE operations on QoS policy rules without specifying policy ID",
+			"updated": "2018-10-07T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Quota engine limit check",
+			"alias": "quota-check-limit",
+			"description": "Support for checking the resource usage before applying a new quota limit",
+			"updated": "2021-09-08T16:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Quota management support",
+			"alias": "quotas",
+			"description": "Expose functions for quotas management per project",
+			"updated": "2012-07-29T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Quota details management support",
+			"alias": "quota_details",
+			"description": "Expose functions for quotas usage statistics per project",
+			"updated": "2017-02-10T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "RBAC Policies",
+			"alias": "rbac-policies",
+			"description": "Allows creation and modification of policies that control tenant access to resources.",
+			"updated": "2015-06-17T12:15:12-00:00",
+			"links": []
+		},
+		{
+			"name": "Add address_scope type to RBAC",
+			"alias": "rbac-address-scope",
+			"description": "Add address_scope type to RBAC",
+			"updated": "2020-02-12T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Add security_group type to network RBAC",
+			"alias": "rbac-security-groups",
+			"description": "Add security_group type to network RBAC",
+			"updated": "2019-02-14T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "If-Match constraints based on revision_number",
+			"alias": "revision-if-match",
+			"description": "Extension indicating that If-Match based on revision_number is supported.",
+			"updated": "2016-12-11T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Resource revision numbers",
+			"alias": "standard-attr-revisions",
+			"description": "This extension will display the revision number of neutron resources.",
+			"updated": "2016-04-11T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Router Availability Zone",
+			"alias": "router_availability_zone",
+			"description": "Availability zone support for router.",
+			"updated": "2015-01-01T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Normalized CIDR field for security group rules",
+			"alias": "security-groups-normalized-cidr",
+			"description": "Add new field with normalized remote_ip_prefix cidr in SG rule",
+			"updated": "2020-07-28T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Remote address group id field for security group rules",
+			"alias": "security-groups-remote-address-group",
+			"description": "Add new field of remote address group id in SG rules",
+			"updated": "2020-08-25T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Security group filtering on the shared field",
+			"alias": "security-groups-shared-filtering",
+			"description": "Support filtering security groups on the shared field",
+			"updated": "2021-10-05T09:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "security-group",
+			"alias": "security-group",
+			"description": "The security groups extension.",
+			"updated": "2012-10-05T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Neutron Service Type Management",
+			"alias": "service-type",
+			"description": "API for retrieving service providers for Neutron advanced services",
+			"updated": "2013-01-20T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Sorting support",
+			"alias": "sorting",
+			"description": "Extension that indicates that sorting is enabled.",
+			"updated": "2016-06-12T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "standard-attr-description",
+			"alias": "standard-attr-description",
+			"description": "Extension to add descriptions to standard attributes",
+			"updated": "2016-02-10T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Stateful security group",
+			"alias": "stateful-security-group",
+			"description": "Indicates if the security group is stateful or not",
+			"updated": "2019-11-26T09:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Subnet DNS publish fixed IP",
+			"alias": "subnet-dns-publish-fixed-ip",
+			"description": "Support choosing to publish DNS records for IPs from a subnet",
+			"updated": "2019-05-24T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Subnet service types",
+			"alias": "subnet-service-types",
+			"description": "Provides ability to set the subnet service_types field",
+			"updated": "2016-03-15T18:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Subnet Allocation",
+			"alias": "subnet_allocation",
+			"description": "Enables allocation of subnets from a subnet pool",
+			"updated": "2015-03-30T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Tag support for resources with standard attribute: port, subnet, subnetpool, network, security_group, router, floatingip, policy, trunk, network_segment_range",
+			"alias": "standard-attr-tag",
+			"description": "Enables to set tag on resources with standard attribute.",
+			"updated": "2017-01-01T00:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Resource timestamps",
+			"alias": "standard-attr-timestamp",
+			"description": "Adds created_at and updated_at fields to all Neutron resources that have Neutron standard attributes.",
+			"updated": "2016-09-12T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Trunk Extension",
+			"alias": "trunk",
+			"description": "Provides support for trunk ports",
+			"updated": "2016-01-01T10:00:00-00:00",
+			"links": []
+		},
+		{
+			"name": "Trunk port details",
+			"alias": "trunk-details",
+			"description": "Expose trunk port details",
+			"updated": "2016-01-01T10:00:00-00:00",
+			"links": []
+		}
+	]
+}

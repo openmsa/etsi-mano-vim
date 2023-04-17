@@ -35,8 +35,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.validation.constraints.Null;
-
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.api.client.IOSClientBuilder.V3;
@@ -69,6 +67,7 @@ import com.ubiqube.etsi.mano.dao.mano.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 
+import jakarta.validation.constraints.Null;
 import ma.glasnost.orika.MapperFacade;
 
 @Service
