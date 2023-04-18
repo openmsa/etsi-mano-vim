@@ -37,13 +37,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
-import org.openstack4j.api.client.IOSClientBuilder.V3;
 import org.openstack4j.api.exceptions.AuthenticationException;
 import org.openstack4j.api.types.ServiceType;
-import org.openstack4j.core.transport.Config;
 import org.openstack4j.model.common.ActionResponse;
 import org.openstack4j.model.common.Extension;
-import org.openstack4j.model.common.Identifier;
 import org.openstack4j.model.compute.AbsoluteLimit;
 import org.openstack4j.model.compute.Action;
 import org.openstack4j.model.compute.BlockDeviceMappingCreate;
@@ -54,7 +51,6 @@ import org.openstack4j.model.compute.builder.ServerCreateBuilder;
 import org.openstack4j.model.compute.ext.AvailabilityZone;
 import org.openstack4j.model.compute.ext.HypervisorStatistics;
 import org.openstack4j.model.network.Agent;
-import org.openstack4j.openstack.OSFactory;
 import org.openstack4j.openstack.internal.OSClientSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +60,7 @@ import com.ubiqube.etsi.mano.dao.mano.AffinityRule;
 import com.ubiqube.etsi.mano.dao.mano.GrantInformationExt;
 import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vnfi.VimCapability;
+import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 
@@ -105,33 +102,7 @@ public class OpenStackVim implements Vim {
 	}
 
 	private static OSClientV3 internalAuthenticate(final VimConnectionInformation vci) {
-		final Map<String, String> ii = vci.getInterfaceInfo();
-		final V3 base = OSFactory.builderV3()
-				.endpoint(ii.get("endpoint"));
-		final Map<String, String> ai = vci.getAccessInfo();
-		final String userDomain = ai.get("userDomain");
-		if (null != userDomain) {
-			final Identifier domainIdentifier = Identifier.byName(userDomain);
-			base.credentials(ai.get("username"), ai.get("password"), domainIdentifier);
-		} else {
-			base.credentials(ai.get("username"), ai.get("password"));
-		}
-		final Config conf = Config.newConfig();
-		if ("true".equals(ii.get("non-strict-ssl"))) {
-			conf.withSSLVerificationDisabled();
-		}
-		if (null != ii.get("nat-host")) {
-			conf.withEndpointNATResolution(ii.get("nat-host"));
-		}
-		base.withConfig(conf);
-		final String project = ai.get("project");
-		final String projectId = ai.get("projectId");
-		if (null != project) {
-			base.scopeToProject(Identifier.byName(project));
-		} else if (null != projectId) {
-			base.scopeToProject(Identifier.byId(projectId));
-		}
-		return base.authenticate();
+		return OsUtils.authenticate(vci.getInterfaceInfo(), vci.getAccessInfo());
 	}
 
 	private static synchronized OSClientV3 getClient(final VimConnectionInformation vimConnectionInformation) {
