@@ -17,22 +17,19 @@
 package com.ubiqube.etsi.mano.service.vim;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
-import org.openstack4j.api.client.IOSClientBuilder.V3;
-import org.openstack4j.model.common.Identifier;
 import org.openstack4j.model.network.ext.Ethertype;
 import org.openstack4j.model.network.ext.FlowClassifier;
 import org.openstack4j.model.network.ext.PortChain;
 import org.openstack4j.model.network.ext.PortPair;
 import org.openstack4j.model.network.ext.PortPairGroup;
-import org.openstack4j.openstack.OSFactory;
 
 import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
+import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
 /**
@@ -44,28 +41,7 @@ import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 public class OsSfc {
 
 	private static OSClientV3 internalAuthenticate(final SystemConnections vci) {
-		final Map<String, String> ii = vci.getInterfaceInfo();
-		final V3 base = OSFactory.builderV3()
-				.endpoint(ii.get("endpoint"));
-		final Map<String, String> ai = vci.getAccessInfo();
-		final String userDomain = ai.get("userDomain");
-		if (null != userDomain) {
-			final Identifier domainIdentifier = Identifier.byName(userDomain);
-			base.credentials(ai.get("username"), ai.get("password"), domainIdentifier);
-		} else {
-			base.credentials(ai.get("username"), ai.get("password"));
-		}
-		if ("true".equals(ii.get("non-strict-ssl"))) {
-			base.useNonStrictSSLClient(true);
-		}
-		final String project = ai.get("project");
-		final String projectId = ai.get("projectId");
-		if (null != project) {
-			base.scopeToProject(Identifier.byName(project));
-		} else if (null != projectId) {
-			base.scopeToProject(Identifier.byId(projectId));
-		}
-		return base.authenticate();
+		return OsUtils.authenticate(vci.getInterfaceInfo(), vci.getAccessInfo());
 	}
 
 	public String createPortPair(final SystemConnections vci, final String name, final String egressId, final String ingressId) {
