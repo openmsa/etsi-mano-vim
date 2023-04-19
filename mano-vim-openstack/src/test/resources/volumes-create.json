@@ -1,0 +1,36 @@
+{
+	"volume": {
+		"id": "d0ae47e1-7240-47f8-b9b6-65df236214f6",
+		"status": "creating",
+		"size": 1,
+		"availability_zone": "nova",
+		"created_at": "2023-04-19T08:18:36.263306",
+		"updated_at": null,
+		"name": "alias",
+		"description": null,
+		"volume_type": "iscsi",
+		"snapshot_id": null,
+		"source_volid": null,
+		"metadata": {
+			
+		},
+		"links": [
+			{
+				"rel": "self",
+				"href": "http://10.31.1.108:8776/v3/volumes/d0ae47e1-7240-47f8-b9b6-65df236214f6"
+			},
+			{
+				"rel": "bookmark",
+				"href": "http://10.31.1.108:8776/volumes/d0ae47e1-7240-47f8-b9b6-65df236214f6"
+			}
+		],
+		"user_id": "d0fa239c72ee43e683ed680f9c9e731d",
+		"bootable": "false",
+		"encrypted": false,
+		"replication_status": null,
+		"consistencygroup_id": null,
+		"multiattach": false,
+		"attachments": [],
+		"migration_status": null
+	}
+}

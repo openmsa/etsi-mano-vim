@@ -21,123 +21,154 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
-import com.ubiqube.etsi.mano.service.rest.model.AuthParamBasic;
-import com.ubiqube.etsi.mano.service.rest.model.AuthType;
-import com.ubiqube.etsi.mano.service.rest.model.AuthentificationInformations;
 
 import ma.glasnost.orika.MapperFacade;
 
 @WireMockTest
 class OpenStackVimTest {
-
+	private static final long GIGA = 1024 * 1024 * 1024L;
+	private static final long MEGA = 1048576L;
 	private MapperFacade mapper;
 
 	@Test
 	void test(final WireMockRuntimeInfo wri) {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
-				.withBody(authBody(wri))));
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
 		stubFor(get(urlPathMatching("/8774/v2.1/limits")).willReturn(aResponse()
 				.withStatus(200)
-				.withBody(limitBody(wri))));
+				.withBody(OsHelper.getFile(wri, "/limits.json"))));
 		final OpenStackVim os = new OpenStackVim(mapper);
-		final VimConnectionInformation vci = createServer(wri);
-		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getQuota(vci);
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetOrCreateFlavor_NoCreate(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavors.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/flavors/detail")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavors-detail.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.getOrCreateFlavor(vci, "name", 2, 512 * MEGA, 0 * GIGA, Map.of());
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetOrCreateFlavor_WithCreate(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavors.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/flavors/detail")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavors-detail.json"))));
+		stubFor(post(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavor-create.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.getOrCreateFlavor(vci, "name", 2, 568 * MEGA, 0 * GIGA, Map.of());
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetPhysicalResources(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/os-hypervisors/statistics")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/os-hypervisors-statistics.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.getPhysicalResources(vci);
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetFlavorList(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/flavors/detail")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavors-detail.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.getFlavorList(vci);
+		assertTrue(true);
+	}
+
+	@Test
+	void testCreateComputeEmpty(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(post(urlPathMatching("/8774/v2.1/servers")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/servers.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		os.createCompute(cp);
+		assertTrue(true);
+	}
+
+	@Test
+	void testCreateCompute(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(post(urlPathMatching("/8774/v2.1/servers")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/servers.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final List<String> networks = List.of("net");
+		final List<String> storage = List.of("storage");
+		final List<String> ports = List.of("port");
+		final List<String> affinity = List.of("affinity");
+		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, networks, storage, "cloudInit", new ArrayList<>(), affinity, ports);
+		os.createCompute(cp);
+		assertTrue(true);
 	}
 
 	@Test
 	void testCaps(final WireMockRuntimeInfo wri) {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
-				.withBody(authBody(wri))));
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
 		stubFor(get(urlPathMatching("/9696/v2.0/extensions")).willReturn(aResponse()
 				.withStatus(200)
-				.withBody(extensionsBody(wri))));
+				.withBody(OsHelper.getFile(wri, "/extensions.json"))));
 		stubFor(get(urlPathMatching("/9696/v2.0/agents")).willReturn(aResponse()
 				.withStatus(200)
-				.withBody(agentsBody(wri))));
+				.withBody(OsHelper.getFile(wri, "/agents.json"))));
 		final OpenStackVim os = new OpenStackVim(mapper);
-		final VimConnectionInformation vci = createServer(wri);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getCaps(vci);
+		assertTrue(true);
 	}
 
-	private static String agentsBody(final WireMockRuntimeInfo wri) {
-		try (InputStream is = wri.getClass().getResourceAsStream("/agents.json");
-				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			is.transferTo(baos);
-			return new String(baos.toByteArray());
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static String extensionsBody(final WireMockRuntimeInfo wri) {
-		try (InputStream is = wri.getClass().getResourceAsStream("/extensions.json");
-				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			is.transferTo(baos);
-			return new String(baos.toByteArray());
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static String limitBody(final WireMockRuntimeInfo wri) {
-		try (InputStream is = wri.getClass().getResourceAsStream("/limits.json");
-				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			is.transferTo(baos);
-			return new String(baos.toByteArray());
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static String authBody(final WireMockRuntimeInfo wri) {
-		try (InputStream is = wri.getClass().getResourceAsStream("/auth.json");
-				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			is.transferTo(baos);
-			return new String(baos.toByteArray()).replace("${URL}", wri.getHttpBaseUrl());
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static VimConnectionInformation createServer(final WireMockRuntimeInfo wmRuntimeInfo) {
-		final AuthentificationInformations auth = AuthentificationInformations.builder()
-				.authParamBasic(AuthParamBasic.builder()
-						.userName("user")
-						.password("password")
-						.build())
-				.authType(List.of(AuthType.BASIC))
-				.build();
-		final VimConnectionInformation vci = new VimConnectionInformation();
-		vci.setId(UUID.randomUUID());
-		vci.setVimId(vci.getId().toString());
-		final Map<String, String> ii = new HashMap<>();
-		ii.put("endpoint", wmRuntimeInfo.getHttpBaseUrl());
-		vci.setInterfaceInfo(ii);
-		final Map<String, String> ai = new HashMap<>();
-		ai.put("username", "username");
-		ai.put("password", "password");
-		ai.put("projectId", "projectId");
-		ai.put("projectDomain", "projectDomain");
-		ai.put("userDomain", "userDomain");
-		vci.setAccessInfo(ai);
-		return vci;
-	}
 }

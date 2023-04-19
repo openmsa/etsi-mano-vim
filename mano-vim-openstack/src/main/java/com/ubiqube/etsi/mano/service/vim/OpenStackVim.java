@@ -71,7 +71,7 @@ import ma.glasnost.orika.MapperFacade;
 public class OpenStackVim implements Vim {
 	private static final long GIGA = 1024 * 1024 * 1024L;
 
-	private static final long MEGA = 1048576L;
+	private static final long MEGA = 1_048_576L;
 
 	private static final Logger LOG = LoggerFactory.getLogger(OpenStackVim.class);
 

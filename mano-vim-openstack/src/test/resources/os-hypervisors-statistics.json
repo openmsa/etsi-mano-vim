@@ -1,0 +1,16 @@
+{
+  "hypervisor_statistics": {
+    "count": 1,
+    "vcpus": 16,
+    "memory_mb": 64135,
+    "local_gb": 49,
+    "vcpus_used": 8,
+    "memory_mb_used": 25088,
+    "local_gb_used": 42,
+    "free_ram_mb": 39047,
+    "free_disk_gb": 7,
+    "current_workload": 0,
+    "running_vms": 5,
+    "disk_available_least": -11
+  }
+}

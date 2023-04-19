@@ -1,0 +1,24 @@
+{
+	"flavor": {
+		"id": "228de8b2-ba46-4824-9489-af36d33c37f8",
+		"name": "name",
+		"ram": 568,
+		"disk": 0,
+		"swap": "",
+		"OS-FLV-EXT-DATA:ephemeral": 0,
+		"OS-FLV-DISABLED:disabled": false,
+		"vcpus": 2,
+		"os-flavor-access:is_public": true,
+		"rxtx_factor": 1.0,
+		"links": [
+			{
+				"rel": "self",
+				"href": "http://10.31.1.108:8774/v2.1/flavors/228de8b2-ba46-4824-9489-af36d33c37f8"
+			},
+			{
+				"rel": "bookmark",
+				"href": "http://10.31.1.108:8774/flavors/228de8b2-ba46-4824-9489-af36d33c37f8"
+			}
+		]
+	}
+}

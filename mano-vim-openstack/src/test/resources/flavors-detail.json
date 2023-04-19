@@ -1,0 +1,268 @@
+{
+	"flavors": [
+		{
+			"id": "1",
+			"name": "m1.tiny",
+			"ram": 512,
+			"disk": 1,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 1,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/1"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/1"
+				}
+			]
+		},
+		{
+			"id": "2",
+			"name": "m1.small",
+			"ram": 2048,
+			"disk": 20,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 1,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/2"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/2"
+				}
+			]
+		},
+		{
+			"id": "240b5603-c32a-4ee1-be65-52d7c3001872",
+			"name": "SBC1",
+			"ram": 5859,
+			"disk": 93,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 4,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/240b5603-c32a-4ee1-be65-52d7c3001872"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/240b5603-c32a-4ee1-be65-52d7c3001872"
+				}
+			]
+		},
+		{
+			"id": "3",
+			"name": "m1.medium",
+			"ram": 4096,
+			"disk": 40,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 2,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/3"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/3"
+				}
+			]
+		},
+		{
+			"id": "4",
+			"name": "m1.large",
+			"ram": 8192,
+			"disk": 80,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 4,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/4"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/4"
+				}
+			]
+		},
+		{
+			"id": "5",
+			"name": "m1.xlarge",
+			"ram": 16384,
+			"disk": 160,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 8,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/5"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/5"
+				}
+			]
+		},
+		{
+			"id": "6322059e-d9b3-4427-9971-780ad587fcb5",
+			"name": "test-meta",
+			"ram": 512,
+			"disk": 0,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 2,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/6322059e-d9b3-4427-9971-780ad587fcb5"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/6322059e-d9b3-4427-9971-780ad587fcb5"
+				}
+			]
+		},
+		{
+			"id": "82c16633-3211-431b-9696-cc2ba6865999",
+			"name": "leftVdu01",
+			"ram": 2048,
+			"disk": 0,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 1,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/82c16633-3211-431b-9696-cc2ba6865999"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/82c16633-3211-431b-9696-cc2ba6865999"
+				}
+			]
+		},
+		{
+			"id": "bdd9cc9e-b06c-409c-8b06-597675bc5a53",
+			"name": "webserver",
+			"ram": 512,
+			"disk": 0,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 1,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/bdd9cc9e-b06c-409c-8b06-597675bc5a53"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/bdd9cc9e-b06c-409c-8b06-597675bc5a53"
+				}
+			]
+		},
+		{
+			"id": "c7ac6d10-bff9-4770-917a-4a15b59c63b5",
+			"name": "juju",
+			"ram": 8192,
+			"disk": 16,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 2,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/c7ac6d10-bff9-4770-917a-4a15b59c63b5"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/c7ac6d10-bff9-4770-917a-4a15b59c63b5"
+				}
+			]
+		},
+		{
+			"id": "d807dd89-98ae-4cd7-a5ad-a44ba9d3c71e",
+			"name": "SBC2",
+			"ram": 5859,
+			"disk": 93,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 4,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/d807dd89-98ae-4cd7-a5ad-a44ba9d3c71e"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/d807dd89-98ae-4cd7-a5ad-a44ba9d3c71e"
+				}
+			]
+		},
+		{
+			"id": "db0d7900-46cf-4a12-a16e-d2e8e2988145",
+			"name": "coreos-master",
+			"ram": 4096,
+			"disk": 10,
+			"swap": "",
+			"OS-FLV-EXT-DATA:ephemeral": 0,
+			"OS-FLV-DISABLED:disabled": false,
+			"vcpus": 2,
+			"os-flavor-access:is_public": true,
+			"rxtx_factor": 1.0,
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/flavors/db0d7900-46cf-4a12-a16e-d2e8e2988145"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/flavors/db0d7900-46cf-4a12-a16e-d2e8e2988145"
+				}
+			]
+		}
+	]
+}

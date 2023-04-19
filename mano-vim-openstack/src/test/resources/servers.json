@@ -1,0 +1,80 @@
+{
+  "server": {
+    "id": "d9b11637-589e-49e7-be66-c5f62463577d",
+    "name": "juju-1ca198-k8s-bundle-core-108-1",
+    "status": "ACTIVE",
+    "tenant_id": "1da4d2fa72dc41dfb71a9972809e50ae",
+    "user_id": "d0fa239c72ee43e683ed680f9c9e731d",
+    "metadata": {
+      "juju-controller-uuid": "80de4055-3dad-4b94-8066-b56c112e6002",
+      "juju-machine-id": "k8s-bundle-core-108-machine-1",
+      "juju-model-uuid": "2d426ec3-0676-49c7-8756-12ae6c1ca198",
+      "juju-units-deployed": "kubernetes-worker/0"
+    },
+    "hostId": "7228bd55045121b94f3f01e2580d072f5f10ca05c3d142f6e7bebcba",
+    "image": {
+      "id": "0bc65ba0-6f27-4128-b596-79e6788e8574",
+      "links": [
+        {
+          "rel": "bookmark",
+          "href": "http://10.31.1.108:8774/images/0bc65ba0-6f27-4128-b596-79e6788e8574"
+        }
+      ]
+    },
+    "flavor": {
+      "id": "c7ac6d10-bff9-4770-917a-4a15b59c63b5",
+      "links": [
+        {
+          "rel": "bookmark",
+          "href": "http://10.31.1.108:8774/flavors/c7ac6d10-bff9-4770-917a-4a15b59c63b5"
+        }
+      ]
+    },
+    "created": "2023-03-31T09:14:41Z",
+    "updated": "2023-03-31T09:14:47Z",
+    "addresses": {
+      "public": [
+        {
+          "version": 4,
+          "addr": "10.31.1.45",
+          "OS-EXT-IPS:type": "fixed",
+          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:5a:9e:ba"
+        }
+      ]
+    },
+    "accessIPv4": "",
+    "accessIPv6": "",
+    "links": [
+      {
+        "rel": "self",
+        "href": "http://10.31.1.108:8774/v2.1/servers/d9b11637-589e-49e7-be66-c5f62463577d"
+      },
+      {
+        "rel": "bookmark",
+        "href": "http://10.31.1.108:8774/servers/d9b11637-589e-49e7-be66-c5f62463577d"
+      }
+    ],
+    "OS-DCF:diskConfig": "MANUAL",
+    "progress": 0,
+    "OS-EXT-AZ:availability_zone": "nova",
+    "config_drive": "",
+    "key_name": null,
+    "OS-SRV-USG:launched_at": "2023-03-31T09:14:47.000000",
+    "OS-SRV-USG:terminated_at": null,
+    "security_groups": [
+      {
+        "name": "juju-80de4055-3dad-4b94-8066-b56c112e6002-2d426ec3-0676-49c7-8756-12ae6c1ca198-1"
+      },
+      {
+        "name": "juju-80de4055-3dad-4b94-8066-b56c112e6002-2d426ec3-0676-49c7-8756-12ae6c1ca198"
+      }
+    ],
+    "OS-EXT-SRV-ATTR:host": "inari.ubiqube.com",
+    "OS-EXT-SRV-ATTR:instance_name": "instance-0000014d",
+    "OS-EXT-SRV-ATTR:hypervisor_hostname": "inari.ubiqube.com",
+    "OS-EXT-STS:task_state": null,
+    "OS-EXT-STS:vm_state": "active",
+    "OS-EXT-STS:power_state": 1,
+    "os-extended-volumes:volumes_attached": []
+  }
+}
