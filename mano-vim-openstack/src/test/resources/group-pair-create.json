@@ -1,0 +1,15 @@
+{
+	"port_pair": {
+		"id": "45302115-ddec-409b-8e25-6b0a5168b927",
+		"name": "test_pair",
+		"description": "",
+		"project_id": "d45cdd393cda4255915f855527f9c98e",
+		"ingress": "891d3299-d8fb-4328-9ca2-2ceb4e6d512b",
+		"egress": "13bd8aa9-36b3-447a-b9eb-3ea3f3fe1d2d",
+		"service_function_parameters": {
+			"correlation": null,
+			"weight": 1
+		},
+		"tenant_id": "d45cdd393cda4255915f855527f9c98e"
+	}
+}

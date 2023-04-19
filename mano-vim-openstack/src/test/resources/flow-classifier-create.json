@@ -1,0 +1,22 @@
+{
+	"flow_classifier": {
+		"id": "94943a8b-bc87-49d6-9d0a-7a309c5c17b0",
+		"name": "name",
+		"description": "",
+		"project_id": "d45cdd393cda4255915f855527f9c98e",
+		"ethertype": "IPv4",
+		"protocol": "tcp",
+		"source_port_range_min": null,
+		"source_port_range_max": null,
+		"destination_port_range_min": 80,
+		"destination_port_range_max": 80,
+		"source_ip_prefix": null,
+		"destination_ip_prefix": null,
+		"logical_source_port": "13bd8aa9-36b3-447a-b9eb-3ea3f3fe1d2d",
+		"logical_destination_port": "8596640c-a91a-4abf-83fd-ecba8ad68955",
+		"l7_parameters": {
+			
+		},
+		"tenant_id": "d45cdd393cda4255915f855527f9c98e"
+	}
+}

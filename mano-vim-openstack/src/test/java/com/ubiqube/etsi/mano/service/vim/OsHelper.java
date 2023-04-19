@@ -26,6 +26,7 @@ import java.util.UUID;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
+import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.service.rest.model.AuthParamBasic;
 import com.ubiqube.etsi.mano.service.rest.model.AuthType;
 import com.ubiqube.etsi.mano.service.rest.model.AuthentificationInformations;
@@ -55,6 +56,23 @@ public class OsHelper {
 				.authType(List.of(AuthType.BASIC))
 				.build();
 		final VimConnectionInformation vci = new VimConnectionInformation();
+		vci.setId(UUID.randomUUID());
+		vci.setVimId(vci.getId().toString());
+		final Map<String, String> ii = new HashMap<>();
+		ii.put("endpoint", wmRuntimeInfo.getHttpBaseUrl());
+		vci.setInterfaceInfo(ii);
+		final Map<String, String> ai = new HashMap<>();
+		ai.put("username", "username");
+		ai.put("password", "password");
+		ai.put("projectId", "projectId");
+		ai.put("projectDomain", "projectDomain");
+		ai.put("userDomain", "userDomain");
+		vci.setAccessInfo(ai);
+		return vci;
+	}
+
+	public static SystemConnections createConnection(final WireMockRuntimeInfo wmRuntimeInfo) {
+		final SystemConnections vci = new SystemConnections();
 		vci.setId(UUID.randomUUID());
 		vci.setVimId(vci.getId().toString());
 		final Map<String, String> ii = new HashMap<>();

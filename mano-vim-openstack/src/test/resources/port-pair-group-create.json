@@ -1,0 +1,26 @@
+{
+	"port_pair_group": {
+		"id": "6ef63c9f-b686-4b70-baa4-34e7cd92b8ab",
+		"name": "pp",
+		"description": "",
+		"project_id": "d45cdd393cda4255915f855527f9c98e",
+		"port_pairs": [
+			"45302115-ddec-409b-8e25-6b0a5168b927",
+			"d51152f1-167c-4e4d-841e-9251ba97646e"
+		],
+		"tap_enabled": false,
+		"port_pair_group_parameters": {
+			"lb_fields": [],
+			"ppg_n_tuple_mapping": {
+				"ingress_n_tuple": {
+					
+				},
+				"egress_n_tuple": {
+					
+				}
+			}
+		},
+		"group_id": 1,
+		"tenant_id": "d45cdd393cda4255915f855527f9c98e"
+	}
+}
