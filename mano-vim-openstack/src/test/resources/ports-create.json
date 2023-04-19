@@ -1,0 +1,47 @@
+{
+	"port": {
+		"id": "9c660ee8-9636-456c-9cf8-4f1762ab1887",
+		"name": "cpRc02-VnfPortNode-0000",
+		"network_id": "c92bb445-790a-4066-aebe-48fa7effdd6f",
+		"tenant_id": "1da4d2fa72dc41dfb71a9972809e50ae",
+		"mac_address": "fa:16:3e:a2:08:9a",
+		"admin_state_up": true,
+		"status": "ACTIVE",
+		"device_id": "446bb4d4-50de-4a73-9fd8-f44a87d7164c",
+		"device_owner": "compute:nova",
+		"fixed_ips": [
+			{
+				"subnet_id": "0c037ad8-48f2-44b0-86e6-453debfb2a56",
+				"ip_address": "192.168.10.202"
+			}
+		],
+		"allowed_address_pairs": [],
+		"extra_dhcp_opts": [],
+		"security_groups": [
+			"d64f76ef-d20b-48af-b6ff-ed153655bbf9"
+		],
+		"description": "",
+		"binding:vnic_type": "normal",
+		"binding:profile": {
+			
+		},
+		"binding:host_id": "inari.ubiqube.com",
+		"binding:vif_type": "ovs",
+		"binding:vif_details": {
+			"port_filter": true,
+			"connectivity": "l2",
+			"bound_drivers": {
+				"0": "ovn"
+			}
+		},
+		"port_security_enabled": true,
+		"qos_policy_id": null,
+		"qos_network_policy_id": null,
+		"resource_request": null,
+		"tags": [],
+		"created_at": "2023-03-17T11:09:30Z",
+		"updated_at": "2023-03-17T11:09:52Z",
+		"revision_number": 4,
+		"project_id": "1da4d2fa72dc41dfb71a9972809e50ae"
+	}
+}

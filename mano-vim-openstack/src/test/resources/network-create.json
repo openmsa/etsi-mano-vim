@@ -1,0 +1,29 @@
+{
+	"network": {
+		"id": "45fd5971-d66f-4bff-a96f-9b37fab600c6",
+		"name": "name",
+		"tenant_id": "projectId",
+		"admin_state_up": true,
+		"mtu": 1442,
+		"status": "ACTIVE",
+		"subnets": [],
+		"shared": false,
+		"project_id": "projectId",
+		"port_security_enabled": true,
+		"qos_policy_id": null,
+		"router:external": false,
+		"provider:network_type": "geneve",
+		"provider:physical_network": null,
+		"provider:segmentation_id": 46,
+		"is_default": false,
+		"availability_zone_hints": [],
+		"availability_zones": [],
+		"ipv4_address_scope": null,
+		"ipv6_address_scope": null,
+		"description": "",
+		"tags": [],
+		"created_at": "2023-04-19T09:21:17Z",
+		"updated_at": "2023-04-19T09:21:17Z",
+		"revision_number": 1
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"subnet": {
+		"id": "de793d43-ef7d-4745-b2d3-31707dc1d3a9",
+		"name": "tu",
+		"tenant_id": "projectId",
+		"network_id": "45fd5971-d66f-4bff-a96f-9b37fab600c6",
+		"ip_version": 4,
+		"subnetpool_id": null,
+		"enable_dhcp": false,
+		"ipv6_ra_mode": null,
+		"ipv6_address_mode": null,
+		"gateway_ip": "192.168.7.1",
+		"cidr": "192.168.7.0/24",
+		"allocation_pools": [
+			{
+				"start": "192.168.7.2",
+				"end": "192.168.7.254"
+			}
+		],
+		"host_routes": [],
+		"dns_nameservers": [],
+		"description": "",
+		"service_types": [],
+		"tags": [],
+		"created_at": "2023-04-19T09:33:19Z",
+		"updated_at": "2023-04-19T09:33:19Z",
+		"revision_number": 0,
+		"project_id": "projectId"
+	}
+}
