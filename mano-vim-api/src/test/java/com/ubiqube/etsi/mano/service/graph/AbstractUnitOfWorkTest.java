@@ -14,10 +14,25 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim.node;
+package com.ubiqube.etsi.mano.service.graph;
 
-import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public interface Start extends Node {
-	// Nothing.
+import org.junit.jupiter.api.Test;
+
+import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsdTask;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
+
+class AbstractUnitOfWorkTest {
+
+	@Test
+	void test() {
+		final VirtualTaskV3<NsdTask> task = new TestVirtualTaskV3();
+		final TestAbstractUnitOfWork srv = new TestAbstractUnitOfWork(task, null);
+		srv.getTask();
+		srv.getType();
+		srv.setResource("res");
+		assertTrue(true);
+	}
+
 }

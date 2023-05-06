@@ -14,10 +14,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim.node;
+package com.ubiqube.etsi.mano.service.graph.vt;
 
+import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsdTask;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 
-public interface Start extends Node {
-	// Nothing.
+public class TestBaseVt extends NsVtBase<NsdTask> {
+
+	protected TestBaseVt(final NsdTask nt) {
+		super(nt);
+	}
+
+	@Override
+	public Class<? extends Node> getType() {
+		return Node.class;
+	}
+
 }

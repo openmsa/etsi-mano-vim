@@ -14,10 +14,27 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim.node;
+package com.ubiqube.etsi.mano.service.graph;
 
+import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsdTask;
+import com.ubiqube.etsi.mano.orchestrator.Context3d;
 import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 
-public interface Start extends Node {
-	// Nothing.
+public class TestAbstractUnitOfWork extends AbstractUnitOfWork<NsdTask> {
+
+	protected TestAbstractUnitOfWork(final VirtualTaskV3<NsdTask> task, final Class<? extends Node> node) {
+		super(task, node);
+	}
+
+	@Override
+	public String execute(final Context3d context) {
+		return null;
+	}
+
+	@Override
+	public String rollback(final Context3d context) {
+		return null;
+	}
+
 }

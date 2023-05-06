@@ -14,10 +14,18 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim.node;
+package com.ubiqube.etsi.mano.service.vim.mon;
 
-import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public interface Start extends Node {
-	// Nothing.
+import org.junit.jupiter.api.Test;
+
+class ManoMetricsTest {
+
+	@Test
+	void test() {
+		final ManoMetrics m = ManoMetrics.BYTE_INCOMING_VNF_EXT_CP;
+		assertNotNull(m.toString());
+	}
+
 }

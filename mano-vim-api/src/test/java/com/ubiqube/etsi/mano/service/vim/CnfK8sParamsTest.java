@@ -14,10 +14,36 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim.node;
+package com.ubiqube.etsi.mano.service.vim;
 
-import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public interface Start extends Node {
-	// Nothing.
+import org.junit.jupiter.api.Test;
+
+import com.ubiqube.etsi.mano.service.vim.CnfK8sParams.CnfK8sParamsBuilder;
+
+class CnfK8sParamsTest {
+
+	@Test
+	void test() {
+		TestBean.testClass(CnfK8sParams.class);
+	}
+
+	@Test
+	void testBuilder() {
+		final CnfK8sParamsBuilder builder = CnfK8sParams.builder()
+				.clusterTemplate(null)
+				.dnsServer(null)
+				.externalNetworkId(null)
+				.flavorId(null)
+				.imageId(null)
+				.keypair(null)
+				.masterFlavor(null)
+				.name(null)
+				.networkDriver(null)
+				.serverType(null)
+				.volumeSize(null);
+		assertNotNull(builder.build());
+		builder.toString();
+	}
 }

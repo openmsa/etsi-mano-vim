@@ -14,10 +14,34 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.ubiqube.etsi.mano.service.vim.node;
+package com.ubiqube.etsi.mano.vim.dto;
 
-import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public interface Start extends Node {
-	// Nothing.
+import org.junit.jupiter.api.Test;
+
+class FlavorTest {
+
+	@Test
+	void test() {
+		final Flavor f = new Flavor();
+		f.setAdditional(null);
+		f.setDisabled(false);
+		f.setDisk(0);
+		f.setId(null);
+		f.setName(null);
+		f.setRam(0);
+		f.setSwap(0);
+		f.setVcpus(0);
+		f.getAdditional();
+		f.getDisk();
+		f.getId();
+		f.getName();
+		f.getRam();
+		f.getSwap();
+		f.getVcpus();
+		f.isDisabled();
+		assertTrue(true);
+	}
+
 }
