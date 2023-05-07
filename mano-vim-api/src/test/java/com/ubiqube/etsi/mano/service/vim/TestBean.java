@@ -29,8 +29,7 @@ public class TestBean {
 		//
 	}
 
-	public static void testClass(final Class clzz) {
-		final Class<DefaultQuotas> clazz = DefaultQuotas.class;
+	public static void testClass(final Class clazz) {
 		try {
 			final Object obj = clazz.getConstructor().newInstance();
 			final BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
