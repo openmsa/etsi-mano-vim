@@ -16,20 +16,12 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
-import java.util.Arrays;
 import java.util.Properties;
 import java.util.UUID;
 
-import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
-import org.openstack4j.model.common.ActionResponse;
-import org.openstack4j.model.telemetry.Alarm;
-import org.openstack4j.model.telemetry.Alarm.AggregationMethod;
-import org.openstack4j.model.telemetry.Alarm.ComparisonOperator;
-import org.openstack4j.model.telemetry.Alarm.Type;
-import org.openstack4j.openstack.telemetry.domain.CeilometerAlarm;
-import org.openstack4j.openstack.telemetry.domain.CeilometerAlarm.CeilometerGnocchiResourcesThresholdRule;
 
+import com.ubiqube.etsi.mano.openstack.AlarmUtils;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 
@@ -44,41 +36,14 @@ public class OpenstackMonitoring implements VimMonitoring {
 		this.props = OsUtils.loadGnocchiMapping();
 	}
 
-	private Metric map(final String x) {
-		final String prop = props.getProperty(x);
-		if (null == prop) {
-			throw new VimGenericException("Unable to map monitoring key : " + x);
-		}
-		final String[] metric = prop.split(",");
-		if (metric.length != 2) {
-			throw new VimGenericException("bad mapping key : " + x + "/" + prop + ". Should have one ','");
-		}
-		return new Metric(metric[0], MetricFunction.fromValue(metric[1]));
-	}
-
 	@Override
 	public String registerAlarm(final UUID x, final String performanceMetric, final Double thresholdValue, final Double hysteresis, final String url) {
-		final CeilometerGnocchiResourcesThresholdRule rule = new CeilometerAlarm.CeilometerGnocchiResourcesThresholdRule();
-		final Metric metric = map(performanceMetric);
-		rule.setAggregationMethod(AggregationMethod.MEAN);
-		rule.setThreshold(thresholdValue.floatValue());
-		rule.setComparisonOperator(ComparisonOperator.GT);
-		// XXX: If it's not equal to original metric it will fail.
-		rule.setEvaluationPeriods(600);
-		rule.setMetric(metric.getName());
-		rule.setResourceId(x.toString());
-		final Alarm alarm = Builders.alarm()
-				.alarmActions(Arrays.asList(url))
-				.gnocchiResourcesThresholdRule(rule)
-				.type(Type.THRESHOLD)
-				.build();
-		return os.telemetry().alarms().create(alarm).getAlarmId();
+		return AlarmUtils.registerAlarm(os, props, x, performanceMetric, thresholdValue, hysteresis, url);
 	}
 
 	@Override
 	public boolean removeAlarm(final String resource) {
-		final ActionResponse resp = os.telemetry().alarms().delete(resource);
-		return resp.isSuccess();
+		return AlarmUtils.removeAlarm(os, resource);
 	}
 
 }

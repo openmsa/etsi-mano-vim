@@ -11,5 +11,10 @@
 			<groupId>com.github.openstack4j.core</groupId>
 			<artifactId>ubi-openstack4j-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 </project>
