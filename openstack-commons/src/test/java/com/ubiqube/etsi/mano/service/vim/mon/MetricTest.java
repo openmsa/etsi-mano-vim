@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.ubiqube.etsi.mano.service.vim.Metric;
+import com.ubiqube.etsi.mano.service.vim.MetricFunction;
+
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.EqualsVerifierReport;
 import nl.jqno.equalsverifier.Warning;
@@ -29,12 +32,8 @@ class MetricTest {
 	@Test
 	void test() {
 		final Metric m = new Metric();
-		m.setKey("");
-		m.setManoMetric(null);
-		m.setResourceLocator(null);
-		m.getKey();
-		m.getManoMetric();
-		m.getResourceLocator();
+		m.setFunc(MetricFunction.MEAN);
+		m.setName(null);
 		m.toString();
 		m.hashCode();
 		assertTrue(true);
