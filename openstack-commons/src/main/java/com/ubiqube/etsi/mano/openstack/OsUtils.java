@@ -16,7 +16,10 @@
  */
 package com.ubiqube.etsi.mano.openstack;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.Properties;
 
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.api.client.IOSClientBuilder.V3;
@@ -65,4 +68,13 @@ public class OsUtils {
 		return base.authenticate();
 	}
 
+	public static Properties loadGnocchiMapping() {
+		try (InputStream mappting = Thread.currentThread().getContextClassLoader().getResourceAsStream("gnocchi-mapping.properties")) {
+			final Properties props = new Properties();
+			props.load(mappting);
+			return props;
+		} catch (final IOException e) {
+			throw new OsVimGenericException(e);
+		}
+	}
 }

@@ -16,8 +16,6 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.UUID;
@@ -33,6 +31,7 @@ import org.openstack4j.openstack.telemetry.domain.CeilometerAlarm;
 import org.openstack4j.openstack.telemetry.domain.CeilometerAlarm.CeilometerGnocchiResourcesThresholdRule;
 
 import com.ubiqube.etsi.mano.dao.mano.VnfMonitoringParameter;
+import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.orchestrator.OrchestrationServiceV3;
 import com.ubiqube.etsi.mano.orchestrator.SystemBuilder;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
@@ -46,12 +45,7 @@ public class OsMonitoringSystem {
 
 	public OsMonitoringSystem(final OSClientV3 os) {
 		this.os = os;
-		try (InputStream mappting = Thread.currentThread().getContextClassLoader().getResourceAsStream("gnocchi-mapping.properties")) {
-			props = new Properties();
-			props.load(mappting);
-		} catch (final IOException e) {
-			throw new VimGenericException(e);
-		}
+		this.props = OsUtils.loadGnocchiMapping();
 	}
 
 	private Metric map(final String x) {
