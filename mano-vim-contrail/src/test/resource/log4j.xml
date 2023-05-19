@@ -6,15 +6,7 @@
             <param value="%5p [%c{2}:%L] -&gt; %m%n" name="ConversionPattern"/>
         </layout>
     </appender>
-    <logger additivity="false" name="com.netcelo.commun.database">
-        <level value="warn"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger name="com.ubiqube.api.server.repository">
-        <level value="info"/>
-        <appender-ref ref="STDOUT"/>
-    </logger>
-    <logger additivity="false" name="com.ubiqube.api.service.server.secEngine">
+    <logger additivity="false" name="org.eclipse.jetty">
         <level value="info"/>
         <appender-ref ref="STDOUT"/>
     </logger>
