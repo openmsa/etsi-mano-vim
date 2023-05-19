@@ -39,6 +39,9 @@ class OsDnsTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(post(urlPathMatching("/v2/zones")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/zones.json"))));
 		final OpenStackVim os = new OpenStackVim(mapper);
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
