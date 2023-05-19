@@ -18,6 +18,7 @@ package com.ubiqube.etsi.mano.tf;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
@@ -38,12 +39,57 @@ class ContrailApiTest {
 		stubFor(get(urlPathMatching("/test001")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody("{}")));
-
+		stubFor(get(urlPathMatching("/virtual-network/left")).willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "application/json")
+				.withBody("""
+						{
+						  "virtual-network": {
+						    "name": "left",
+						    "uuid": "62acfbbc-f620-11ed-a711-c8f750509d3b"
+						  }
+						}
+						""")));
+		stubFor(get(urlPathMatching("/virtual-network/right")).willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "application/json")
+				.withBody("""
+						{
+						  "virtual-network": {
+						    "name": "right",
+						    "uuid": "e6b6e704-f65e-11ed-b4eb-c8f750509d3b"
+						  }
+						}
+						""")));
+		stubFor(get(urlPathMatching("/service-instance/")).willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "application/json")
+				.withBody("""
+						{
+						"service-instance":
+						{
+							"name": "left",
+							"uuid": "62acfbbc-f620-11ed-a711-c8f750509d3b"
+						}
+						}
+						""")));
+		stubFor(post(urlPathMatching("/network-policys")).willReturn(aResponse()
+				.withStatus(200)
+				.withHeader("Content-Type", "application/json")
+				.withBody("""
+						{
+						"network-policy":
+						{
+							"name": "left",
+							"uuid": "62acfbbc-f620-11ed-a711-c8f750509d3b"
+						}
+						}
+						""")));
 		final ContrailApi srv = new ContrailApi();
 		final SystemConnections vimConn = new SystemConnections();
 		vimConn.setExtra(Map.of());
 		vimConn.setAccessInfo(Map.of());
-		vimConn.setInterfaceInfo(Map.of("sdn-endpoint", wmRuntimeInfo.getHttpsBaseUrl()));
+		vimConn.setInterfaceInfo(Map.of("sdn-endpoint", wmRuntimeInfo.getHttpBaseUrl()));
 		final Classifier clas = new Classifier();
 		srv.createNetworkPolicy(vimConn, "", clas, "", "left", "right");
 	}
