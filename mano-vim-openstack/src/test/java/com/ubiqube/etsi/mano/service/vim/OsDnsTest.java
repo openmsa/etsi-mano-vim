@@ -17,10 +17,13 @@
 package com.ubiqube.etsi.mano.service.vim;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +38,7 @@ class OsDnsTest {
 	private MapperFacade mapper;
 
 	@Test
-	void test(final WireMockRuntimeInfo wri) {
+	void testCreateDnsZone(final WireMockRuntimeInfo wri) {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
@@ -49,4 +52,59 @@ class OsDnsTest {
 		assertTrue(true);
 	}
 
+	@Test
+	void testDeleteDnsZone(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.dns(vci).deleteDnsZone("");
+		assertTrue(true);
+	}
+
+	@Test
+	void testCreateDnsRecordSet(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/servers/detail")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/server-detail.json"))));
+		stubFor(get(urlPathMatching("/v2/recordsets")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/list-recordset.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.dns(vci).createDnsRecordSet("zone", "rightVdu01-Compute-0000", "middleVl01-Network-0000");
+		assertTrue(true);
+	}
+
+	@Test
+	void testDeleteDnsRecordSet(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/v2/zones/zone/recordsets/record")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/recordset-record.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.dns(vci).deleteDnsRecordSet("record", "zone", Set.of("ips"));
+		assertTrue(true);
+	}
+
+	@Test
+	void testDeleteDnsRecordSet2(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/v2/zones/zone/recordsets/record")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/recordset-record2.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.dns(vci).deleteDnsRecordSet("record", "zone", Set.of("ips"));
+		assertTrue(true);
+	}
 }

@@ -1,0 +1,178 @@
+{
+	"servers": [
+		{
+			"id": "446bb4d4-50de-4a73-9fd8-f44a87d7164c",
+			"name": "rightVdu01-Compute-0000",
+			"status": "ACTIVE",
+			"tenant_id": "1da4d2fa72dc41dfb71a9972809e50ae",
+			"user_id": "d0fa239c72ee43e683ed680f9c9e731d",
+			"metadata": {
+				
+			},
+			"hostId": "7228bd55045121b94f3f01e2580d072f5f10ca05c3d142f6e7bebcba",
+			"image": {
+				"id": "56261e87-0be2-4683-a053-2132b9c53dc4",
+				"links": [
+					{
+						"rel": "bookmark",
+						"href": "http://10.31.1.108:8774/images/56261e87-0be2-4683-a053-2132b9c53dc4"
+					}
+				]
+			},
+			"flavor": {
+				"id": "2",
+				"links": [
+					{
+						"rel": "bookmark",
+						"href": "http://10.31.1.108:8774/flavors/2"
+					}
+				]
+			},
+			"created": "2023-03-17T11:09:38Z",
+			"updated": "2023-03-17T11:09:53Z",
+			"addresses": {
+				"middleVl01-Network-0000": [
+					{
+						"version": 4,
+						"addr": "192.168.10.202",
+						"OS-EXT-IPS:type": "fixed",
+						"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:a2:08:9a"
+					}
+				],
+				"rightVl01-Network-0000": [
+					{
+						"version": 4,
+						"addr": "192.168.20.243",
+						"OS-EXT-IPS:type": "fixed",
+						"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:60:16:1e"
+					}
+				]
+			},
+			"accessIPv4": "",
+			"accessIPv6": "",
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/servers/446bb4d4-50de-4a73-9fd8-f44a87d7164c"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/servers/446bb4d4-50de-4a73-9fd8-f44a87d7164c"
+				}
+			],
+			"OS-DCF:diskConfig": "MANUAL",
+			"progress": 0,
+			"OS-EXT-AZ:availability_zone": "nova",
+			"config_drive": "",
+			"key_name": null,
+			"OS-SRV-USG:launched_at": "2023-03-17T11:09:53.000000",
+			"OS-SRV-USG:terminated_at": null,
+			"OS-EXT-SRV-ATTR:host": "inari.ubiqube.com",
+			"OS-EXT-SRV-ATTR:instance_name": "instance-0000014b",
+			"OS-EXT-SRV-ATTR:hypervisor_hostname": "inari.ubiqube.com",
+			"OS-EXT-STS:task_state": null,
+			"OS-EXT-STS:vm_state": "active",
+			"OS-EXT-STS:power_state": 1,
+			"os-extended-volumes:volumes_attached": [
+				{
+					"id": "d0b729b1-7ef7-4675-a457-36bf0775b00c"
+				}
+			],
+			"security_groups": [
+				{
+					"name": "default"
+				},
+				{
+					"name": "default"
+				}
+			]
+		},
+		{
+			"id": "87d5a126-3015-4323-908a-7d594a433a44",
+			"name": "leftVdu01-Compute-0000",
+			"status": "ACTIVE",
+			"tenant_id": "1da4d2fa72dc41dfb71a9972809e50ae",
+			"user_id": "d0fa239c72ee43e683ed680f9c9e731d",
+			"metadata": {
+				
+			},
+			"hostId": "7228bd55045121b94f3f01e2580d072f5f10ca05c3d142f6e7bebcba",
+			"image": {
+				"id": "56261e87-0be2-4683-a053-2132b9c53dc4",
+				"links": [
+					{
+						"rel": "bookmark",
+						"href": "http://10.31.1.108:8774/images/56261e87-0be2-4683-a053-2132b9c53dc4"
+					}
+				]
+			},
+			"flavor": {
+				"id": "82c16633-3211-431b-9696-cc2ba6865999",
+				"links": [
+					{
+						"rel": "bookmark",
+						"href": "http://10.31.1.108:8774/flavors/82c16633-3211-431b-9696-cc2ba6865999"
+					}
+				]
+			},
+			"created": "2023-03-17T11:09:37Z",
+			"updated": "2023-03-17T11:09:51Z",
+			"addresses": {
+				"leftVl01-Network-0000": [
+					{
+						"version": 4,
+						"addr": "192.168.0.172",
+						"OS-EXT-IPS:type": "fixed",
+						"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:d7:73:c5"
+					}
+				],
+				"middleVl01-Network-0000": [
+					{
+						"version": 4,
+						"addr": "192.168.10.110",
+						"OS-EXT-IPS:type": "fixed",
+						"OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:00:4d:82"
+					}
+				]
+			},
+			"accessIPv4": "",
+			"accessIPv6": "",
+			"links": [
+				{
+					"rel": "self",
+					"href": "http://10.31.1.108:8774/v2.1/servers/87d5a126-3015-4323-908a-7d594a433a44"
+				},
+				{
+					"rel": "bookmark",
+					"href": "http://10.31.1.108:8774/servers/87d5a126-3015-4323-908a-7d594a433a44"
+				}
+			],
+			"OS-DCF:diskConfig": "MANUAL",
+			"progress": 0,
+			"OS-EXT-AZ:availability_zone": "nova",
+			"config_drive": "",
+			"key_name": null,
+			"OS-SRV-USG:launched_at": "2023-03-17T11:09:51.000000",
+			"OS-SRV-USG:terminated_at": null,
+			"OS-EXT-SRV-ATTR:host": "inari.ubiqube.com",
+			"OS-EXT-SRV-ATTR:instance_name": "instance-0000014a",
+			"OS-EXT-SRV-ATTR:hypervisor_hostname": "inari.ubiqube.com",
+			"OS-EXT-STS:task_state": null,
+			"OS-EXT-STS:vm_state": "active",
+			"OS-EXT-STS:power_state": 1,
+			"os-extended-volumes:volumes_attached": [
+				{
+					"id": "a95b0811-91cf-4444-8580-5f94bfbc53ff"
+				}
+			],
+			"security_groups": [
+				{
+					"name": "default"
+				},
+				{
+					"name": "default"
+				}
+			]
+		}
+	]
+}

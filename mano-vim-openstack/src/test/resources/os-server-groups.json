@@ -1,0 +1,11 @@
+{
+  "server_group": {
+    "id": "525fa125-5c17-4a70-86a3-e539d0351ba5",
+    "name": "31c01ce3-13d0-417f-9678-076317f15c11",
+    "policies": [
+      "affinity"
+    ],
+    "metadata": {},
+    "members": []
+  }
+}

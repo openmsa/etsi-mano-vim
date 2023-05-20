@@ -26,11 +26,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.ubiqube.etsi.mano.dao.mano.AffinityRule;
 import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
 
 import ma.glasnost.orika.MapperFacade;
@@ -168,6 +170,162 @@ class OpenStackVimTest {
 		final OpenStackVim os = new OpenStackVim(mapper);
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getCaps(vci);
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetZoneAvailableList(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/os-availability-zone")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/availability-zone.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.getZoneAvailableList(vci);
+		assertTrue(true);
+	}
+
+	@Test
+	void testDeleteCompute(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.deleteCompute(vci, "");
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetServerGroup(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/os-aggregates")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/server-group.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.getServerGroup(vci);
+		assertTrue(true);
+	}
+
+	@Test
+	void testStartServer(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.startServer(vci, "");
+		assertTrue(true);
+	}
+
+	@Test
+	void testStopServer(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.stopServer(vci, "");
+		assertTrue(true);
+	}
+
+	@Test
+	void testRebootServer(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.rebootServer(vci, "");
+		assertTrue(true);
+	}
+
+	@Test
+	void testCreateServerGroup(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(post(urlPathMatching("/8774/v2.1/os-server-groups")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/os-server-groups.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final AffinityRule ar = new AffinityRule();
+		ar.setId(UUID.randomUUID());
+		ar.setAnti(false);
+		os.createServerGroup(vci, ar);
+		assertTrue(true);
+	}
+
+	@Test
+	void testDeleteServerGroup(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.deleteServerGroup(vci, "");
+		assertTrue(true);
+	}
+
+	@Test
+	void testAuthenticate(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.authenticate(vci);
+		assertTrue(true);
+	}
+
+	@Test
+	void testSimple(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final OpenStackVim os = new OpenStackVim(mapper);
+		os.getMonitoring(vci);
+		os.network(vci);
+		os.storage(vci);
+		os.dns(vci);
+		os.cnf(vci);
+		os.canCreateFlavor();
+		os.isEqualMemFlavor(1_048_576L, 1_048_576L);
+		os.isEqualMemFlavor(1_048_576L, 2_048_576L);
+		os.getType();
+		os.allocateResources(vci, null);
+		os.freeResources(vci, null);
+		assertTrue(true);
+	}
+
+	@Test
+	void testCreateFlavor(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(post(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavor-create.json"))));
+		stubFor(post(urlPathMatching("/8774/v2.1/flavors/228de8b2-ba46-4824-9489-af36d33c37f8/os-extra_specs")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody("""
+												{
+						  "extra_specs": {
+						    "hw:cpu_policy:": "shared",
+						    "read": "openstack"
+						  }
+						}
+												""")));
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final OpenStackVim os = new OpenStackVim(mapper);
+		os.createFlavor(vci, "name", 2, 568, 0, Map.of("spec", "value"));
 		assertTrue(true);
 	}
 

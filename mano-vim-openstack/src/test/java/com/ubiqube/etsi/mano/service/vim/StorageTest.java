@@ -38,11 +38,22 @@ import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.VnfStorage;
 
 import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.OrikaSystemProperties;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 
 @WireMockTest
 class StorageTest {
 
-	private MapperFacade mapper;
+	private final MapperFacade mapper;
+
+	public StorageTest() {
+		System.setProperty(OrikaSystemProperties.COMPILER_STRATEGY, EclipseJdtCompilerStrategy.class.getName());
+		System.setProperty(OrikaSystemProperties.WRITE_SOURCE_FILES, "true");
+		System.setProperty(OrikaSystemProperties.WRITE_SOURCE_FILES_TO_PATH, "/tmp/orika-test");
+		final DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().compilerStrategy(new EclipseJdtCompilerStrategy()).build();
+		mapper = mapperFactory.getMapperFacade();
+	}
 
 	@Test
 	void testCreateVolumeNoSW(final WireMockRuntimeInfo wri) {
@@ -204,6 +215,59 @@ class StorageTest {
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.storage(vci).getImageDetail("9f326f5f-7839-4928-9722-ad51ca97b478");
 		assertTrue(true);
+	}
 
+	@Test
+	void testDeleteObjectStorage(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.storage(vci).deleteObjectStorage("storageId");
+		assertTrue(true);
+	}
+
+	@Test
+	void testCreateObjectStorage(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final VnfStorage vnfStorage = new VnfStorage();
+		vnfStorage.setToscaName("name");
+		os.storage(vci).createObjectStorage(vnfStorage);
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetImageInformation(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/9292/v2/images")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/images.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.storage(vci).getImagesInformations("cirros-0.5.2");
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetImageInformationError(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(post(urlPathMatching("/9292/v2/images"))
+				.withQueryParam("limit", equalTo("500"))
+				.willReturn(aResponse()
+						.withStatus(200)
+						.withBody(OsHelper.getFile(wri, "/images.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final Storage sto = os.storage(vci);
+		assertThrows(VimException.class, () -> sto.getImagesInformations("cirros-0.5.2"));
 	}
 }
