@@ -7,9 +7,12 @@
 			</pattern>
 		</encoder>
 	</appender>
-	<logger name="io.fabric8.kubernetes" level="TRACE" />
-	'
-	<root level="trace">
+	<logger name="org.eclipse.jetty" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 	</root>
 </configuration>

@@ -1,0 +1,8 @@
+name: mano-ha
+description: Ubiqube ETSI-MANO server in HA mode.
+version: 0.0.1
+apiVersion: v1
+keywords:
+  - mano-ha
+sources:
+home:

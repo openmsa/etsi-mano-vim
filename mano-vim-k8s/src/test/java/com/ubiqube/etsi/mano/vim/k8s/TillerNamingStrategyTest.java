@@ -16,18 +16,24 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
-import lombok.Getter;
-import lombok.Setter;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.util.UUID;
+
+import org.junit.jupiter.api.Test;
 
 /**
  *
- * @author olivier
+ * @author Olivier Vignaud
  *
  */
-@Getter
-@Setter
-public class ExceptionHandler {
-	private String message;
-	private Throwable e;
+@SuppressWarnings("static-method")
+class TillerNamingStrategyTest {
+
+	@Test
+	void test() {
+		final TillerNamingStrategy srv = new TillerNamingStrategy();
+		assertNotNull(srv.getChartName(UUID.randomUUID(), ""));
+	}
 
 }
