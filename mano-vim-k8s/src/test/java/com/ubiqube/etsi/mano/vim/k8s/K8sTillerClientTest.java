@@ -57,6 +57,8 @@ import org.bouncycastle.operator.bc.BcContentSignerBuilder;
 import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -71,6 +73,9 @@ import com.ubiqube.etsi.mano.service.vim.VimException;
  */
 @SuppressWarnings("static-method")
 class K8sTillerClientTest {
+
+	private static final Logger LOG = LoggerFactory.getLogger(K8sTillerClientTest.class);
+
 	private static final String PASSWORD = "password";
 
 	private static final String CLIENT_KEYSTORE = "/tmp/test-unit.ks";
@@ -150,7 +155,9 @@ class K8sTillerClientTest {
 				.withBody("{}")
 				.withStatus(101)));
 		final String caTxt = HelmHelper.pemEncode(caKey);
+		LOG.info("CA cert: {}", caTxt);
 		final String certTxt = HelmHelper.pemEncode(cert);
+		LOG.info("Cert: {}", certTxt);
 		final K8sTillerClient srv = new K8sTillerClient();
 		final Servers server = Servers.builder()
 				.url(wri.getHttpsBaseUrl())

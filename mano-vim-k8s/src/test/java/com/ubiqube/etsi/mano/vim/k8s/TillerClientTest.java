@@ -58,6 +58,8 @@ import org.bouncycastle.operator.bc.BcContentSignerBuilder;
 import org.bouncycastle.operator.bc.BcRSAContentSignerBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
@@ -70,6 +72,9 @@ import com.ubiqube.etsi.mano.service.vim.VimException;
  */
 @SuppressWarnings("static-method")
 class TillerClientTest {
+
+	private static final Logger LOG = LoggerFactory.getLogger(TillerClientTest.class);
+
 	private static final String PASSWORD = "password";
 
 	private static final String CLIENT_KEYSTORE = "/tmp/test-unit.ks";
@@ -149,7 +154,9 @@ class TillerClientTest {
 				.withBody("{}")
 				.withStatus(101)));
 		final String certTxt = HelmHelper.pemEncode(cert);
+		LOG.info("CA cert: {}", certTxt);
 		final String caTxt = HelmHelper.pemEncode(caKey);
+		LOG.info("CA cert: {}", caTxt);
 		final TillerClient tc = TillerClient.ofCerts(URI.create(wri.getHttpsBaseUrl()).toURL(), certTxt.getBytes(), certTxt.getBytes(), caTxt, "name");
 		HelmHelper.buildHelmTarball();
 		final File tgz = new File("/tmp/chart.tgz");
