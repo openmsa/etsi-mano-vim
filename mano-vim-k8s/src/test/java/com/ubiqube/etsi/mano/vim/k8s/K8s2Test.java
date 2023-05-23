@@ -27,7 +27,7 @@ import nl.jqno.equalsverifier.EqualsVerifierReport;
 import nl.jqno.equalsverifier.Warning;
 
 @SuppressWarnings("static-method")
-class K8sTest2 {
+class K8s2Test {
 
 	@Test
 	void test() {
