@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -82,8 +83,8 @@ public class TillerClient {
 	 * @return
 	 */
 	public static TillerClient ofCerts(final URL url, final byte[] ca, final byte[] crt, final String uk, final String name) {
-		final Config c = getBaseBuilder(url, new String(ca))
-				.withClientCertData(new String(crt))
+		final Config c = getBaseBuilder(url, encode64IfNeeded(ca))
+				.withClientCertData(encode64IfNeeded(crt))
 				.withClientKeyData(uk)
 				.build();
 		return new TillerClient(c, name);
@@ -127,4 +128,22 @@ public class TillerClient {
 
 	}
 
+	/**
+	 * This is a workaround for a broken CertUtils#kubernates-client 3.1.8. Or more
+	 * exactly {@code okio.ByteString.decodeBase64(data);}
+	 *
+	 * Force base64 encoding of a byte array, if not already encoded.
+	 *
+	 * @param crt A byte array.
+	 * @return A base64 string.
+	 */
+	private static String encode64IfNeeded(final byte[] crt) {
+		try {
+			Base64.getDecoder().decode(crt);
+			return new String(crt);
+		} catch (final IllegalArgumentException e) {
+			LOG.trace("", e);
+		}
+		return Base64.getEncoder().encodeToString(crt);
+	}
 }
