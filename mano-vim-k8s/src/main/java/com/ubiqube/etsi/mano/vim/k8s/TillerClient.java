@@ -85,7 +85,7 @@ public class TillerClient {
 	public static TillerClient ofCerts(final URL url, final byte[] ca, final byte[] crt, final String uk, final String name) {
 		final Config c = getBaseBuilder(url, encode64IfNeeded(ca))
 				.withClientCertData(encode64IfNeeded(crt))
-				.withClientKeyData(uk)
+				.withClientKeyData(encode64IfNeeded(uk.getBytes()))
 				.build();
 		return new TillerClient(c, name);
 	}
