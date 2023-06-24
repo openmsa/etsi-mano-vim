@@ -37,7 +37,6 @@ import net.juniper.contrail.api.ApiObjectBase;
 import net.juniper.contrail.api.Status;
 import net.juniper.contrail.api.types.InstanceIp;
 import net.juniper.contrail.api.types.IpamSubnetType;
-import net.juniper.contrail.api.types.IpamSubnets;
 import net.juniper.contrail.api.types.NetworkIpam;
 import net.juniper.contrail.api.types.PortTuple;
 import net.juniper.contrail.api.types.Project;
@@ -48,7 +47,6 @@ import net.juniper.contrail.api.types.ServiceTemplateType;
 import net.juniper.contrail.api.types.SubnetType;
 import net.juniper.contrail.api.types.VirtualMachineInterface;
 import net.juniper.contrail.api.types.VirtualNetwork;
-import net.juniper.contrail.api.types.VirtualNetworkType;
 import net.juniper.contrail.api.types.VnSubnetsType;
 
 /**
@@ -128,14 +126,12 @@ class ContrailTest {
 	}
 
 	void createServiceInstanceTest() {
-		final ApiConnector conn = getConnection();
 		final ServiceInstance root = new ServiceInstance();
 		final ServiceTemplate st = new ServiceTemplate();
 		root.setServiceTemplate(st);
 	}
 
 	void createPortTupleTest() {
-		final ApiConnector conn = getConnection();
 		final PortTuple root = new PortTuple();
 		root.setDisplayName("ovi-tuple");
 		root.setName("ovi-tuple-name");
@@ -144,7 +140,6 @@ class ContrailTest {
 	}
 
 	void createIpamTest() throws IOException {
-		final ApiConnector conn = getConnection();
 		final NetworkIpam root = new NetworkIpam();
 		root.setDisplayName("ovi-ipam");
 		root.setName("ovi-ipam-name");
@@ -154,8 +149,6 @@ class ContrailTest {
 		final SubnetType subnet = new SubnetType("5.6.7.8", 24);
 		final IpamSubnetType ipt = new IpamSubnetType(subnet);
 		subnets.add(ipt);
-		final IpamSubnets ipam_subnets = new IpamSubnets(subnets);
-		// root.setIpamSubnets(ipam_subnets);
 		executeCreate(root);
 		LOG.info("Done crating ipam.");
 
@@ -170,7 +163,6 @@ class ContrailTest {
 	}
 
 	void createVirtualNetworkTest() throws IOException {
-		final ApiConnector conn = getConnection();
 		final VirtualNetwork root = new VirtualNetwork();
 		root.setDisplayName("ovi display name");
 		root.setName("ovi-vl");
@@ -182,8 +174,6 @@ class ContrailTest {
 		final SubnetType subnet = new SubnetType("5.6.7.8", 24);
 		final IpamSubnetType ipt = new IpamSubnetType(subnet);
 		subnets.add(ipt);
-		final IpamSubnets ipam_subnets = new IpamSubnets(subnets);
-		final VirtualNetworkType vnp = new VirtualNetworkType();
 		final VnSubnetsType data = new VnSubnetsType();
 		data.addIpamSubnets(ipt);
 		root.setNetworkIpam(ipam, data);
@@ -202,14 +192,6 @@ class ContrailTest {
 
 	void createServiceInstance() {
 		final ContrailApi api = new ContrailApi();
-		// final String tmpl = api.createServiceTemplate(vimConnectionInformation,
-		// "ovi-template");
-		final String left = "6e5fc975-9265-43f7-8923-89f2cce03563";
-		final String right = "7ae1f037-b6f5-431a-bb7b-48d8644b9033";
-		// final String si = api.createServiceInstance(vimConnectionInformation,
-		// "ovi-si", tmpl, left, right);
-		// final String pt = api.createPortTuple(vimConnectionInformation, "ovi-pt",
-		// si);
 		final String vmi = "4880c971-0359-43f4-a2a1-d63ad72dbab4";
 		final String ptStr = "c45f7463-67b9-4436-a1f3-c80d211605d2";
 		api.updatePort(vimConnectionInformation, vmi, ptStr, "left");
