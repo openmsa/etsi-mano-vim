@@ -36,7 +36,6 @@ public class AwsCnf {
 	}
 
 	public String startK8s() {
-		eks.
 		return null;
 	}
 }

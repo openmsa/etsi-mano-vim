@@ -185,7 +185,7 @@ public class AzureVim implements Vim {
 	@Override
 	public String createRouter(final VimConnectionInformation vimConnectionInformation, final String name, final String internalNetworkId, final String externalNetworkId) {
 		// TODO Auto-generated method stub
-		getConnection(vimConnectionInformation).
+		//getConnection(vimConnectionInformation).
 		return null;
 	}
 
