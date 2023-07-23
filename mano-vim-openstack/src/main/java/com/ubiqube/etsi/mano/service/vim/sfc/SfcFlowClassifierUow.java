@@ -12,7 +12,7 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 /**
 s *     Copyright (C) 2019-2020 Ubiqube.
@@ -46,7 +46,7 @@ import com.ubiqube.etsi.mano.service.vim.sfc.node.FlowClassifierNode;
 
 /**
  *
- * @author Olivier Vignaud <ovi@ubiqube.com>
+ * @author Olivier Vignaud {@literal <ovi@ubiqube.com>}
  *
  */
 public class SfcFlowClassifierUow extends AbstractUnitOfWork<SfcFlowClassifierTask> {

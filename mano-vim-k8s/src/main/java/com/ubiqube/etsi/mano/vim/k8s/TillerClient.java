@@ -12,7 +12,7 @@
  *     GNU General Public License for more details.
  *
  *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
@@ -44,7 +44,7 @@ import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 
 /**
  *
- * @author Olivier Vignaud <ovi@ubiqube.com>
+ * @author Olivier Vignaud {@literal <ovi@ubiqube.com>}
  *
  */
 public class TillerClient {
@@ -80,7 +80,7 @@ public class TillerClient {
 	 * @param crt  base64 String of the DER
 	 * @param uk   Full PEM key
 	 * @param name
-	 * @return
+	 * @return A tiller client.
 	 */
 	public static TillerClient ofCerts(final URL url, final byte[] ca, final byte[] crt, final String uk, final String name) {
 		final Config c = getBaseBuilder(url, encode64IfNeeded(ca))
