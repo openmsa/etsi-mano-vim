@@ -5,9 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.ubiqube.mano</groupId>
-		<artifactId>mano-super-pom</artifactId>
+		<artifactId>mano-vim-aggregator</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
-		<relativePath/>
 	</parent>
 	<artifactId>mano-vim-openstack</artifactId>
 	<name>mano-vim-openstack</name>
@@ -55,7 +54,7 @@
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>orchestration-api</artifactId>
-			<version>3.0.0-SNAPSHOT</version>
+			<version>${version.orchestration-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>ma.glasnost.orika</groupId>
