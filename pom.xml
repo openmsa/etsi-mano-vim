@@ -20,12 +20,6 @@
 		<module>openstack-commons</module>
 		<module>mano-vim-dummy</module>
 	</modules>
-	<properties>
-		<version.orchestration-api>3.0.0</version.orchestration-api>
-		<version.mano-fluxrest>3.0.0</version.mano-fluxrest>
-		<version.mano-model>3.0.0</version.mano-model>
-		<version.ubi-juniper-contrail-api>4.0.0</version.ubi-juniper-contrail-api>
-	</properties>
 	<scm>
 		<developerConnection>scm:git:https://github.com/openmsa/etsi-mano-vim.git</developerConnection>
 		<tag>HEAD</tag>
