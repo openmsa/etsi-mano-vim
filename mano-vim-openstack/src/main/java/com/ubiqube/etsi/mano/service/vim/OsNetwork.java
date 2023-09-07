@@ -20,12 +20,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.model.common.ActionResponse;
 import org.openstack4j.model.network.AttachInterfaceType;
+import org.openstack4j.model.network.IP;
 import org.openstack4j.model.network.IPVersionType;
 import org.openstack4j.model.network.Network;
 import org.openstack4j.model.network.NetworkType;
@@ -142,7 +144,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	}
 
 	@Override
-	public String createPort(final String name, final String networkId, final String deviceId, final String macAddress, final NicType nicType) {
+	public com.ubiqube.etsi.mano.service.vim.Port createPort(final String name, final String networkId, final String deviceId, final String macAddress, final NicType nicType) {
 		final Port port = Builders.port()
 				.networkId(networkId)
 				.macAddress(macAddress)
@@ -151,7 +153,24 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 				.vNicType(nicType.toString())
 				.build();
 		final Port p = os.networking().port().create(port);
-		return p.getId();
+		return map(p);
+	}
+
+	private static com.ubiqube.etsi.mano.service.vim.Port map(final Port p) {
+		final com.ubiqube.etsi.mano.service.vim.Port ret = new com.ubiqube.etsi.mano.service.vim.Port();
+		ret.setId(UUID.fromString(p.getId()));
+		ret.setName(p.getName());
+		ret.setMacAddress(p.getMacAddress());
+		ret.setSecurityGroups(p.getSecurityGroups().stream().map(UUID::fromString).toList());
+		ret.setFixedIps(p.getFixedIps().stream().map(x -> map(x)).toList());
+		return ret;
+	}
+
+	private static FixedIp map(final IP x) {
+		final FixedIp ret = new FixedIp();
+		ret.setIp(x.getIpAddress());
+		ret.setSubnetId(x.getSubnetId());
+		return ret;
 	}
 
 	@Override

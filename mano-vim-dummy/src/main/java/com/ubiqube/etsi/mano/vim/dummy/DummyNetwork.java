@@ -26,6 +26,7 @@ import com.ubiqube.etsi.mano.dao.mano.VlProtocolData;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 import com.ubiqube.etsi.mano.service.vim.Network;
 import com.ubiqube.etsi.mano.service.vim.NetworkObject;
+import com.ubiqube.etsi.mano.service.vim.Port;
 
 public class DummyNetwork implements Network {
 
@@ -68,7 +69,7 @@ public class DummyNetwork implements Network {
 	}
 
 	@Override
-	public String createPort(final String name, final String networkId, final String deviceId, final String macAddress, final NicType nicType) {
+	public Port createPort(final String name, final String networkId, final String deviceId, final String macAddress, final NicType nicType) {
 		return null;
 	}
 

@@ -49,7 +49,7 @@ public interface Network {
 	@Nonnull
 	Map<String, String> getPublicNetworks();
 
-	String createPort(final String name, final String networkId, @Nullable final String deviceId, @Nullable String macAddress, NicType nicType);
+	Port createPort(final String name, final String networkId, @Nullable final String deviceId, @Nullable String macAddress, NicType nicType);
 
 	void deletePort(final String uuid);
 

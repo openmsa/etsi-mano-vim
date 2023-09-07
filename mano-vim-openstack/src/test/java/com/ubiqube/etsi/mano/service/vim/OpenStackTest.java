@@ -78,6 +78,7 @@ import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.VlProtocolData;
 import com.ubiqube.etsi.mano.dao.mano.VnfCompute;
 import com.ubiqube.etsi.mano.dao.mano.VnfStorage;
+import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 import com.ubiqube.etsi.mano.service.VimService;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
@@ -621,5 +622,14 @@ public class OpenStackTest {
 				.forEach(x -> {
 					System.out.println("" + x.getName() + " | " + x.getId());
 				});
+	}
+
+	/**
+	 * {"port":{"id":"81a7d32f-dbe5-4814-bbbc-e358f4e7733c","name":"testname","network_id":"0dc0e07c-0eae-4c55-9b28-13bb909a9d94","tenant_id":"1da4d2fa72dc41dfb71a9972809e50ae","mac_address":"fa:16:3e:77:21:07","admin_state_up":true,"status":"DOWN","device_id":"0f33bd64-5c7c-46f8-8f71-563ec7fc4689","device_owner":"","fixed_ips":[{"subnet_id":"12332803-72f8-4aac-9ad2-cd69c1502fcb","ip_address":"192.168.21.215"}],"project_id":"1da4d2fa72dc41dfb71a9972809e50ae","port_security_enabled":true,"qos_policy_id":null,"security_groups":["d64f76ef-d20b-48af-b6ff-ed153655bbf9"],"binding:vnic_type":"normal","binding:profile":{},"binding:host_id":"","binding:vif_type":"unbound","binding:vif_details":{},"allowed_address_pairs":[],"extra_dhcp_opts":[],"description":"","qos_network_policy_id":null,"resource_request":null,"tags":[],"created_at":"2023-09-06T12:43:41Z","updated_at":"2023-09-06T12:43:41Z","revision_number":1}}
+	 */
+	void testCreatePort() {
+		final OpenStackVim vim = new OpenStackVim(mapper);
+		final com.ubiqube.etsi.mano.service.vim.Port port = vim.network(vciInari).createPort("testname", "0dc0e07c-0eae-4c55-9b28-13bb909a9d94", "0f33bd64-5c7c-46f8-8f71-563ec7fc4689", null, NicType.NORMAL);
+
 	}
 }
