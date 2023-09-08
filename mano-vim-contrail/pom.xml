@@ -9,17 +9,6 @@
 	<artifactId>mano-vim-contrail</artifactId>
 	<name>mano-vim-contrail</name>
 	<description>ETSI MANO VIM interface for contrail.</description>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-bom</artifactId>
-				<version>9.4.49.v20220914</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>net.juniper.contrail</groupId>
@@ -50,8 +39,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.tomakehurst</groupId>
-			<artifactId>wiremock-jre8</artifactId>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
