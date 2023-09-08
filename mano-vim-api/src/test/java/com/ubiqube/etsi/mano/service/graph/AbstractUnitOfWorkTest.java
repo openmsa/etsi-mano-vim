@@ -29,7 +29,7 @@ class AbstractUnitOfWorkTest {
 	void test() {
 		final VirtualTaskV3<NsdTask> task = new TestVirtualTaskV3();
 		final TestAbstractUnitOfWork srv = new TestAbstractUnitOfWork(task, null);
-		srv.getTask();
+		srv.getVirtualTask();
 		srv.getType();
 		srv.setResource("res");
 		assertTrue(true);

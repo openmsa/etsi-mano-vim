@@ -39,7 +39,7 @@ public abstract class AbstractUnitOfWork<U> implements UnitOfWorkV3<U> {
 	}
 
 	@Override
-	public final VirtualTaskV3<U> getTask() {
+	public final VirtualTaskV3<U> getVirtualTask() {
 		return task;
 	}
 
