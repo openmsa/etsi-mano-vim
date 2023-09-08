@@ -16,6 +16,7 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ import lombok.Setter;
 public class Port {
 	private UUID id;
 	private String name;
-	private List<FixedIp> fixedIps;
+	private List<FixedIp> fixedIps = new ArrayList<>();
 	private String macAddress;
-	private List<UUID> securityGroups;
+	private List<UUID> securityGroups = new ArrayList<>();
 }
