@@ -23,7 +23,7 @@ import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
+import com.ubiqube.etsi.mano.dao.mano.vim.vnffg.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
 import net.juniper.contrail.api.ApiPropertyBase;

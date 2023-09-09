@@ -19,11 +19,11 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.util.List;
 import java.util.Map;
 
-import com.ubiqube.etsi.mano.dao.mano.IpPool;
-import com.ubiqube.etsi.mano.dao.mano.L3Data;
-import com.ubiqube.etsi.mano.dao.mano.SecurityGroup;
-import com.ubiqube.etsi.mano.dao.mano.VlProtocolData;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
+import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
+import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
+import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
+import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;

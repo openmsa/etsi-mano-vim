@@ -40,13 +40,13 @@ import org.openstack4j.model.network.builder.SubnetBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ubiqube.etsi.mano.dao.mano.IpPool;
-import com.ubiqube.etsi.mano.dao.mano.L2Data;
-import com.ubiqube.etsi.mano.dao.mano.L3Data;
-import com.ubiqube.etsi.mano.dao.mano.SecurityGroup;
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
-import com.ubiqube.etsi.mano.dao.mano.VlProtocolData;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
+import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
+import com.ubiqube.etsi.mano.dao.mano.vim.L2Data;
+import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
+import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 
 import jakarta.annotation.Nullable;
 

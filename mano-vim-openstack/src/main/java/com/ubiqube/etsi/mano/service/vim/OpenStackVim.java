@@ -56,10 +56,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.ubiqube.etsi.mano.dao.mano.AffinityRule;
-import com.ubiqube.etsi.mano.dao.mano.GrantInformationExt;
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
-import com.ubiqube.etsi.mano.dao.mano.vnfi.VimCapability;
+import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
@@ -123,14 +122,14 @@ public class OpenStackVim implements Vim {
 	}
 
 	@Override
-	public void allocateResources(final VimConnectionInformation vimConnectionInformation, final GrantInformationExt grantInformation) {
+	public void allocateResources(final VimConnectionInformation vimConnectionInformation, final String grantInformation) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
 		os.placement();
 		// XXX Do placement with blazar.
 	}
 
 	@Override
-	public void freeResources(final VimConnectionInformation vimConnectionInformation, final GrantInformationExt grantInformation) {
+	public void freeResources(final VimConnectionInformation vimConnectionInformation, final String grantInformation) {
 		// TODO Auto-generated method stub
 
 	}

@@ -23,9 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
-
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.api.storage.BlockVolumeService;
@@ -42,14 +39,16 @@ import org.openstack4j.model.storage.block.builder.VolumeBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ubiqube.etsi.mano.dao.mano.ContainerFormatType;
-import com.ubiqube.etsi.mano.dao.mano.DiskFormatType;
-import com.ubiqube.etsi.mano.dao.mano.SoftwareImage;
-import com.ubiqube.etsi.mano.dao.mano.VnfStorage;
-import com.ubiqube.etsi.mano.dao.mano.common.Checksum;
+import com.ubiqube.etsi.mano.dao.mano.vim.Checksum;
+import com.ubiqube.etsi.mano.dao.mano.vim.ContainerFormatType;
+import com.ubiqube.etsi.mano.dao.mano.vim.DiskFormatType;
+import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
+import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.sys.SysImage;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import ma.glasnost.orika.MapperFacade;
 
 public class OsStorage implements Storage {

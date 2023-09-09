@@ -67,18 +67,17 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
-import com.ubiqube.etsi.mano.dao.mano.ContainerFormatType;
-import com.ubiqube.etsi.mano.dao.mano.DiskFormatType;
-import com.ubiqube.etsi.mano.dao.mano.IpPool;
-import com.ubiqube.etsi.mano.dao.mano.L2Data;
-import com.ubiqube.etsi.mano.dao.mano.L3Data;
-import com.ubiqube.etsi.mano.dao.mano.SecurityGroup;
-import com.ubiqube.etsi.mano.dao.mano.SoftwareImage;
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
-import com.ubiqube.etsi.mano.dao.mano.VlProtocolData;
-import com.ubiqube.etsi.mano.dao.mano.VnfCompute;
-import com.ubiqube.etsi.mano.dao.mano.VnfStorage;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
+import com.ubiqube.etsi.mano.dao.mano.vim.ContainerFormatType;
+import com.ubiqube.etsi.mano.dao.mano.vim.DiskFormatType;
+import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
+import com.ubiqube.etsi.mano.dao.mano.vim.L2Data;
+import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
+import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
+import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
+import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.VimService;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
@@ -270,11 +269,8 @@ public class OpenStackTest {
 		final OpenStackVim vim = new OpenStackVim(mapper);
 		when(vimJpa.findById(id)).thenReturn(Optional.ofNullable(vimConnectionInformation));
 
-		final VnfCompute vnfc = new VnfCompute();
 		final SoftwareImage softwareImage = new SoftwareImage();
 		softwareImage.setName("cirros");
-		vnfc.setSoftwareImage(softwareImage);
-		vnfc.setName("vdu01");
 		final List<String> networks = new ArrayList<>();
 		final List<String> storages = new ArrayList<>();
 		final ComputeParameters computeParams = ComputeParameters.builder()

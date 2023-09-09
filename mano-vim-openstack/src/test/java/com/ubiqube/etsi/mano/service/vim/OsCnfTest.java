@@ -32,7 +32,7 @@ import org.openstack4j.model.magnum.Certificate;
 import org.openstack4j.model.magnum.Cluster;
 import org.openstack4j.openstack.magnum.MagnumCluster;
 
-import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
+import com.ubiqube.etsi.mano.dao.mano.vim.k8s.K8sServers;
 
 @ExtendWith(MockitoExtension.class)
 class OsCnfTest {

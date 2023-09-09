@@ -18,7 +18,7 @@ package com.ubiqube.etsi.mano.service.vim;
 
 import java.util.List;
 
-import com.ubiqube.etsi.mano.dao.mano.vnfi.StatusType;
+import com.ubiqube.etsi.mano.dao.mano.vim.k8s.StatusType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

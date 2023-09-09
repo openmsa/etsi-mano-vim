@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.ubiqube.etsi.mano.dao.mano.nsd.Classifier;
+import com.ubiqube.etsi.mano.dao.mano.vim.vnffg.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
 @SuppressWarnings("static-method")

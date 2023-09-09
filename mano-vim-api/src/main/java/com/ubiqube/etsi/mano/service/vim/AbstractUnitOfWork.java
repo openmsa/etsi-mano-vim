@@ -14,43 +14,44 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
-package com.ubiqube.etsi.mano.service.vim.sfc.enity;
+package com.ubiqube.etsi.mano.service.vim;
 
-import java.util.Set;
+import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
+import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
+import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 
-import com.ubiqube.etsi.mano.dao.mano.v2.nfvo.NsTask;
-
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.annotation.Nonnull;
 
 /**
  *
  * @author Olivier Vignaud {@literal <ovi@ubiqube.com>}
  *
  */
-@Entity
-@Getter
-@Setter
-public class SfcPortPairGroupTask extends NsTask {
+public abstract class AbstractUnitOfWork<U> implements UnitOfWorkV3<U> {
+	@Nonnull
+	private final VirtualTaskV3<U> task;
+	@Nonnull
+	private final Class<? extends Node> node;
 
-	/** Serial. */
-	private static final long serialVersionUID = 1L;
-
-	@ElementCollection(fetch = FetchType.EAGER)
-	private Set<String> portPair;
-
-	public SfcPortPairGroupTask() {
-		super(null);
+	protected AbstractUnitOfWork(final VirtualTaskV3<U> task, final Class<? extends Node> node) {
+		this.task = task;
+		this.node = node;
 	}
 
 	@Override
-	public NsTask copy() {
-		final SfcPortPairGroupTask task = new SfcPortPairGroupTask();
-		super.copy(task);
-		task.setPortPair(portPair);
+	public final VirtualTaskV3<U> getVirtualTask() {
 		return task;
 	}
+
+	@Override
+	public final Class<? extends Node> getType() {
+		return node;
+	}
+
+	@Override
+	public void setResource(final String res) {
+		task.setVimResourceId(res);
+
+	}
+
 }

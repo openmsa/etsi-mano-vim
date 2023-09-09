@@ -19,7 +19,7 @@ package com.ubiqube.etsi.mano.service;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
 /**
  *

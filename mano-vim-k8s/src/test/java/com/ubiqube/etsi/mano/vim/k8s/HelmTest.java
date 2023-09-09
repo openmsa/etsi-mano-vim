@@ -37,7 +37,6 @@ import org.microbean.helm.Tiller;
 import org.microbean.helm.chart.URLChartLoader;
 
 import com.ubiqube.etsi.mano.service.vim.VimException;
-import com.ubiqube.etsi.mano.utils.ColumnEncryptor;
 
 import hapi.chart.ChartOuterClass.Chart;
 import hapi.release.ReleaseOuterClass.Release;
@@ -200,8 +199,7 @@ class HelmTest {
 						""";
 
 	void testApi() throws IOException {
-		final ColumnEncryptor ce = new ColumnEncryptor();
-		final String privPlain = ce.convertToEntityAttribute(K8S_PRIV);
+		final String privPlain = ""; // ce.convertToEntityAttribute(K8S_PRIV)
 		System.out.println(privPlain);
 		final byte[] ca = convertToDer(CA);
 		final byte[] crt = convertToDer(USER_KEY);

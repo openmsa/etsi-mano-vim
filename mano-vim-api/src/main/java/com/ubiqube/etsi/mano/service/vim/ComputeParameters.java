@@ -18,7 +18,7 @@ package com.ubiqube.etsi.mano.service.vim;
 
 import java.util.List;
 
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
 import lombok.Builder;
 import lombok.Getter;

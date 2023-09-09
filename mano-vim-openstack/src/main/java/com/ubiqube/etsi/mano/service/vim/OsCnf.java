@@ -26,8 +26,8 @@ import org.openstack4j.model.magnum.Cluster;
 import org.openstack4j.openstack.magnum.MagnumCarequest;
 import org.openstack4j.openstack.magnum.MagnumCluster;
 
-import com.ubiqube.etsi.mano.dao.mano.k8s.K8sServers;
-import com.ubiqube.etsi.mano.dao.mano.vnfi.StatusType;
+import com.ubiqube.etsi.mano.dao.mano.vim.k8s.K8sServers;
+import com.ubiqube.etsi.mano.dao.mano.vim.k8s.StatusType;
 
 /**
  *

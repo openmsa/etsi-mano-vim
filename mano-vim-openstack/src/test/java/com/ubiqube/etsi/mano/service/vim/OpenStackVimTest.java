@@ -32,8 +32,8 @@ import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.ubiqube.etsi.mano.dao.mano.AffinityRule;
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
 import ma.glasnost.orika.MapperFacade;
 

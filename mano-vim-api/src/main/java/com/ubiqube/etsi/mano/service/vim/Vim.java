@@ -19,15 +19,14 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.annotation.Nonnull;
-
-import com.ubiqube.etsi.mano.dao.mano.AffinityRule;
-import com.ubiqube.etsi.mano.dao.mano.GrantInformationExt;
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
-import com.ubiqube.etsi.mano.dao.mano.vnfi.VimCapability;
+import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 import com.ubiqube.etsi.mano.vim.dto.Flavor;
+
+import jakarta.annotation.Nonnull;
 
 /**
  *
@@ -73,9 +72,9 @@ public interface Vim {
 
 	List<VimCapability> getCaps(final VimConnectionInformation vimConnectionInformation);
 
-	void allocateResources(VimConnectionInformation vimConnectionInformation, GrantInformationExt x);
+	void allocateResources(VimConnectionInformation vimConnectionInformation, String x);
 
-	void freeResources(VimConnectionInformation vimConnectionInformation, GrantInformationExt x);
+	void freeResources(VimConnectionInformation vimConnectionInformation, String x);
 
 	String createServerGroup(final VimConnectionInformation vimConnectionInformation, final AffinityRule ar);
 

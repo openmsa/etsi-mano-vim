@@ -19,10 +19,9 @@ package com.ubiqube.etsi.mano.vim.dummy;
 import java.util.List;
 import java.util.Map;
 
-import com.ubiqube.etsi.mano.dao.mano.AffinityRule;
-import com.ubiqube.etsi.mano.dao.mano.GrantInformationExt;
-import com.ubiqube.etsi.mano.dao.mano.VimConnectionInformation;
-import com.ubiqube.etsi.mano.dao.mano.vnfi.VimCapability;
+import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.Cnf;
 import com.ubiqube.etsi.mano.service.vim.ComputeParameters;
@@ -131,13 +130,13 @@ public class DummyVim implements Vim {
 	}
 
 	@Override
-	public void allocateResources(final VimConnectionInformation vimConnectionInformation, final GrantInformationExt x) {
+	public void allocateResources(final VimConnectionInformation vimConnectionInformation, final String x) {
 		//
 
 	}
 
 	@Override
-	public void freeResources(final VimConnectionInformation vimConnectionInformation, final GrantInformationExt x) {
+	public void freeResources(final VimConnectionInformation vimConnectionInformation, final String x) {
 		//
 
 	}
