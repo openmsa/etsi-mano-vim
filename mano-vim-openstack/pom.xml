@@ -26,6 +26,24 @@
 			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ubiqube.mano</groupId>
+			<artifactId>mano-db-vim</artifactId>
+			<version>${version.mano-db-auth}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ubiqube.mano</groupId>
+			<artifactId>mano-db-auth</artifactId>
+			<version>${version.mano-db-auth}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.github.openstack4j.core.connectors</groupId>
 			<artifactId>ubi-openstack4j-httpclient</artifactId>
 		</dependency>
