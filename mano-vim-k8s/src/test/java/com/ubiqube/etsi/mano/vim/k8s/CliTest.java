@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.vim.k8s;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.net.URI;
 
 import org.junit.jupiter.api.Test;
 
@@ -110,10 +111,10 @@ class CliTest {
 								.clientSecret("RJuAdY7c7iRgoVoqM7nVQtWSqKOGq4oJ")
 								.clientId("mano-helm")
 								.grantType(OAuth2GrantType.CLIENT_CREDENTIAL)
-								.tokenEndpoint("http://mano-auth:8080/auth/realms/mano-realm/protocol/openid-connect/token")
+								.tokenEndpoint(URI.create("http://mano-auth:8080/auth/realms/mano-realm/protocol/openid-connect/token"))
 								.build())
 						.build())
-				.url("http://localhost:8080/")
+				.url(URI.create("http://localhost:8080/"))
 				.build();
 	}
 

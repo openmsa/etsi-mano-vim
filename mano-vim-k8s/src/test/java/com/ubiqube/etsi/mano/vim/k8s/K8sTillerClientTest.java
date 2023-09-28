@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -160,7 +161,7 @@ class K8sTillerClientTest {
 		LOG.info("Cert: {}", certTxt);
 		final K8sTillerClient srv = new K8sTillerClient();
 		final Servers server = Servers.builder()
-				.url(wri.getHttpsBaseUrl())
+				.url(URI.create(wri.getHttpsBaseUrl()))
 				.build();
 		final K8sServers k8s = K8sServers.builder()
 				.apiAddress(wri.getHttpsBaseUrl())

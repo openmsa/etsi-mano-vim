@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.net.URI;
 
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +50,7 @@ class HelmV3WrapperClientTest {
 				.withStatus(200)));
 		final HelmV3WrapperClient srv = new HelmV3WrapperClient();
 		final Servers server = Servers.builder()
-				.url(wri.getHttpBaseUrl())
+				.url(URI.create(wri.getHttpBaseUrl()))
 				.build();
 		final K8sServers k8s = K8sServers.builder()
 				.caPem("ca-pem")
@@ -67,7 +68,7 @@ class HelmV3WrapperClientTest {
 				.withStatus(204)));
 		final HelmV3WrapperClient srv = new HelmV3WrapperClient();
 		final Servers server = Servers.builder()
-				.url(wri.getHttpBaseUrl())
+				.url(URI.create(wri.getHttpBaseUrl()))
 				.build();
 		final K8sServers k8s = K8sServers.builder()
 				.caPem("ca-pem")
@@ -84,7 +85,7 @@ class HelmV3WrapperClientTest {
 				.withStatus(200)));
 		final HelmV3WrapperClient srv = new HelmV3WrapperClient();
 		final Servers server = Servers.builder()
-				.url(wri.getHttpBaseUrl())
+				.url(URI.create(wri.getHttpBaseUrl()))
 				.build();
 		final K8sServers k8s = K8sServers.builder()
 				.caPem("ca-pem")
@@ -101,7 +102,7 @@ class HelmV3WrapperClientTest {
 				.withStatus(204)));
 		final HelmV3WrapperClient srv = new HelmV3WrapperClient();
 		final Servers server = Servers.builder()
-				.url(wri.getHttpBaseUrl())
+				.url(URI.create(wri.getHttpBaseUrl()))
 				.build();
 		final K8sServers k8s = K8sServers.builder()
 				.caPem("ca-pem")
