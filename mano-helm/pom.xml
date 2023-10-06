@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.ubiqube.mano</groupId>
 		<artifactId>mano-vim-aggregator</artifactId>
-		<version>3.2.0</version>
+		<version>3.2.1-SNAPSHOT</version>
 	</parent>
 	<groupId>com.ubiqube.mano.helm</groupId>
 	<artifactId>mano-helm</artifactId>
