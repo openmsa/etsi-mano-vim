@@ -20,22 +20,15 @@
 		</repository>
 	</distributionManagement>
 	<dependencies>
-		<!--
-		<dependency>
-			<groupId>com.ubiqube.mano</groupId>
-			<artifactId>mano-model</artifactId>
-			<version>${version.mano-model}</version>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>orchestration-api</artifactId>
-			<version>3.2.1-SNAPSHOT</version>
+			<version>${version.orchestration-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>mano-db-vim</artifactId>
-			<version>3.2.1-SNAPSHOT</version>
+			<version>${version.mano-db-auth}</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.annotation</groupId>
@@ -56,6 +49,10 @@
 			<groupId>nl.jqno.equalsverifier</groupId>
 			<artifactId>equalsverifier</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
 		</dependency>
 	</dependencies>
 </project>
