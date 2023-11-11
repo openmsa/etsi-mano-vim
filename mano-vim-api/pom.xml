@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.ubiqube.mano</groupId>
 		<artifactId>mano-vim-aggregator</artifactId>
-		<version>3.2.1</version>
+		<version>3.2.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>mano-vim-api</artifactId>
 	<name>mano-vim-api</name>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>mano-db-vim</artifactId>
-			<version>${version.mano-db-auth}</version>
+			<version>${version.small-db}</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.annotation</groupId>
