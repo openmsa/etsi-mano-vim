@@ -143,7 +143,7 @@ public class OpenStackVim implements Vim {
 	public String createCompute(final ComputeParameters cp) {
 		final OSClientV3 os = OpenStackVim.getClient(cp.getVimConnectionInformation());
 		final ServerCreateBuilder bs = Builders.server();
-		LOG.debug("Creating server: {}", cp);
+		LOG.trace("Creating server: {}", cp);
 		bs.image(cp.getImageId());
 		bs.name(cp.getInstanceName());
 		bs.flavor(cp.getFlavorId());
