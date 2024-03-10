@@ -193,7 +193,7 @@ public class OpenStackVim implements Vim {
 	}
 
 	private static Flavor createFlavor(final OSClientV3 os, final String name, final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
-		LOG.debug("Flavor mem={} disk={}", virtualMemorySize / MEGA, disk / GIGA);
+		LOG.debug("Creating flavor mem={} disk={}", virtualMemorySize / MEGA, disk / GIGA);
 		final Flavor flavor = os.compute()
 				.flavors()
 				.create(Builders.flavor()
