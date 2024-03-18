@@ -173,7 +173,10 @@ public class OpenStackVim implements Vim {
 	@Override
 	public String getOrCreateFlavor(final VimConnectionInformation vimConnectionInformation, final String name, final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
-		LOG.debug("Flavor mem={} disk={}", virtualMemorySize / MEGA, disk / GIGA);
+		if (disk < GIGA) {
+			throw new OpenStackException("Openstack cannot allow a disk flavor below 1Gb.");
+		}
+		LOG.debug("Flavor cpu={} mem={} disk={}, spec={}", numVcpu, virtualMemorySize / MEGA, disk / GIGA, flavorSpec);
 		final List<Flavor> matchingFlavor = os.compute().flavors().list()
 				.parallelStream()
 				.filter(x -> x.getVcpus() == numVcpu)

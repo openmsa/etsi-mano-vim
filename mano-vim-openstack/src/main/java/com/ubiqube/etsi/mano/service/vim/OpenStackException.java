@@ -29,4 +29,7 @@ public class OpenStackException extends RuntimeException {
 		super(message, e);
 	}
 
+	public OpenStackException(final String message) {
+		super(message);
+	}
 }
