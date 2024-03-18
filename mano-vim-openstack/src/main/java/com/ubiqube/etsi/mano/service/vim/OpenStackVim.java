@@ -173,10 +173,6 @@ public class OpenStackVim implements Vim {
 	@Override
 	public String getOrCreateFlavor(final VimConnectionInformation vimConnectionInformation, final String name, final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
-		if (disk < GIGA) {
-			throw new OpenStackException("Openstack cannot allow a disk flavor below 1Gb.");
-		}
-		LOG.debug("Flavor cpu={} mem={} disk={}, spec={}", numVcpu, virtualMemorySize / MEGA, disk / GIGA, flavorSpec);
 		final List<Flavor> matchingFlavor = os.compute().flavors().list()
 				.parallelStream()
 				.filter(x -> x.getVcpus() == numVcpu)
@@ -195,8 +191,15 @@ public class OpenStackVim implements Vim {
 		return createFlavor(os, name, numVcpu, virtualMemorySize, disk, flavorSpec).getId();
 	}
 
+	private static void checkParameters(final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
+		if (disk < GIGA) {
+			throw new OpenStackException("Openstack cannot allow a disk flavor below 1Gb.");
+		}
+		LOG.debug("Flavor cpu={} mem={} disk={}, spec={}", numVcpu, virtualMemorySize / MEGA, disk / GIGA, flavorSpec);
+	}
+
 	private static Flavor createFlavor(final OSClientV3 os, final String name, final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
-		LOG.debug("Creating cpu= {}, flavor mem={} disk={} spec={}", numVcpu, virtualMemorySize / MEGA, disk / GIGA, flavorSpec);
+		checkParameters(numVcpu, virtualMemorySize, disk, flavorSpec);
 		final Flavor flavor = os.compute()
 				.flavors()
 				.create(Builders.flavor()
