@@ -21,6 +21,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -91,6 +92,27 @@ class OpenStackVimTest {
 		final OpenStackVim os = new OpenStackVim(mapper);
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getOrCreateFlavor(vci, "name", 2, 568 * MEGA, 0 * GIGA, Map.of());
+		assertTrue(true);
+	}
+
+	@Test
+	void testGetOrCreateFlavor_FailDisk(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavors.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/flavors/detail")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavors-detail.json"))));
+		stubFor(post(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/flavor-create.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final Map<String, String> map = Map.of();
+		assertThrows(OpenStackException.class, () -> os.getOrCreateFlavor(vci, "name", 2, 568 * MEGA, 10 * MEGA, map));
 		assertTrue(true);
 	}
 
