@@ -192,7 +192,7 @@ public class OpenStackVim implements Vim {
 	}
 
 	private static void checkParameters(final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
-		if (disk < GIGA) {
+		if ((disk > 0) && (disk < GIGA)) {
 			throw new OpenStackException("Openstack cannot allow a disk flavor below 1Gb.");
 		}
 		LOG.debug("Flavor cpu={} mem={} disk={}, spec={}", numVcpu, virtualMemorySize / MEGA, disk / GIGA, flavorSpec);
