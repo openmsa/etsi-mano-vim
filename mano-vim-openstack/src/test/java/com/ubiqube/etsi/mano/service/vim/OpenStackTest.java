@@ -66,7 +66,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 import com.ubiqube.etsi.mano.dao.mano.vim.ContainerFormatType;
 import com.ubiqube.etsi.mano.dao.mano.vim.DiskFormatType;
@@ -145,7 +144,7 @@ public class OpenStackTest {
 				.flavor("1")
 				.image("e5429d68-3f1a-43e6-b46b-f83700d771da")
 				.addPersonality("/etc/motd", "Welcome to the new VM! Restricted access only")
-				.networks(ImmutableList.of("3958926a-b986-41f4-a5d9-95a3474d3d7b"))
+				.networks(List.of("3958926a-b986-41f4-a5d9-95a3474d3d7b"))
 				.build();
 
 //Boot the Server
