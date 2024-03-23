@@ -27,10 +27,14 @@ import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.model.common.ActionResponse;
 import org.openstack4j.model.network.AttachInterfaceType;
+import org.openstack4j.model.network.HostRoute;
 import org.openstack4j.model.network.IP;
 import org.openstack4j.model.network.IPVersionType;
+import org.openstack4j.model.network.Ipv6AddressMode;
+import org.openstack4j.model.network.Ipv6RaMode;
 import org.openstack4j.model.network.Network;
 import org.openstack4j.model.network.NetworkType;
+import org.openstack4j.model.network.Pool;
 import org.openstack4j.model.network.Port;
 import org.openstack4j.model.network.Router;
 import org.openstack4j.model.network.SecurityGroupRule;
@@ -162,7 +166,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 		ret.setName(p.getName());
 		ret.setMacAddress(p.getMacAddress());
 		ret.setSecurityGroups(p.getSecurityGroups().stream().map(UUID::fromString).toList());
-		ret.setFixedIps(p.getFixedIps().stream().map(x -> map(x)).toList());
+		ret.setFixedIps(p.getFixedIps().stream().map(OsNetwork::map).toList());
 		return ret;
 	}
 
@@ -227,5 +231,63 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 				})
 				.map(x -> new NetworkObject(x.getName(), x.getId()))
 				.toList();
+	}
+
+	@Override
+	public SubNetwork findSubNetworkById(final String id) {
+		final Subnet res = os.networking().subnet().get(id);
+		return map(res);
+	}
+
+	private static SubNetwork map(final Subnet res) {
+		final SubNetwork ret = new SubNetwork();
+		ret.setCidr(res.getCidr());
+		ret.setCreatedTime(res.getCreatedTime());
+		ret.setDnsNames(res.getDnsNames());
+		ret.setEnableDHCP(res.isDHCPEnabled());
+		ret.setGateway(res.getGateway());
+		ret.setHostRoutes(map(res.getHostRoutes()));
+		ret.setId(res.getId());
+		ret.setIpv6AddressMode(map(res.getIpv6AddressMode()));
+		ret.setIpv6RaMode(map(res.getIpv6RaMode()));
+		ret.setIpVersion(map(res.getIpVersion()));
+		ret.setName(res.getName());
+		ret.setNetworkId(res.getNetworkId());
+		ret.setPools(mapPool(res.getAllocationPools()));
+		ret.setTenantId(res.getTenantId());
+		ret.setUpdatedTime(res.getUpdatedTime());
+		return null;
+	}
+
+	private static List<IpPool> mapPool(final List<? extends Pool> allocationPools) {
+		return allocationPools.stream()
+				.map(x -> {
+					final IpPool ret = new IpPool();
+					ret.setEndIpAddress(x.getEnd());
+					ret.setStartIpAddress(x.getStart());
+					return ret;
+				}).toList();
+	}
+
+	private static com.ubiqube.etsi.mano.service.vim.Ipv6AddressMode map(final Ipv6AddressMode ipv6AddressMode) {
+		return com.ubiqube.etsi.mano.service.vim.Ipv6AddressMode.forValue(ipv6AddressMode.getIpv6AddressMode());
+	}
+
+	private static com.ubiqube.etsi.mano.service.vim.Ipv6RaMode map(final Ipv6RaMode ipv6RaMode) {
+		return com.ubiqube.etsi.mano.service.vim.Ipv6RaMode.forValue(ipv6RaMode.getIpv6RaMode());
+	}
+
+	private static com.ubiqube.etsi.mano.service.vim.IPVersionType map(final IPVersionType ipVersion) {
+		return com.ubiqube.etsi.mano.service.vim.IPVersionType.valueOf(ipVersion.name());
+	}
+
+	private static List<com.ubiqube.etsi.mano.service.vim.HostRoute> map(final List<? extends HostRoute> hostRoutes) {
+		return hostRoutes.stream()
+				.map(x -> {
+					final com.ubiqube.etsi.mano.service.vim.HostRoute ret = new com.ubiqube.etsi.mano.service.vim.HostRoute();
+					ret.setDestination(x.getDestination());
+					ret.setNexthop(x.getNexthop());
+					return ret;
+				}).toList();
 	}
 }

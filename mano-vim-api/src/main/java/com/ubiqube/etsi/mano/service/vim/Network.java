@@ -62,4 +62,6 @@ public interface Network {
 	void deleteSecurityGroup(String vimResourceId);
 
 	List<NetworkObject> searchByName(List<String> vl);
+
+	SubNetwork findSubNetworkById(final String id);
 }

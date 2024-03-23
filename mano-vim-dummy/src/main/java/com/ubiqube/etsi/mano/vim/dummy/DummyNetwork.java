@@ -27,6 +27,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 import com.ubiqube.etsi.mano.service.vim.Network;
 import com.ubiqube.etsi.mano.service.vim.NetworkObject;
 import com.ubiqube.etsi.mano.service.vim.Port;
+import com.ubiqube.etsi.mano.service.vim.SubNetwork;
 
 public class DummyNetwork implements Network {
 
@@ -106,6 +107,12 @@ public class DummyNetwork implements Network {
 	@Override
 	public List<NetworkObject> searchByName(final List<String> vl) {
 		return List.of();
+	}
+
+	@Override
+	public SubNetwork findSubNetworkById(final String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

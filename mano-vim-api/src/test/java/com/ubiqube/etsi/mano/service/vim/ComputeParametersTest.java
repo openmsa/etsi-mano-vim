@@ -18,6 +18,8 @@ package com.ubiqube.etsi.mano.service.vim;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import com.ubiqube.etsi.mano.service.vim.ComputeParameters.ComputeParametersBuilder;
@@ -47,5 +49,16 @@ class ComputeParametersTest {
 		cp.hashCode();
 		final ComputeParameters res = cp.build();
 		assertNotNull(res.toString());
+		final ComputeParameters c = cp.build();
+		c.setAffinityRules(List.of());
+		c.setCloudInitData("");
+		c.setFlavorId("");
+		c.setImageId("");
+		c.setInstanceName("");
+		c.setNetworks(List.of());
+		c.setPortsId(List.of());
+		c.setSecurityGroup(List.of());
+		c.setStorages(List.of());
+		c.setVimConnectionInformation(null);
 	}
 }
