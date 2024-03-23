@@ -270,14 +270,23 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	}
 
 	private static com.ubiqube.etsi.mano.service.vim.Ipv6AddressMode map(final Ipv6AddressMode ipv6AddressMode) {
+		if (null == ipv6AddressMode) {
+			return null;
+		}
 		return com.ubiqube.etsi.mano.service.vim.Ipv6AddressMode.forValue(ipv6AddressMode.getIpv6AddressMode());
 	}
 
 	private static com.ubiqube.etsi.mano.service.vim.Ipv6RaMode map(final Ipv6RaMode ipv6RaMode) {
+		if (null == ipv6RaMode) {
+			return null;
+		}
 		return com.ubiqube.etsi.mano.service.vim.Ipv6RaMode.forValue(ipv6RaMode.getIpv6RaMode());
 	}
 
 	private static com.ubiqube.etsi.mano.service.vim.IPVersionType map(final IPVersionType ipVersion) {
+		if (null == ipVersion) {
+			return com.ubiqube.etsi.mano.service.vim.IPVersionType.V4;
+		}
 		return com.ubiqube.etsi.mano.service.vim.IPVersionType.valueOf(ipVersion.name());
 	}
 

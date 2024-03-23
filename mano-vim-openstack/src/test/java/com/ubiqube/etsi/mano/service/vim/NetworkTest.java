@@ -264,4 +264,34 @@ class NetworkTest {
 		os.network(vci).deleteSubnet("");
 		assertTrue(true);
 	}
+
+	@Test
+	void testFindSubNetworkById(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/9696/v2.0/subnets/")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/subnets-single1.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		//
+		os.network(vci).findSubNetworkById("");
+		assertTrue(true);
+	}
+
+	@Test
+	void testFindSubNetworkById2(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/9696/v2.0/subnets/")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/subnets-single2.json"))));
+		final OpenStackVim os = new OpenStackVim(mapper);
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		//
+		os.network(vci).findSubNetworkById("");
+		assertTrue(true);
+	}
 }
