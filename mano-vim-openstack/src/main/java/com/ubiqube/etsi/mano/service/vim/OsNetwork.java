@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -236,6 +237,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	@Override
 	public SubNetwork findSubNetworkById(final String id) {
 		final Subnet res = os.networking().subnet().get(id);
+		Objects.requireNonNull(res, "Unable to find sub-network: " + id);
 		return map(res);
 	}
 
