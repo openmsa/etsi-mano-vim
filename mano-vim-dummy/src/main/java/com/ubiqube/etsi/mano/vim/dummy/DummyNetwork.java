@@ -111,7 +111,6 @@ public class DummyNetwork implements Network {
 
 	@Override
 	public SubNetwork findSubNetworkById(final String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
