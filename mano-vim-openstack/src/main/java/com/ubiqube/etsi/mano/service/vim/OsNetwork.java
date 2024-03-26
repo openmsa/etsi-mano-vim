@@ -258,7 +258,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 		ret.setPools(mapPool(res.getAllocationPools()));
 		ret.setTenantId(res.getTenantId());
 		ret.setUpdatedTime(res.getUpdatedTime());
-		return null;
+		return ret;
 	}
 
 	private static List<IpPool> mapPool(final List<? extends Pool> allocationPools) {
