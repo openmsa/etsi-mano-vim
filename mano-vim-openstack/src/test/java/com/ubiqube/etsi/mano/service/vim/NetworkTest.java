@@ -38,18 +38,16 @@ import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 
-import ma.glasnost.orika.MapperFacade;
-
+@SuppressWarnings("static-method")
 @WireMockTest
 class NetworkTest {
-	private MapperFacade mapper;
 
 	@Test
 	void testCreateNetwork(final WireMockRuntimeInfo wri) {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		stubFor(post(urlPathMatching("/9696/v2.0/networks")).willReturn(aResponse()
 				.withStatus(200)
@@ -61,12 +59,16 @@ class NetworkTest {
 		assertTrue(true);
 	}
 
+	private static OpenStackVim createOsVim() {
+		return new OpenStackVim();
+	}
+
 	@Test
 	void testCreateSubNetwork(final WireMockRuntimeInfo wri) {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		stubFor(post(urlPathMatching("/9696/v2.0/subnets")).willReturn(aResponse()
 				.withStatus(200)
@@ -90,7 +92,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		// /9696/v2.0/networks/45fd5971-d66f-4bff-a96f-9b37fab600c6
 		stubFor(get(urlPathMatching("/9696/v2.0/networks/45fd5971-d66f-4bff-a96f-9b37fab600c6")).willReturn(aResponse()
@@ -111,7 +113,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		stubFor(get(urlPathMatching("/9696/v2.0/ports")).willReturn(aResponse()
@@ -129,7 +131,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		stubFor(post(urlPathMatching("/9696/v2.0/ports")).willReturn(aResponse()
@@ -144,7 +146,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		stubFor(post(urlPathMatching("/9696/v2.0/security-groups")).willReturn(aResponse()
@@ -159,7 +161,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		stubFor(post(urlPathMatching("/9696/v2.0/security-group-rules")).willReturn(aResponse()
@@ -180,7 +182,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).deleteSecurityRule("");
@@ -192,7 +194,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).deleteSecurityGroup("");
@@ -207,7 +209,7 @@ class NetworkTest {
 		stubFor(get(urlPathMatching("/9696/v2.0/networks")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/networks.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).searchByName(List.of("public"));
@@ -219,7 +221,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).deletePort("");
@@ -234,7 +236,7 @@ class NetworkTest {
 		stubFor(get(urlPathMatching("/9696/v2.0/networks")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/networks.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).getPublicNetworks();
@@ -246,7 +248,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).deleteVirtualLink("");
@@ -258,7 +260,7 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).deleteSubnet("");
@@ -273,7 +275,7 @@ class NetworkTest {
 		stubFor(get(urlPathMatching("/9696/v2.0/subnets/")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/subnets-single1.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).findSubNetworkById("");
@@ -288,7 +290,7 @@ class NetworkTest {
 		stubFor(get(urlPathMatching("/9696/v2.0/subnets/")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/subnets-single2.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.network(vci).findSubNetworkById("");

@@ -80,9 +80,6 @@ import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.VimService;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-
 @Tag("Remote")
 //@ExtendWith(MockitoExtension.class)
 //@RunWith(MockitoJUnitRunner.Silent.class)
@@ -94,8 +91,6 @@ public class OpenStackTest {
 	@Mock
 	private VimService vimJpa;
 
-	private final MapperFacade mapper;
-
 	private final VimConnectionInformation vimConnectionInformation;
 
 	private final VimConnectionInformation vciInari;
@@ -103,8 +98,6 @@ public class OpenStackTest {
 	private final UUID id;
 
 	public OpenStackTest() throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
-		final DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
-		mapper = mapperFactory.getMapperFacade();
 		final ObjectMapper desMapper = new ObjectMapper();
 		vimConnectionInformation = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack.json"), VimConnectionInformation.class);
 		id = UUID.randomUUID();
@@ -207,9 +200,13 @@ public class OpenStackTest {
 		vnfStorage.setSoftwareImage(softwareImage);
 		vnfStorage.setToscaName("JUnit-test-volume");
 		when(vimJpa.findById(id)).thenReturn(Optional.of(vimConnectionInformation));
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		final String lid = vim.storage(vimConnectionInformation).createStorage(vnfStorage, "junit-test");
 		assertNotNull(lid);
+	}
+
+	private OpenStackVim createOsVim() {
+		return new OpenStackVim();
 	}
 
 	public void testNetworkFunctions() {
@@ -227,7 +224,7 @@ public class OpenStackTest {
 		vl.setL3ProtocolData(l3ProtocolData);
 		LOG.info("==> {}", id);
 
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		when(vimJpa.findById(id)).thenReturn(Optional.ofNullable(vimConnectionInformation));
 		final String net = vim.network(vimConnectionInformation).createNetwork(vl, "Junit-vl", "mano.junit.net.", null);
 		final IpPool ipPool = new IpPool();
@@ -238,7 +235,7 @@ public class OpenStackTest {
 	}
 
 	public void uploadSoftwareImageTest() {
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		when(vimJpa.findById(id)).thenReturn(Optional.ofNullable(vimConnectionInformation));
 		final SoftwareImage img = new SoftwareImage();
 		img.setContainerFormat(ContainerFormatType.BARE);
@@ -253,7 +250,7 @@ public class OpenStackTest {
 	}
 
 	void testFlavorGet() throws Exception {
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		when(vimJpa.findById(id)).thenReturn(Optional.ofNullable(vimConnectionInformation));
 
 		// Get m1.small
@@ -265,7 +262,7 @@ public class OpenStackTest {
 	}
 
 	void testCompute() throws Exception {
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		when(vimJpa.findById(id)).thenReturn(Optional.ofNullable(vimConnectionInformation));
 
 		final SoftwareImage softwareImage = new SoftwareImage();
@@ -575,7 +572,7 @@ public class OpenStackTest {
 	}
 
 	void createFlavor() {
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		final Map<String, String> flavorSpec = Map.of("my-custom-spec", "true");
 		vim.getOrCreateFlavor(vimConnectionInformation, "test-flavor", 5, 512 * 1048576L, 1 * 1024 * 1024 * 1024L, flavorSpec);
 	}
@@ -597,7 +594,7 @@ public class OpenStackTest {
 	}
 
 	void testMagnum() {
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		final String networkId = null;
 		final String clusterTemplateId = "d5cc3f4d-7df3-4506-8135-2a566df78e88";
 		vim.cnf(vciInari).createK8sCluster(clusterTemplateId, "ovi-dev", 1, "myCluster-TU", 1, networkId);
@@ -623,7 +620,7 @@ public class OpenStackTest {
 	 * {"port":{"id":"81a7d32f-dbe5-4814-bbbc-e358f4e7733c","name":"testname","network_id":"0dc0e07c-0eae-4c55-9b28-13bb909a9d94","tenant_id":"1da4d2fa72dc41dfb71a9972809e50ae","mac_address":"fa:16:3e:77:21:07","admin_state_up":true,"status":"DOWN","device_id":"0f33bd64-5c7c-46f8-8f71-563ec7fc4689","device_owner":"","fixed_ips":[{"subnet_id":"12332803-72f8-4aac-9ad2-cd69c1502fcb","ip_address":"192.168.21.215"}],"project_id":"1da4d2fa72dc41dfb71a9972809e50ae","port_security_enabled":true,"qos_policy_id":null,"security_groups":["d64f76ef-d20b-48af-b6ff-ed153655bbf9"],"binding:vnic_type":"normal","binding:profile":{},"binding:host_id":"","binding:vif_type":"unbound","binding:vif_details":{},"allowed_address_pairs":[],"extra_dhcp_opts":[],"description":"","qos_network_policy_id":null,"resource_request":null,"tags":[],"created_at":"2023-09-06T12:43:41Z","updated_at":"2023-09-06T12:43:41Z","revision_number":1}}
 	 */
 	void testCreatePort() {
-		final OpenStackVim vim = new OpenStackVim(mapper);
+		final OpenStackVim vim = createOsVim();
 		final com.ubiqube.etsi.mano.service.vim.Port port = vim.network(vciInari).createPort("testname", "0dc0e07c-0eae-4c55-9b28-13bb909a9d94", "0f33bd64-5c7c-46f8-8f71-563ec7fc4689", null, NicType.NORMAL);
 
 	}

@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.mapstruct.factory.Mappers;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.api.storage.BlockVolumeService;
@@ -45,11 +46,11 @@ import com.ubiqube.etsi.mano.dao.mano.vim.DiskFormatType;
 import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.sys.SysImage;
+import com.ubiqube.etsi.mano.service.vim.mapping.ImageMapper;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-import ma.glasnost.orika.MapperFacade;
 
 public class OsStorage implements Storage {
 
@@ -61,11 +62,10 @@ public class OsStorage implements Storage {
 
 	private final OSClientV3 os;
 
-	private final MapperFacade mapper;
+	private final ImageMapper mapper = Mappers.getMapper(ImageMapper.class);
 
-	public OsStorage(final OSClientV3 os, final MapperFacade mapper) {
+	public OsStorage(final OSClientV3 os) {
 		this.os = os;
-		this.mapper = mapper;
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class OsStorage implements Storage {
 	public SysImage getImagesInformations(final String name) {
 		final List<? extends Image> images = os.imagesV2().list(Map.of(LIMIT, "500"));
 		final Image image = images.stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst().orElseThrow(() -> new VimException("Image " + name + " Cannot be found on Vim."));
-		return mapper.map(image, SysImage.class);
+		return mapper.map(image);
 	}
 
 	private static void checkResult(final ActionResponse action) {

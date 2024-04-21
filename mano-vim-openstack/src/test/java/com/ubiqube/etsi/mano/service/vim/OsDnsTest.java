@@ -31,11 +31,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
-import ma.glasnost.orika.MapperFacade;
-
 @WireMockTest
 class OsDnsTest {
-	private MapperFacade mapper;
 
 	@Test
 	void testCreateDnsZone(final WireMockRuntimeInfo wri) {
@@ -45,11 +42,15 @@ class OsDnsTest {
 		stubFor(post(urlPathMatching("/v2/zones")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/zones.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
 		os.dns(vci).createDnsZone("name");
 		assertTrue(true);
+	}
+
+	private OpenStackVim createOsVim() {
+		return new OpenStackVim();
 	}
 
 	@Test
@@ -57,7 +58,7 @@ class OsDnsTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.dns(vci).deleteDnsZone("");
 		assertTrue(true);
@@ -74,7 +75,7 @@ class OsDnsTest {
 		stubFor(get(urlPathMatching("/v2/recordsets")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/list-recordset.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.dns(vci).createDnsRecordSet("zone", "rightVdu01-Compute-0000", "middleVl01-Network-0000");
 		assertTrue(true);
@@ -88,7 +89,7 @@ class OsDnsTest {
 		stubFor(get(urlPathMatching("/v2/zones/zone/recordsets/record")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/recordset-record.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.dns(vci).deleteDnsRecordSet("record", "zone", Set.of("ips"));
 		assertTrue(true);
@@ -102,7 +103,7 @@ class OsDnsTest {
 		stubFor(get(urlPathMatching("/v2/zones/zone/recordsets/record")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/recordset-record2.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.dns(vci).deleteDnsRecordSet("record", "zone", Set.of("ips"));
 		assertTrue(true);

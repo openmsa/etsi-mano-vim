@@ -64,7 +64,6 @@ import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 
 import jakarta.validation.constraints.Null;
-import ma.glasnost.orika.MapperFacade;
 
 @Service
 public class OpenStackVim implements Vim {
@@ -76,10 +75,7 @@ public class OpenStackVim implements Vim {
 
 	private static final ThreadLocal<Map<String, OSClientV3>> sessions = new ThreadLocal<>();
 
-	private final MapperFacade mapper;
-
-	public OpenStackVim(final MapperFacade mapper) {
-		this.mapper = mapper;
+	public OpenStackVim() {
 		LOG.info("""
 				Booting Openstack VIM.
 				   ___  ___   __   _____ __  __
@@ -456,7 +452,7 @@ public class OpenStackVim implements Vim {
 	@Override
 	public Storage storage(final VimConnectionInformation vimConnectionInformation) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
-		return new OsStorage(os, mapper);
+		return new OsStorage(os);
 	}
 
 	@Override

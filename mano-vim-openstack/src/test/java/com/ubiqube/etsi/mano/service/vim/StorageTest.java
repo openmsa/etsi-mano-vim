@@ -37,22 +37,11 @@ import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.OrikaSystemProperties;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
-
 @WireMockTest
 class StorageTest {
 
-	private final MapperFacade mapper;
-
 	public StorageTest() {
-		System.setProperty(OrikaSystemProperties.COMPILER_STRATEGY, EclipseJdtCompilerStrategy.class.getName());
-		System.setProperty(OrikaSystemProperties.WRITE_SOURCE_FILES, "true");
-		System.setProperty(OrikaSystemProperties.WRITE_SOURCE_FILES_TO_PATH, "/tmp/orika-test");
-		final DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().compilerStrategy(new EclipseJdtCompilerStrategy()).build();
-		mapper = mapperFactory.getMapperFacade();
+		//
 	}
 
 	@Test
@@ -67,12 +56,16 @@ class StorageTest {
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/volumes-detail.json"))));
 		//
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final VnfStorage vnfStorage = new VnfStorage();
 		vnfStorage.setSize(1 * 1024 * 1024 * 1024L);
 		os.storage(vci).createStorage(vnfStorage, "alias");
 		assertTrue(true);
+	}
+
+	private static OpenStackVim createOsVim() {
+		return new OpenStackVim();
 	}
 
 	@Test
@@ -92,7 +85,7 @@ class StorageTest {
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/volumes-detail.json"))));
 		//
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final VnfStorage vnfStorage = new VnfStorage();
 		vnfStorage.setSize(1 * 1024 * 1024 * 1024L);
@@ -119,7 +112,7 @@ class StorageTest {
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/volumes-detail.json"))));
 		//
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final VnfStorage vnfStorage = new VnfStorage();
 		vnfStorage.setSize(1 * 1024 * 1024 * 1024L);
@@ -139,7 +132,7 @@ class StorageTest {
 				.withStatus(200)
 				.withBody("")));
 		//
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final VnfStorage vnfStorage = new VnfStorage();
 		vnfStorage.setSize(1 * 1024 * 1024 * 1024L);
@@ -157,7 +150,7 @@ class StorageTest {
 				.willReturn(aResponse()
 						.withStatus(200)
 						.withBody(OsHelper.getFile(wri, "/images.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final SoftwareImage si = new SoftwareImage();
 		si.setName("cirros-0.5.2");
@@ -175,7 +168,7 @@ class StorageTest {
 				.willReturn(aResponse()
 						.withStatus(200)
 						.withBody(OsHelper.getFile(wri, "/images.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final SoftwareImage si = new SoftwareImage();
 		si.setName("cirros");
@@ -194,7 +187,7 @@ class StorageTest {
 		stubFor(put(urlPathMatching("/9292/v2/images/9f326f5f-7839-4928-9722-ad51ca97b478/file")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody("")));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final SoftwareImage si = new SoftwareImage();
 		si.setName("cirros");
@@ -211,7 +204,7 @@ class StorageTest {
 		stubFor(get(urlPathMatching("/9292/v2/images/9f326f5f-7839-4928-9722-ad51ca97b478")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/image-single.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.storage(vci).getImageDetail("9f326f5f-7839-4928-9722-ad51ca97b478");
 		assertTrue(true);
@@ -222,7 +215,7 @@ class StorageTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.storage(vci).deleteObjectStorage("storageId");
 		assertTrue(true);
@@ -233,7 +226,7 @@ class StorageTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final VnfStorage vnfStorage = new VnfStorage();
 		vnfStorage.setToscaName("name");
@@ -249,7 +242,7 @@ class StorageTest {
 		stubFor(get(urlPathMatching("/9292/v2/images")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/images.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.storage(vci).getImagesInformations("cirros-0.5.2");
 		assertTrue(true);
@@ -265,7 +258,7 @@ class StorageTest {
 				.willReturn(aResponse()
 						.withStatus(200)
 						.withBody(OsHelper.getFile(wri, "/images.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final Storage sto = os.storage(vci);
 		assertThrows(VimException.class, () -> sto.getImagesInformations("cirros-0.5.2"));

@@ -36,13 +36,10 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
-import ma.glasnost.orika.MapperFacade;
-
 @WireMockTest
 class OpenStackVimTest {
 	private static final long GIGA = 1024 * 1024 * 1024L;
 	private static final long MEGA = 1048576L;
-	private MapperFacade mapper;
 
 	@Test
 	void test(final WireMockRuntimeInfo wri) {
@@ -52,10 +49,14 @@ class OpenStackVimTest {
 		stubFor(get(urlPathMatching("/8774/v2.1/limits")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/limits.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getQuota(vci);
 		assertTrue(true);
+	}
+
+	private OpenStackVim createOsVim() {
+		return new OpenStackVim();
 	}
 
 	@Test
@@ -69,7 +70,7 @@ class OpenStackVimTest {
 		stubFor(get(urlPathMatching("/8774/v2.1/flavors/detail")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/flavors-detail.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getOrCreateFlavor(vci, "name", 2, 512 * MEGA, 0 * GIGA, Map.of());
 		assertTrue(true);
@@ -89,7 +90,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/flavor-create.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getOrCreateFlavor(vci, "name", 2, 568 * MEGA, 0 * GIGA, Map.of());
 		assertTrue(true);
@@ -109,7 +110,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/8774/v2.1/flavors")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/flavor-create.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final Map<String, String> map = Map.of();
 		assertThrows(OpenStackException.class, () -> os.getOrCreateFlavor(vci, "name", 2, 568 * MEGA, 10 * MEGA, map));
@@ -124,7 +125,7 @@ class OpenStackVimTest {
 		stubFor(get(urlPathMatching("/8774/v2.1/os-hypervisors/statistics")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/os-hypervisors-statistics.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getPhysicalResources(vci);
 		assertTrue(true);
@@ -138,7 +139,7 @@ class OpenStackVimTest {
 		stubFor(get(urlPathMatching("/8774/v2.1/flavors/detail")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/flavors-detail.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getFlavorList(vci);
 		assertTrue(true);
@@ -152,7 +153,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/8774/v2.1/servers")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/servers.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 		os.createCompute(cp);
@@ -167,7 +168,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/8774/v2.1/servers")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/servers.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final List<String> networks = List.of("net");
 		final List<String> storage = List.of("storage");
@@ -189,7 +190,7 @@ class OpenStackVimTest {
 		stubFor(get(urlPathMatching("/9696/v2.0/agents")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/agents.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getCaps(vci);
 		assertTrue(true);
@@ -203,7 +204,7 @@ class OpenStackVimTest {
 		stubFor(get(urlPathMatching("/8774/v2.1/os-availability-zone")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/availability-zone.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getZoneAvailableList(vci);
 		assertTrue(true);
@@ -214,7 +215,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.deleteCompute(vci, "");
 		assertTrue(true);
@@ -228,7 +229,7 @@ class OpenStackVimTest {
 		stubFor(get(urlPathMatching("/8774/v2.1/os-aggregates")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/server-group.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.getServerGroup(vci);
 		assertTrue(true);
@@ -239,7 +240,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.startServer(vci, "");
 		assertTrue(true);
@@ -250,7 +251,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.stopServer(vci, "");
 		assertTrue(true);
@@ -261,7 +262,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.rebootServer(vci, "");
 		assertTrue(true);
@@ -275,7 +276,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/8774/v2.1/os-server-groups")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/os-server-groups.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final AffinityRule ar = new AffinityRule();
 		ar.setId(UUID.randomUUID());
@@ -289,7 +290,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.deleteServerGroup(vci, "");
 		assertTrue(true);
@@ -300,7 +301,7 @@ class OpenStackVimTest {
 		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		os.authenticate(vci);
 		assertTrue(true);
@@ -312,7 +313,7 @@ class OpenStackVimTest {
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		os.getMonitoring(vci);
 		os.network(vci);
 		os.storage(vci);
@@ -346,7 +347,7 @@ class OpenStackVimTest {
 						}
 												""")));
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
-		final OpenStackVim os = new OpenStackVim(mapper);
+		final OpenStackVim os = createOsVim();
 		os.createFlavor(vci, "name", 2, 568, 0, Map.of("spec", "value"));
 		assertTrue(true);
 	}
