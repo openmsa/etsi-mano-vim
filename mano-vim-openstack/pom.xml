@@ -44,7 +44,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.github.openstack4j.core.connectors</groupId>
-			<artifactId>ubi-openstack4j-httpclient</artifactId>
+			<artifactId>openstack4j-httpclient5</artifactId>
+			<version>3.12-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.openstack4j.core</groupId>
