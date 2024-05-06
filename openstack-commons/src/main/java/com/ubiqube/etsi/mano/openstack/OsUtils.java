@@ -19,6 +19,7 @@ package com.ubiqube.etsi.mano.openstack;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.openstack4j.api.OSClient.OSClientV3;
@@ -51,6 +52,9 @@ public class OsUtils {
 			base.credentials(ai.get("username"), ai.get("password"));
 		}
 		final Config conf = Config.newConfig();
+		Optional.ofNullable(ii.get("connection-timeout")).map(Integer::valueOf).ifPresent(conf::withConnectionTimeout);
+		Optional.ofNullable(ii.get("read-timeout")).map(Integer::valueOf).ifPresent(conf::withReadTimeout);
+		Optional.ofNullable(ii.get("retry")).map(Integer::valueOf).ifPresent(conf::withRetry);
 		if ("true".equals(ii.get("non-strict-ssl"))) {
 			conf.withSSLVerificationDisabled();
 		}
