@@ -55,10 +55,5 @@
 			<artifactId>aws-java-sdk-eks</artifactId>
 			<version>1.12.213</version>
 		</dependency>
-		<dependency>
-			<groupId>ma.glasnost.orika</groupId>
-			<artifactId>ubi-orika-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 </project>
