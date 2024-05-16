@@ -45,6 +45,7 @@ class DummyNetworkTest {
 		srv.deleteVirtualLink(null);
 		srv.getPublicNetworks();
 		srv.searchByName(null);
+		srv.findSubNetworkById(null);
 		assertTrue(true);
 	}
 
