@@ -19,6 +19,7 @@
 		<module>mano-vim-k8s</module>
 		<module>openstack-commons</module>
 		<module>mano-vim-dummy</module>
+		<module>mano-crds</module>
 	</modules>
 	<scm>
 		<developerConnection>scm:git:https://github.com/openmsa/etsi-mano-vim.git</developerConnection>
