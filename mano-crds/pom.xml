@@ -13,5 +13,6 @@
 	<modules>
 		<module>capi-openstack</module>
 		<module>capi-crd-metal3</module>
+		<module>capi-crd-main</module>
 	</modules>
 </project>
