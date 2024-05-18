@@ -9,6 +9,9 @@
 	<artifactId>mano-vim-k8s</artifactId>
 	<name>mano-vim-k8s</name>
 	<description>ETSI MANO VIM K8S implementation.</description>
+	<properties>
+		<fabric8.version>6.12.1</fabric8.version>
+	</properties>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus-snapshots</id>
@@ -36,7 +39,6 @@
 		<dependency>
 			<groupId>io.kubernetes</groupId>
 			<artifactId>client-java</artifactId>
-			<version>20.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -63,6 +65,21 @@
 			<artifactId>jackson-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>kubernetes-client</artifactId>
+			<version>6.12.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ubiqube.mano.crd</groupId>
+			<artifactId>capi-crd-openstack</artifactId>
+			<version>4.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ubiqube.mano.crd</groupId>
+			<artifactId>capi-crd-main</artifactId>
+			<version>4.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.wiremock</groupId>
 			<artifactId>wiremock-standalone</artifactId>
 			<scope>test</scope>
@@ -70,6 +87,12 @@
 		<dependency>
 			<groupId>nl.jqno.equalsverifier</groupId>
 			<artifactId>equalsverifier</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.fabric8</groupId>
+			<artifactId>kubernetes-server-mock</artifactId>
+			<version>${fabric8.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
