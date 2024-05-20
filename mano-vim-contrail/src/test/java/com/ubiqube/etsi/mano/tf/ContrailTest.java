@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
 import net.juniper.contrail.api.ApiConnector;
@@ -64,18 +64,18 @@ class ContrailTest {
 		System.getProperties().put("socksProxyHost", "10.31.1.29");
 		System.getProperties().put("socksProxyPort", "3128");
 		vimConnectionInformation = new SystemConnections();
-		vimConnectionInformation.setInterfaceInfo(new HashMap<>());
 		// vimConnectionInformation.getInterfaceInfo().put("endpoint",
 		// "http://192.168.1.36:8082");
-		vimConnectionInformation.getInterfaceInfo().put("sdn-endpoint", "https://10.242.228.221:8082");
-		vimConnectionInformation.getInterfaceInfo().put("endpoint", "https://10.242.228.250:5000/v3");
-		vimConnectionInformation.setAccessInfo(new HashMap<>());
-		vimConnectionInformation.getAccessInfo().put("username", "admin");
-		vimConnectionInformation.getAccessInfo().put("password", "uoleiChai8no6yai");
-		vimConnectionInformation.getAccessInfo().put("projectId", "44009ebe33d34d5f81b22a9354661abf");
-		vimConnectionInformation.getAccessInfo().put("projectDomain", "admin_domain");
-		vimConnectionInformation.getAccessInfo().put("userDomain", "admin_domain");
-		vimConnectionInformation.getAccessInfo().put("sdnDomain", "admin");
+		vimConnectionInformation.getInterfaceInfo().setSdnEndpoint("https://10.242.228.221:8082");
+		vimConnectionInformation.getInterfaceInfo().setEndpoint("https://10.242.228.250:5000/v3");
+		vimConnectionInformation.setAccessInfo(AccessInfo.builder()
+				.username("admin")
+				.password("uoleiChai8no6yai")
+				.projectId("44009ebe33d34d5f81b22a9354661abf")
+				.projectDomain("admin_domain")
+				.userDomain("admin_domain")
+				.sdnDomain("admin")
+				.build());
 	}
 
 	@Test

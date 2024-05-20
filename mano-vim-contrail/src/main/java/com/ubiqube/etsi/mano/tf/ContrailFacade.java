@@ -99,14 +99,14 @@ public class ContrailFacade {
 
 	@SuppressWarnings("static-method")
 	private ApiConnector getConnection(final SystemConnections vimConnectionInformation) {
-		final String endpoint = vimConnectionInformation.getInterfaceInfo().get("sdn-endpoint");
+		final String endpoint = vimConnectionInformation.getInterfaceInfo().getSdnEndpoint();
 		final URI url = URI.create(endpoint);
-		final String username = vimConnectionInformation.getAccessInfo().get("username");
-		final String password = vimConnectionInformation.getAccessInfo().get("password");
+		final String username = vimConnectionInformation.getAccessInfo().getUsername();
+		final String password = vimConnectionInformation.getAccessInfo().getPassword();
 		final ApiConnector apiConnector = ApiConnectorFactory.build(url).credentials(username, password);
-		Optional.ofNullable(vimConnectionInformation.getAccessInfo().get("projectDomain")).ifPresent(apiConnector::domainName);
-		Optional.ofNullable(vimConnectionInformation.getAccessInfo().get("projectId")).ifPresent(apiConnector::tenantId);
-		Optional.ofNullable(vimConnectionInformation.getInterfaceInfo().get("endpoint")).ifPresent(x -> apiConnector.authServer("keystonev3", x));
+		Optional.ofNullable(vimConnectionInformation.getAccessInfo().getProjectDomain()).ifPresent(apiConnector::domainName);
+		Optional.ofNullable(vimConnectionInformation.getAccessInfo().getProjectId()).ifPresent(apiConnector::tenantId);
+		Optional.ofNullable(vimConnectionInformation.getInterfaceInfo().getEndpoint()).ifPresent(x -> apiConnector.authServer("keystonev3", x));
 		return apiConnector;
 	}
 }
