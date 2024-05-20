@@ -62,7 +62,7 @@ public class OsHelper {
 		ii.setEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		vci.setInterfaceInfo(ii);
 		final AccessInfo ai = AccessInfo.builder()
-				.userDomain("username")
+				.username("username")
 				.password("password")
 				.projectId("projectId")
 				.projectDomain("projectDomain")
@@ -80,7 +80,7 @@ public class OsHelper {
 		ii.setEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		vci.setInterfaceInfo(ii);
 		final AccessInfo ai = AccessInfo.builder()
-				.userDomain("username")
+				.username("username")
 				.password("password")
 				.projectId("projectId")
 				.projectDomain("projectDomain")
