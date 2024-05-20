@@ -27,8 +27,8 @@ import org.openstack4j.core.transport.Config;
 import org.openstack4j.model.common.Identifier;
 import org.openstack4j.openstack.OSFactory;
 
-import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
-import com.ubiqube.etsi.mano.dao.mano.vim.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
 
 /**
  *
