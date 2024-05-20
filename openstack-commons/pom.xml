@@ -9,7 +9,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
-			<artifactId>mano-db-vim</artifactId>
+			<artifactId>mano-db-connection</artifactId>
 			<version>${version.small-db}</version>
 		</dependency>
 		<dependency>
