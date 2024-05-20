@@ -59,7 +59,7 @@ public class TestExecutor implements K8sExecutor {
 		try {
 			final R o = func.apply(client);
 			final JsonNode str = toObjectNode(o);
-			final ObjectNode doc = findDocument(o.getKind());
+			final ObjectNode doc = findDocument(o.getKind(), o.getMetadata().getName());
 			LOG.info("{}", doc);
 			LOG.info("{}", str);
 			assertEquals(doc, str);
@@ -69,18 +69,23 @@ public class TestExecutor implements K8sExecutor {
 		}
 	}
 
-	ObjectNode findDocument(final String name) throws IOException {
+	ObjectNode findDocument(final String kind, final String name) throws IOException {
 		final YAMLFactory yamlFactory = new YAMLFactory();
 		final YAMLParser yamlParser = yamlFactory.createParser(new File("src/test/resources/capi/quickstart.yaml"));
 		final List<ObjectNode> res = mapper.readValues(yamlParser, new TypeReference<ObjectNode>() {
 		}).readAll();
 		for (final ObjectNode objectNode : res) {
 			final String type = objectNode.get("kind").asText();
-			if (name.equals(type)) {
+			if (kind.equals(type) && matchName(objectNode, name)) {
 				return objectNode;
 			}
 		}
-		throw new VimException("Could not find: " + name);
+		throw new VimException("Could not find: " + kind + "/" + name + " in \n" + res);
+	}
+
+	private static boolean matchName(final ObjectNode objectNode, final String name) {
+		final JsonNode meta = objectNode.get("metadata");
+		return meta.get("name").asText().equals(name);
 	}
 
 	private JsonNode toObjectNode(final Object o) throws JsonMappingException, JsonProcessingException {
