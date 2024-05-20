@@ -19,12 +19,12 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
+import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.vim.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.service.auth.model.AuthParamBasic;
@@ -58,15 +58,16 @@ public class OsHelper {
 		final VimConnectionInformation vci = new VimConnectionInformation();
 		vci.setId(UUID.randomUUID());
 		vci.setVimId(vci.getId().toString());
-		final Map<String, String> ii = new HashMap<>();
-		ii.put("endpoint", wmRuntimeInfo.getHttpBaseUrl());
+		final InterfaceInfo ii = new InterfaceInfo();
+		ii.setEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		vci.setInterfaceInfo(ii);
-		final Map<String, String> ai = new HashMap<>();
-		ai.put("username", "username");
-		ai.put("password", "password");
-		ai.put("projectId", "projectId");
-		ai.put("projectDomain", "projectDomain");
-		ai.put("userDomain", "userDomain");
+		final AccessInfo ai = AccessInfo.builder()
+				.userDomain("username")
+				.password("password")
+				.projectId("projectId")
+				.projectDomain("projectDomain")
+				.userDomain("userDomain")
+				.build();
 		vci.setAccessInfo(ai);
 		return vci;
 	}
@@ -75,15 +76,16 @@ public class OsHelper {
 		final SystemConnections vci = new SystemConnections();
 		vci.setId(UUID.randomUUID());
 		vci.setVimId(vci.getId().toString());
-		final Map<String, String> ii = new HashMap<>();
-		ii.put("endpoint", wmRuntimeInfo.getHttpBaseUrl());
+		final InterfaceInfo ii = new InterfaceInfo();
+		ii.setEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		vci.setInterfaceInfo(ii);
-		final Map<String, String> ai = new HashMap<>();
-		ai.put("username", "username");
-		ai.put("password", "password");
-		ai.put("projectId", "projectId");
-		ai.put("projectDomain", "projectDomain");
-		ai.put("userDomain", "userDomain");
+		final AccessInfo ai = AccessInfo.builder()
+				.userDomain("username")
+				.password("password")
+				.projectId("projectId")
+				.projectDomain("projectDomain")
+				.userDomain("userDomain")
+				.build();
 		vci.setAccessInfo(ai);
 		return vci;
 	}

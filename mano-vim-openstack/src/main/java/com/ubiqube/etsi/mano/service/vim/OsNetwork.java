@@ -70,7 +70,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	@Override
 	public String createNetwork(final VlProtocolData vl, final String name, final String dnsDomain, final String qosPolicyId) {
 		final L2Data l2 = vl.getL2ProtocolData();
-		final NetworkBuilder bNet = Builders.network().tenantId(vimConnectionInformation.getAccessInfo().get("projectId"));
+		final NetworkBuilder bNet = Builders.network().tenantId(vimConnectionInformation.getAccessInfo().getProjectId());
 		bNet.name(name);
 		Optional.ofNullable(l2.getMtu()).ifPresent(bNet::mtu);
 		Optional.ofNullable(l2.getNetworkType()).ifPresent(x2 -> bNet.networkType(NetworkType.valueOf(x2.toUpperCase())));
@@ -92,7 +92,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 		bSub.cidr(l3ProtocolData.getCidr())
 				.enableDHCP(Optional.ofNullable(l3ProtocolData.isDhcpEnabled()).orElse(false))
 				.gateway(l3ProtocolData.getGatewayIp())
-				.tenantId(vimConnectionInformation.getAccessInfo().get("projectId"))
+				.tenantId(vimConnectionInformation.getAccessInfo().getProjectId())
 				.ipVersion(convertIpVersion(l3ProtocolData.getIpVersion()))
 				.networkId(networkId);
 		final Subnet res = os.networking().subnet().create(bSub.build());
