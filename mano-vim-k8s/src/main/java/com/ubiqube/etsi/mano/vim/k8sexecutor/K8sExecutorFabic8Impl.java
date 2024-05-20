@@ -22,6 +22,7 @@ import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.ubiqube.etsi.mano.vim.k8s.event.ClusterCreateEventHandler;
 import com.ubiqube.etsi.mano.vim.k8s.event.ClusterDeleteEventHandler;
@@ -35,6 +36,7 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 
+@Service
 public class K8sExecutorFabic8Impl implements K8sExecutor {
 	/** Logger. */
 	private static final Logger LOG = LoggerFactory.getLogger(K8sExecutorFabic8Impl.class);

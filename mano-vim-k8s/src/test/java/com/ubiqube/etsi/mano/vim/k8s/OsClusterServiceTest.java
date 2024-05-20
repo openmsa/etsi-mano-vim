@@ -20,9 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -30,6 +28,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.vim.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.vim.k8s.model.K8sParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsMachineParams;
@@ -64,15 +64,16 @@ class OsClusterServiceTest {
 		final VimConnectionInformation vci = new VimConnectionInformation();
 		vci.setId(UUID.randomUUID());
 		vci.setVimId(vci.getId().toString());
-		final Map<String, String> ii = new HashMap<>();
-		ii.put("endpoint", "http://10.31.1.108:5000");
+		final InterfaceInfo ii = new InterfaceInfo();
+		ii.setEndpoint("http://10.31.1.108:5000");
 		vci.setInterfaceInfo(ii);
-		final Map<String, String> ai = new HashMap<>();
-		ai.put("username", "admin");
-		ai.put("password", "cc4ace4cf4844540");
-		ai.put("projectId", "18b7739d3f294ba5adacb41b42e14e80");
-		ai.put("projectDomain", "Default");
-		ai.put("userDomain", "Default");
+		final AccessInfo ai = AccessInfo.builder()
+				.username("admin")
+				.password("cc4ace4cf4844540")
+				.projectId("18b7739d3f294ba5adacb41b42e14e80")
+				.projectDomain("Default")
+				.userDomain("Default")
+				.build();
 		vci.setAccessInfo(ai);
 		return vci;
 	}

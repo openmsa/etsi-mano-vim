@@ -25,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.vim.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.vim.k8s.model.cloud.AuthInfo;
@@ -57,23 +59,23 @@ public class CloudsManager {
 	}
 
 	private static CloudsObject toCloudObject(final VimConnectionInformation vci) {
-		final Map<String, String> ai = vci.getAccessInfo();
-		final Map<String, String> ii = vci.getInterfaceInfo();
+		final AccessInfo ai = vci.getAccessInfo();
+		final InterfaceInfo ii = vci.getInterfaceInfo();
 		final CloudsObject o = new CloudsObject();
 		o.setAuth(toAuth(ai, ii));
-		o.setIface(Optional.ofNullable(ii).map(x -> x.get("interface")).orElse("public"));
-		o.setRegionName(Optional.ofNullable(ii).map(x -> x.get("regionName")).orElse("RegionOne"));
+		o.setIface(Optional.ofNullable(ii).map(x -> x.getIface()).orElse("public"));
+		o.setRegionName(Optional.ofNullable(ii).map(x -> x.getRegionName()).orElse("RegionOne"));
 		return o;
 	}
 
-	private static AuthInfo toAuth(final Map<String, String> ai, final Map<String, String> ii) {
+	private static AuthInfo toAuth(final AccessInfo ai, final InterfaceInfo ii) {
 		final AuthInfo authInfo = new AuthInfo();
-		authInfo.setAuthUrl(ii.get("endpoint"));
-		authInfo.setPassword(ai.get("password"));
-		authInfo.setProjectDomainName(ai.get("projectDomain"));
-		authInfo.setProjectName(Optional.ofNullable(ai.get("projectName")).orElse("admin"));
-		authInfo.setUserDomainName(ai.get("userDomain"));
-		authInfo.setUsername(ai.get("username"));
+		authInfo.setAuthUrl(ii.getEndpoint());
+		authInfo.setPassword(ai.getPassword());
+		authInfo.setProjectDomainName(ai.getProjectDomain());
+		authInfo.setProjectName(Optional.ofNullable(ai.getProjectName()).orElse("admin"));
+		authInfo.setUserDomainName(ai.getUserDomain());
+		authInfo.setUsername(ai.getUsername());
 		return authInfo;
 	}
 }

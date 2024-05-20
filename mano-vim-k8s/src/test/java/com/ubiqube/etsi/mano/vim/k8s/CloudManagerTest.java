@@ -18,13 +18,14 @@ package com.ubiqube.etsi.mano.vim.k8s;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.vim.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.vim.k8s.model.cloud.AuthInfo;
 import com.ubiqube.etsi.mano.vim.k8s.model.cloud.CloudRoot;
@@ -52,15 +53,16 @@ class CloudManagerTest {
 		final VimConnectionInformation vci = new VimConnectionInformation();
 		vci.setId(UUID.randomUUID());
 		vci.setVimId(vci.getId().toString());
-		final Map<String, String> ii = new HashMap<>();
-		ii.put("endpoint", "http://localhost:890/");
+		final InterfaceInfo ii = new InterfaceInfo();
+		ii.setEndpoint("http://localhost:890/");
 		vci.setInterfaceInfo(ii);
-		final Map<String, String> ai = new HashMap<>();
-		ai.put("username", "username");
-		ai.put("password", "password");
-		ai.put("projectId", "projectId");
-		ai.put("projectDomain", "projectDomain");
-		ai.put("userDomain", "userDomain");
+		final AccessInfo ai = AccessInfo.builder()
+				.userDomain("username")
+				.password("password")
+				.projectId("projectId")
+				.projectDomain("projectDomain")
+				.userDomain("userDomain")
+				.build();
 		vci.setAccessInfo(ai);
 		cm.vimConnectionToYaml(vci);
 		assertTrue(true);
