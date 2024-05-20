@@ -18,7 +18,6 @@ package com.ubiqube.etsi.mano.openstack;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -27,6 +26,9 @@ import org.openstack4j.api.client.IOSClientBuilder.V3;
 import org.openstack4j.core.transport.Config;
 import org.openstack4j.model.common.Identifier;
 import org.openstack4j.openstack.OSFactory;
+
+import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.vim.InterfaceInfo;
 
 /**
  *
@@ -39,31 +41,28 @@ public class OsUtils {
 		//
 	}
 
-	public static OSClientV3 authenticate(final Map<String, String> interfaceInfo, final Map<String, String> accessInfo) {
-		final Map<String, String> ii = interfaceInfo;
-		final V3 base = OSFactory.builderV3()
-				.endpoint(ii.get("endpoint"));
-		final Map<String, String> ai = accessInfo;
-		final String userDomain = ai.get("userDomain");
+	public static OSClientV3 authenticate(final InterfaceInfo interfaceInfo, final AccessInfo accessInfo) {
+		final V3 base = OSFactory.builderV3().endpoint(interfaceInfo.getEndpoint());
+		final String userDomain = accessInfo.getUserDomain();
 		if (null != userDomain) {
 			final Identifier domainIdentifier = Identifier.byName(userDomain);
-			base.credentials(ai.get("username"), ai.get("password"), domainIdentifier);
+			base.credentials(accessInfo.getUsername(), accessInfo.getPassword(), domainIdentifier);
 		} else {
-			base.credentials(ai.get("username"), ai.get("password"));
+			base.credentials(accessInfo.getUsername(), accessInfo.getPassword());
 		}
 		final Config conf = Config.newConfig();
-		Optional.ofNullable(ii.get("connection-timeout")).map(Integer::valueOf).ifPresent(conf::withConnectionTimeout);
-		Optional.ofNullable(ii.get("read-timeout")).map(Integer::valueOf).ifPresent(conf::withReadTimeout);
-		Optional.ofNullable(ii.get("retry")).map(Integer::valueOf).ifPresent(conf::withRetry);
-		if ("true".equals(ii.get("non-strict-ssl"))) {
+		Optional.ofNullable(interfaceInfo.getConnectionTimeout()).map(Integer::valueOf).ifPresent(conf::withConnectionTimeout);
+		Optional.ofNullable(interfaceInfo.getReadTimeout()).map(Integer::valueOf).ifPresent(conf::withReadTimeout);
+		Optional.ofNullable(interfaceInfo.getRetry()).map(Integer::valueOf).ifPresent(conf::withRetry);
+		if ("true".equals(interfaceInfo.isNonStrictSsl())) {
 			conf.withSSLVerificationDisabled();
 		}
-		if (null != ii.get("nat-host")) {
-			conf.withEndpointNATResolution(ii.get("nat-host"));
+		if (null != interfaceInfo.getNatHost()) {
+			conf.withEndpointNATResolution(interfaceInfo.getNatHost());
 		}
 		base.withConfig(conf);
-		final String project = ai.get("project");
-		final String projectId = ai.get("projectId");
+		final String project = accessInfo.getProject();
+		final String projectId = accessInfo.getProjectId();
 		if (null != project) {
 			base.scopeToProject(Identifier.byName(project));
 		} else if (null != projectId) {

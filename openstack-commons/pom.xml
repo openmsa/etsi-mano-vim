@@ -8,6 +8,11 @@
 	<artifactId>openstack-commons</artifactId>
 	<dependencies>
 		<dependency>
+			<groupId>com.ubiqube.mano</groupId>
+			<artifactId>mano-db-vim</artifactId>
+			<version>${version.small-db}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.github.openstack4j.core</groupId>
 			<artifactId>ubi-openstack4j-core</artifactId>
 		</dependency>

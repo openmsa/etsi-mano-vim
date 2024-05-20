@@ -19,9 +19,10 @@ package com.ubiqube.etsi.mano.openstack;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.Map;
-
 import org.junit.jupiter.api.Test;
+
+import com.ubiqube.etsi.mano.dao.mano.vim.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.vim.InterfaceInfo;
 
 /**
  *
@@ -39,20 +40,30 @@ class OsUtilsTest {
 
 	@Test
 	void testAuth1() {
-		OsUtils.authenticate(Map.of(), Map.of("userDomain", "userDomain", "project", "project", "projectId", "projectId"));
+		final InterfaceInfo ii = new InterfaceInfo();
+		final AccessInfo ai = new AccessInfo();
+		ai.setUserDomain("userDomain");
+		ai.setProject("project");
+		ai.setProjectId("projectId");
+		OsUtils.authenticate(ii, ai);
 		assertTrue(true);
 	}
 
 	@Test
 	void testAuth2() {
-		OsUtils.authenticate(Map.of("non-strict-ssl", "true", "nat-host", "nat-host"), Map.of("projectId", "projectId"));
+		final InterfaceInfo ii = new InterfaceInfo();
+		ii.setNonStrictSsl(true);
+		ii.setNatHost("nat-host");
+		final AccessInfo ai = new AccessInfo();
+		ai.setProjectId("projectId");
+		OsUtils.authenticate(ii, ai);
 		assertTrue(true);
 	}
 
 	@Test
 	void testAuth3() {
-		final Map<String, String> ii = Map.of();
-		final Map<String, String> ai = Map.of();
+		final InterfaceInfo ii = new InterfaceInfo();
+		final AccessInfo ai = new AccessInfo();
 		assertThrows(NullPointerException.class, () -> OsUtils.authenticate(ii, ai));
 	}
 }
