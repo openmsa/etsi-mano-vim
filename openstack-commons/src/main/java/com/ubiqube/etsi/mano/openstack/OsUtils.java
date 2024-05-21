@@ -54,7 +54,7 @@ public class OsUtils {
 		Optional.ofNullable(interfaceInfo.getConnectionTimeout()).map(Integer::valueOf).ifPresent(conf::withConnectionTimeout);
 		Optional.ofNullable(interfaceInfo.getReadTimeout()).map(Integer::valueOf).ifPresent(conf::withReadTimeout);
 		Optional.ofNullable(interfaceInfo.getRetry()).map(Integer::valueOf).ifPresent(conf::withRetry);
-		if ("true".equals(interfaceInfo.isNonStrictSsl())) {
+		if (interfaceInfo.isNonStrictSsl()) {
 			conf.withSSLVerificationDisabled();
 		}
 		if (null != interfaceInfo.getNatHost()) {
