@@ -111,4 +111,9 @@ public class TestExecutor implements K8sExecutor {
 
 	}
 
+	@Override
+	public <R extends HasMetadata> R get(final Config k8sCfg, final Function<KubernetesClient, R> func) {
+		return func.apply(client);
+	}
+
 }

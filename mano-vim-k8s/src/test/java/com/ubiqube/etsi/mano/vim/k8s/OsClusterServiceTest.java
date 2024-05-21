@@ -16,28 +16,40 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
 import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.service.vim.VimException;
+import com.ubiqube.etsi.mano.service.vim.VimGenericException;
 import com.ubiqube.etsi.mano.vim.k8s.model.K8sParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsMachineParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsParams;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.SecretList;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
+import io.fabric8.kubernetes.client.dsl.Resource;
 
 @ExtendWith(MockitoExtension.class)
 class OsClusterServiceTest {
@@ -114,6 +126,50 @@ class OsClusterServiceTest {
 	void deleteCluster() {
 		final OsClusterService srv = createService();
 		srv.deleteCluster(k8sConfigMock, "default", "capi-quickstart");
+		assertTrue(true);
+	}
 
+	@Test
+	void getKubeConfigBadType() {
+		final OsClusterService ocs = createService();
+		final MixedOperation<Secret, SecretList, Resource<Secret>> sec = Mockito.mock(MixedOperation.class);
+		when(client.secrets()).thenReturn(sec);
+		when(sec.inNamespace("default")).thenReturn(sec);
+		final Resource<Secret> value = Mockito.mock(Resource.class);
+		when(sec.withName("capi-quickstart-kubeconfig")).thenReturn(value);
+		final Secret secret = new Secret();
+		when(value.get()).thenReturn(secret);
+		assertThrows(VimGenericException.class, () -> ocs.getKubeConfig(k8sConfigMock, "default", "capi-quickstart"));
+	}
+
+	@Test
+	void getKubeConfig() {
+		final OsClusterService ocs = createService();
+		final MixedOperation<Secret, SecretList, Resource<Secret>> sec = Mockito.mock(MixedOperation.class);
+		when(client.secrets()).thenReturn(sec);
+		when(sec.inNamespace("default")).thenReturn(sec);
+		final Resource<Secret> value = Mockito.mock(Resource.class);
+		when(sec.withName("capi-quickstart-kubeconfig")).thenReturn(value);
+		final Secret secret = new Secret();
+		secret.setType("cluster.x-k8s.io/secret");
+		final String r = load("/kubeConfig");
+		final String r64 = toBase64(r);
+		secret.getData().put("value", r64);
+		when(value.get()).thenReturn(secret);
+		final K8s k = ocs.getKubeConfig(k8sConfigMock, "default", "capi-quickstart");
+		System.out.println(k);
+		assertThat(k).hasNoNullFieldsOrProperties();
+	}
+
+	private static String toBase64(final String r) {
+		return Base64.getEncoder().encodeToString(r.getBytes());
+	}
+
+	private String load(final String string) {
+		try (InputStream r = this.getClass().getResourceAsStream(string)) {
+			return new String(r.readAllBytes());
+		} catch (final IOException e) {
+			throw new VimException(e);
+		}
 	}
 }
