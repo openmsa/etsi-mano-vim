@@ -18,12 +18,13 @@ package com.ubiqube.etsi.mano.vim.k8s;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Builder
 @Data
+@ToString
 public class K8s {
 
 	private String namespace;
