@@ -33,4 +33,7 @@ public interface K8sExecutor {
 	void waitForClusterDelete(final Config k8sCfg, final HasMetadata obj);
 
 	void waitForClusterCreate(final Config k8sCfg, final HasMetadata obj);
+
+	<R extends HasMetadata> R get(Config k8sCfg, Function<KubernetesClient, R> func);
+
 }

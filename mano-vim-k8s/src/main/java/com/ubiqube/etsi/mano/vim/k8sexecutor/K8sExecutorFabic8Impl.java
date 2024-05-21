@@ -100,4 +100,14 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 		}
 	}
 
+	@Override
+	public <R extends HasMetadata> R get(final Config k8sCfg, final Function<KubernetesClient, R> func) {
+		try (final KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
+			return func.apply(client);
+		} catch (final KubernetesClientException e) {
+			LOG.warn("Error code: {}", e.getCode(), e);
+		}
+		return null;
+	}
+
 }

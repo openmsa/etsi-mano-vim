@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.service.vim.VimGenericException;
 import com.ubiqube.etsi.mano.vim.k8s.factory.ClusterFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.CommonFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.KubeadmConfigTemplateFactory;
@@ -36,6 +37,8 @@ import com.ubiqube.etsi.mano.vim.k8s.model.OsMachineParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsParams;
 import com.ubiqube.etsi.mano.vim.k8sexecutor.K8sExecutor;
 
+import io.fabric8.kubernetes.api.model.NamedAuthInfo;
+import io.fabric8.kubernetes.api.model.NamedCluster;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -43,6 +46,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import io.x_k8s.cluster.bootstrap.v1beta1.KubeadmConfigTemplate;
 import io.x_k8s.cluster.controlplane.v1beta1.KubeadmControlPlane;
 import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackCluster;
@@ -64,7 +68,7 @@ public class OsClusterService {
 		this.kexec = kexec;
 	}
 
-	void createCluster(final VimConnectionInformation vci, final K8s k8sConfig, final K8sParams params) {
+	public void createCluster(final VimConnectionInformation vci, final K8s k8sConfig, final K8sParams params) {
 		final Config k8sCfg = toConfig(k8sConfig);
 		final String vimConn = cm.vimConnectionToYaml(vci);
 		final String vciB64 = Base64.getEncoder().encodeToString(vimConn.getBytes());
@@ -118,6 +122,31 @@ public class OsClusterService {
 				.withClientCertData(k8sConfig.getClientCrt())
 				.withClientKeyData(k8sConfig.getClientKey())
 				.withClientKeyAlgo("RSA")
+				.build();
+	}
+
+	public K8s getKubeConfig(final K8s k8sConfig, final String namespace, final String clusterName) {
+		final Config k8sCfg = toConfig(k8sConfig);
+		final Secret secret = kexec.get(k8sCfg, x -> x.secrets().inNamespace(namespace).withName(clusterName + "-kubeconfig").get());
+		if (!"cluster.x-k8s.io/secret".equals(secret.getType())) {
+			throw new VimGenericException("Type of expected secret is not correct: " + secret.getType());
+		}
+		final String rawSecret = secret.getData().get("value");
+		final byte[] raw = Base64.getDecoder().decode(rawSecret);
+		return rawToK8s(new String(raw));
+	}
+
+	@SuppressWarnings("static-method")
+	public K8s rawToK8s(final String string) {
+		final io.fabric8.kubernetes.api.model.Config cfg = Serialization.unmarshal(string, io.fabric8.kubernetes.api.model.Config.class);
+		final NamedCluster cluster = cfg.getClusters().get(0);
+		final NamedAuthInfo user = cfg.getUsers().get(0);
+		return K8s.builder()
+				.apiUrl(cluster.getCluster().getServer())
+				.caData(cluster.getCluster().getCertificateAuthorityData())
+				.clientCrt(user.getUser().getClientCertificateData())
+				.clientKey(user.getUser().getClientKeyData())
+				.namespace("default")
 				.build();
 	}
 
