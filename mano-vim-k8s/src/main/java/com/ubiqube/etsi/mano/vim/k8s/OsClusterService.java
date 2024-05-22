@@ -78,7 +78,7 @@ public class OsClusterService {
 			final Secret res = client.secrets().resource(secret).createOr(NonDeletingOperation::update);
 			LOG.info("{}", res.getMetadata().getUid());
 		} catch (final KubernetesClientException e) {
-			LOG.error("error code: {}", e.getCode());
+			LOG.error("error code: {}", e.getCode(), e);
 		}
 		//
 		final KubeadmConfigTemplate kct = KubeadmConfigTemplateFactory.create(params.getClusterName(), 0);
