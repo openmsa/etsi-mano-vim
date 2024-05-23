@@ -17,12 +17,14 @@
 package com.ubiqube.etsi.mano.vim.k8s;
 
 import java.util.Base64;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.service.vim.VimGenericException;
 import com.ubiqube.etsi.mano.vim.k8s.factory.ClusterFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.CommonFactory;
@@ -32,13 +34,16 @@ import com.ubiqube.etsi.mano.vim.k8s.factory.MachineDeploymentFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.OpenStackClusterFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.OpenStackMachineTemplateFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.SecretFactory;
+import com.ubiqube.etsi.mano.vim.k8s.mapping.K8sMapping;
 import com.ubiqube.etsi.mano.vim.k8s.model.K8sParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsMachineParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsParams;
 import com.ubiqube.etsi.mano.vim.k8sexecutor.K8sExecutor;
 
+import io.fabric8.kubernetes.api.model.Context;
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedCluster;
+import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.api.model.Secret;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
@@ -63,16 +68,19 @@ public class OsClusterService {
 
 	private final K8sExecutor kexec;
 
-	public OsClusterService(final CloudsManager cm, final K8sExecutor kexec) {
+	private final K8sMapping mapper;
+
+	public OsClusterService(final CloudsManager cm, final K8sExecutor kexec, final K8sMapping mapper) {
 		this.cm = cm;
 		this.kexec = kexec;
+		this.mapper = mapper;
 	}
 
 	public void createCluster(final VimConnectionInformation vci, final K8s k8sConfig, final K8sParams params) {
 		final Config k8sCfg = toConfig(k8sConfig);
 		final String vimConn = cm.vimConnectionToYaml(vci);
 		final String vciB64 = Base64.getEncoder().encodeToString(vimConn.getBytes());
-		LOG.debug("vci :\n{}", vciB64);
+		LOG.trace("vci :{}", vciB64);
 		final Secret secret = SecretFactory.create(params.getClusterName(), vciB64);
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
 			final Secret res = client.secrets().resource(secret).createOr(NonDeletingOperation::update);
@@ -136,18 +144,57 @@ public class OsClusterService {
 		return rawToK8s(new String(raw));
 	}
 
-	@SuppressWarnings("static-method")
 	public K8s rawToK8s(final String string) {
 		final io.fabric8.kubernetes.api.model.Config cfg = Serialization.unmarshal(string, io.fabric8.kubernetes.api.model.Config.class);
+		final List<NamedContext> ctx = cfg.getContexts();
+		if (ctx.size() != 1) {
+			throw new VimException("Context have " + ctx.size() + " element, only 1 is accepted.");
+		}
 		final NamedCluster cluster = cfg.getClusters().get(0);
 		final NamedAuthInfo user = cfg.getUsers().get(0);
-		return K8s.builder()
-				.apiUrl(cluster.getCluster().getServer())
-				.caData(cluster.getCluster().getCertificateAuthorityData())
-				.clientCrt(user.getUser().getClientCertificateData())
-				.clientKey(user.getUser().getClientKeyData())
-				.namespace("default")
-				.build();
+		return toK8s(cluster, user);
+	}
+
+	private K8s toK8s(final NamedCluster cluster, final NamedAuthInfo user) {
+		final K8s ret = new K8s();
+		mapper.map(user, ret);
+		mapper.map(cluster, ret);
+		ret.setNamespace("default");
+		return ret;
+	}
+
+	public K8s fromKubeConfig(final String context, final byte[] bytes) {
+		final String string = new String(bytes);
+		final io.fabric8.kubernetes.api.model.Config cfg = Serialization.unmarshal(string, io.fabric8.kubernetes.api.model.Config.class);
+		final NamedContext optCtx = findContext(cfg, context);
+		final Context ctx = optCtx.getContext();
+		final String clusName = ctx.getCluster();
+		final String userName = ctx.getUser();
+		final NamedCluster cluster = findCluster(clusName, cfg.getClusters());
+		final NamedAuthInfo user = findUser(userName, cfg.getUsers());
+		return toK8s(cluster, user);
+
+	}
+
+	private static NamedContext findContext(final io.fabric8.kubernetes.api.model.Config cfg, final String context) {
+		return cfg.getContexts().stream()
+				.filter(x -> x.getName().equals(context))
+				.findFirst()
+				.orElseThrow(() -> new VimException("Unable to find context: " + context));
+	}
+
+	private static NamedAuthInfo findUser(final String userName, final List<NamedAuthInfo> list) {
+		return list.stream()
+				.filter(x -> x.getName().equals(userName))
+				.findFirst()
+				.orElseThrow(() -> new VimException("Unable to find user: " + userName));
+	}
+
+	private static NamedCluster findCluster(final String clusName, final List<NamedCluster> list) {
+		return list.stream()
+				.filter(x -> x.getName().equals(clusName))
+				.findFirst()
+				.orElseThrow(() -> new VimException("Unable to find cluster: " + clusName));
 	}
 
 }
