@@ -30,6 +30,7 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,6 +40,7 @@ import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.service.vim.VimGenericException;
+import com.ubiqube.etsi.mano.vim.k8s.mapping.K8sMapping;
 import com.ubiqube.etsi.mano.vim.k8s.model.K8sParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsMachineParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsParams;
@@ -58,6 +60,7 @@ class OsClusterServiceTest {
 	private static final String CERT_AUTH = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJZUFLMEVxQ29DdHN3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRBMU1URXhPVFF6TVRGYUZ3MHpOREExTURreE9UUTRNVEZhTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUUN3cXpBNHBuWWozSWhZTGxnZkNIbXVKSUpMQzZjTXNjVmNnY004WmFacG44Q09SZXFvS0pTNUswVkUKOFFxRE9KdHVBY2d5RlI3VWx1MzArRDBKV05NM0FyYVk1R3lhcVVWM1JmZEhCLytTT1FPL21PSCtOZTlyd2VUaQpJcmFST01RTTd1NUxLWnhoV2x2YjMxR3duYlRoR1FDdmxrNEdjeEVyb0grdUphajJpa3VycnRvdVM4YnkzMGdQCjVVYTBDQVI0d0MvYStzMGExc3NCVWVBSlhlY0FIaFQvdGpyaFlkTHdlQlc0ZFMwOUhoRyt3RnBoL213WjRoWlQKbVN2dXVkTmorSFQ5RjJudWJwWmV5TGZGcVIzaDNvRXlsSnZaczBydHNPMFdBdzZTa0R2bkFDRmcxaURteGw0dAo1NnJUZE9ZUFllWUsreDhKUE1KUU1NczJGZHlOQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJTR3lkazdyRkd5ZDc3cjNTL1N1a3FGdy95MzVqQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQ3BZYmw0OVFPVwpnWWdlQUQrR3h3L2JERkhUQitOTzAvK1JVT2kzVTVOZ0Y5d3ZNWGIyMENhNFhBb1haQVdjZ3ByVlJ6QWFQQWZpCmJWNWNSYVVKZTlrbTlGTWdMdWlUaWw4U1RGRFA4N3RrajB1c3JYV2FyOWJWdjAxcFZ0bFRsc0lYM1locjZKRFIKdk1oMkN2WnVMd09TbXh4TGx1YUlaSWFRY0Q0WU13RFU5amxlS05sMHhTbzNreDRxMHBzTzVmcGhsc1VGdmNaTgpIVzNyZDE5TVBDWEdrbzZsSDd4UWRBVDE5SzlHcmkxUW1Md1NkemFnLzczV00zTzZ1U3lPWEV3Um1ZRkNMNS9NClUyZG9FM2g4QlcvM2J2RmIwbVBwUm1tL0ZPWlBlWTdCZ1FkeXYzcEMvYlhOVTExREg3TzFrbHV4ajhXV0RHci8KVTB3RUZIQlFGUVUzCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K";
 	@Mock
 	private KubernetesClient client;
+	private final K8sMapping mapper = Mappers.getMapper(K8sMapping.class);
 	private final K8s k8sConfigMock = K8s.builder()
 			.namespace("default")
 			.apiUrl("https://10.255.3.60:6443")
@@ -69,7 +72,7 @@ class OsClusterServiceTest {
 	private NamespaceableResource<HasMetadata> namespaceRes;
 
 	OsClusterService createService() {
-		return new OsClusterService(new CloudsManager(), new TestExecutor(client));
+		return new OsClusterService(new CloudsManager(), new TestExecutor(client), mapper);
 	}
 
 	static VimConnectionInformation createVci() {
