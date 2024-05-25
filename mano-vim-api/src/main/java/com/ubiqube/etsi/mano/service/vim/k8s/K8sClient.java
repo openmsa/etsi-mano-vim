@@ -28,7 +28,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.k8s.K8sServers;
  */
 public interface K8sClient {
 
-	String deploy(Servers server, K8sServers k8s, String userKey, File file, String name);
+	String deploy(Servers server, K8sServers k8s, File file, String name);
 
 	void undeploy(final Servers server, final K8sServers k8s, final String userKey, final String vimResourceId);
 
