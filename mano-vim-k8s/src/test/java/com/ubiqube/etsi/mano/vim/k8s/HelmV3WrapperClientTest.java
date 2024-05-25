@@ -57,7 +57,7 @@ class HelmV3WrapperClientTest {
 				.userCrt("userCrt")
 				.build();
 		final File file = new File("src/test/resources/logback.xml");
-		srv.deploy(server, k8s, "uk", file, "test");
+		srv.deploy(server, k8s, file, "test");
 		assertTrue(true);
 	}
 
@@ -75,7 +75,7 @@ class HelmV3WrapperClientTest {
 				.userCrt("userCrt")
 				.build();
 		final File file = new File("src/test/resources/logback.xml");
-		assertThrows(VimException.class, () -> srv.deploy(server, k8s, "uk", file, "test"));
+		assertThrows(VimException.class, () -> srv.deploy(server, k8s, file, "test"));
 	}
 
 	@Test

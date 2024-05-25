@@ -136,7 +136,7 @@ class CliTest {
 		final File file = new File("/home/olivier/Downloads/helm/wordpress-0.1.tgz");
 		final Servers server = createServers();
 		final K8sServers k8s = createK8s();
-		cli.deploy(server, k8s, PRIV, file, "deployement-name");
+		cli.deploy(server, k8s, file, "deployement-name");
 	}
 
 	void testUninstall() throws Exception {

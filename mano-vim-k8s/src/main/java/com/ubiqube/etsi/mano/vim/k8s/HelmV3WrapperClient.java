@@ -41,11 +41,11 @@ import reactor.core.publisher.Mono;
 public class HelmV3WrapperClient implements K8sClient {
 
 	@Override
-	public String deploy(final Servers server, final K8sServers k8s, final String userKey, final File file, final String name) {
+	public String deploy(final Servers server, final K8sServers k8s, final File file, final String name) {
 		final FluxRest fr = new FluxRest(server);
 		final WebClient wc = fr.getWebClient();
 		final MultipartBodyBuilder builder = new MultipartBodyBuilder();
-		builder.part("config", buildInstallMessage(k8s, userKey, name), MediaType.APPLICATION_JSON);
+		builder.part("config", buildInstallMessage(k8s, k8s.getUserKey(), name), MediaType.APPLICATION_JSON);
 		builder.part("file", new FileSystemResource(file), MediaType.APPLICATION_OCTET_STREAM);
 		final Mono<Object> res = wc.post()
 				.uri(server.getUrl() + "/install")
