@@ -55,6 +55,7 @@ class HelmV3WrapperClientTest {
 		final K8sServers k8s = K8sServers.builder()
 				.caPem("ca-pem")
 				.userCrt("userCrt")
+				.userKey("userKey")
 				.build();
 		final File file = new File("src/test/resources/logback.xml");
 		srv.deploy(server, k8s, file, "test");
@@ -73,6 +74,7 @@ class HelmV3WrapperClientTest {
 		final K8sServers k8s = K8sServers.builder()
 				.caPem("ca-pem")
 				.userCrt("userCrt")
+				.userKey("userKey")
 				.build();
 		final File file = new File("src/test/resources/logback.xml");
 		assertThrows(VimException.class, () -> srv.deploy(server, k8s, file, "test"));
