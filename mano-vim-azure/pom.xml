@@ -11,18 +11,6 @@
 	<artifactId>mano-vim-azure</artifactId>
 	<name>mano-vim-azures</name>
 	<description>ETSI MANO VIM MS azure implementation.</description>
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<url>http://nexus2.ubiqube.com:8081/repository/maven-snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-releases</id>
-			<url>http://nexus2.ubiqube.com:8081/repository/maven-releases/</url>
-		</repository>
-	</distributionManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
