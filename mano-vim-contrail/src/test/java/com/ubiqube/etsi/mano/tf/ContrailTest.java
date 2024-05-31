@@ -64,7 +64,9 @@ class ContrailTest {
 		System.getProperties().put("proxySet", "true");
 		System.getProperties().put("socksProxyHost", "10.31.1.29");
 		System.getProperties().put("socksProxyPort", "3128");
-		vimConnectionInformation = new SystemConnections();
+		vimConnectionInformation = new SystemConnections<>();
+		vimConnectionInformation.setAccessInfo(new KeystoneAuthV3());
+		vimConnectionInformation.setInterfaceInfo(new InterfaceInfo());
 		// vimConnectionInformation.getInterfaceInfo().put("endpoint",
 		// "http://192.168.1.36:8082");
 		vimConnectionInformation.getInterfaceInfo().setSdnEndpoint("https://10.242.228.221:8082");

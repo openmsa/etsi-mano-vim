@@ -30,6 +30,8 @@ import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnffg.Classifier;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
@@ -86,8 +88,7 @@ class ContrailApiTest {
 						}
 						""")));
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
-		vimConn.setExtra(Map.of());
+		final SystemConnections vimConn = createConn();
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		final Classifier clas = new Classifier();
 		srv.createNetworkPolicy(vimConn, "", clas, "", "left", "right");
@@ -97,7 +98,7 @@ class ContrailApiTest {
 	@Test
 	void testDeletePortTuple(final WireMockRuntimeInfo wmRuntimeInfo) {
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		final Classifier clas = new Classifier();
@@ -108,8 +109,7 @@ class ContrailApiTest {
 	@Test
 	void testDeleteServiceTemplate(final WireMockRuntimeInfo wmRuntimeInfo) {
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
-		vimConn.setExtra(Map.of());
+		final SystemConnections vimConn = createConn();
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		final Classifier clas = new Classifier();
 		srv.deleteServiceTemplate(vimConn, "");
@@ -119,7 +119,7 @@ class ContrailApiTest {
 	@Test
 	void testDeleteServiceInstance(final WireMockRuntimeInfo wmRuntimeInfo) {
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		final Classifier clas = new Classifier();
@@ -130,7 +130,7 @@ class ContrailApiTest {
 	@Test
 	void testDeleteNetworkPolicy(final WireMockRuntimeInfo wmRuntimeInfo) {
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		final Classifier clas = new Classifier();
@@ -141,8 +141,7 @@ class ContrailApiTest {
 	@Test
 	void testRollbackWmi(final WireMockRuntimeInfo wmRuntimeInfo) {
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
-		vimConn.setExtra(Map.of());
+		final SystemConnections vimConn = createConn();
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		final Classifier clas = new Classifier();
 		srv.rollbackVmi(vimConn, "");
@@ -187,7 +186,7 @@ class ContrailApiTest {
 						}
 						""")));
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		srv.rollbackVmi(vimConn, "");
@@ -219,7 +218,7 @@ class ContrailApiTest {
 						}
 						""")));
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		srv.createPortTuple(vimConn, "name", "serverInstance");
@@ -251,7 +250,7 @@ class ContrailApiTest {
 						}
 						""")));
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		srv.createServiceTemplate(vimConn, "name");
@@ -305,11 +304,18 @@ class ContrailApiTest {
 						}
 						""")));
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
-		vimConn.setExtra(Map.of());
+		final SystemConnections vimConn = createConn();
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		srv.createServiceInstance(vimConn, "name", "template", "left", "right");
 		assertTrue(true);
+	}
+
+	private SystemConnections<InterfaceInfo, KeystoneAuthV3> createConn() {
+		final SystemConnections<InterfaceInfo, KeystoneAuthV3> vimConn = new SystemConnections<>();
+		vimConn.setAccessInfo(new KeystoneAuthV3());
+		vimConn.setInterfaceInfo(new InterfaceInfo());
+		vimConn.setExtra(Map.of());
+		return vimConn;
 	}
 
 	@Test
@@ -342,7 +348,9 @@ class ContrailApiTest {
 						}
 						""")));
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections<InterfaceInfo, KeystoneAuthV3> vimConn = new SystemConnections<>();
+		vimConn.setAccessInfo(new KeystoneAuthV3());
+		vimConn.setInterfaceInfo(new InterfaceInfo());
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		srv.updatePort(vimConn, "uuid", "portId", "mode");
@@ -379,7 +387,9 @@ class ContrailApiTest {
 						}
 						""")));
 		final ContrailApi srv = new ContrailApi();
-		final SystemConnections vimConn = new SystemConnections();
+		final SystemConnections<InterfaceInfo, KeystoneAuthV3> vimConn = new SystemConnections<>();
+		vimConn.setAccessInfo(new KeystoneAuthV3());
+		vimConn.setInterfaceInfo(new InterfaceInfo());
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		srv.updatePort(vimConn, "uuid", null, "mode");
