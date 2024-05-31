@@ -64,7 +64,7 @@ public class OsUtils {
 		final String project = accessInfo.getProject();
 		final String projectId = accessInfo.getProjectId();
 		if (null != project) {
-			base.scopeToProject(Identifier.byName(project));
+			base.scopeToProject(Identifier.byName(project), Identifier.byName(accessInfo.getProjectDomain()));
 		} else if (null != projectId) {
 			base.scopeToProject(Identifier.byId(projectId));
 		}
