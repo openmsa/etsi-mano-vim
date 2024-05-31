@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
-import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
 import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 import com.ubiqube.etsi.mano.service.auth.model.AuthParamBasic;
@@ -61,7 +61,7 @@ public class OsHelper {
 		final InterfaceInfo ii = new InterfaceInfo();
 		ii.setEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		vci.setInterfaceInfo(ii);
-		final AccessInfo ai = AccessInfo.builder()
+		final KeystoneAuthV3 ai = KeystoneAuthV3.builder()
 				.username("username")
 				.password("password")
 				.projectId("projectId")
@@ -79,7 +79,7 @@ public class OsHelper {
 		final InterfaceInfo ii = new InterfaceInfo();
 		ii.setEndpoint(wmRuntimeInfo.getHttpBaseUrl());
 		vci.setInterfaceInfo(ii);
-		final AccessInfo ai = AccessInfo.builder()
+		final KeystoneAuthV3 ai = KeystoneAuthV3.builder()
 				.username("username")
 				.password("password")
 				.projectId("projectId")

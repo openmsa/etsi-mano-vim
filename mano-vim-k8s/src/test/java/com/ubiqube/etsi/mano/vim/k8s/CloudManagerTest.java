@@ -24,8 +24,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
 import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.vim.k8s.model.cloud.AuthInfo;
 import com.ubiqube.etsi.mano.vim.k8s.model.cloud.CloudRoot;
@@ -56,8 +56,8 @@ class CloudManagerTest {
 		final InterfaceInfo ii = new InterfaceInfo();
 		ii.setEndpoint("http://localhost:890/");
 		vci.setInterfaceInfo(ii);
-		final AccessInfo ai = AccessInfo.builder()
-				.userDomain("username")
+		final KeystoneAuthV3 ai = KeystoneAuthV3.builder()
+				.username("username")
 				.password("password")
 				.projectId("projectId")
 				.projectDomain("projectDomain")

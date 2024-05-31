@@ -28,7 +28,8 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
 import net.juniper.contrail.api.ApiConnector;
@@ -57,7 +58,7 @@ import net.juniper.contrail.api.types.VnSubnetsType;
 @SuppressWarnings("static-method")
 class ContrailTest {
 	private static final Logger LOG = LoggerFactory.getLogger(ContrailTest.class);
-	private final SystemConnections vimConnectionInformation;
+	private final SystemConnections<InterfaceInfo, KeystoneAuthV3> vimConnectionInformation;
 
 	public ContrailTest() {
 		System.getProperties().put("proxySet", "true");
@@ -68,13 +69,13 @@ class ContrailTest {
 		// "http://192.168.1.36:8082");
 		vimConnectionInformation.getInterfaceInfo().setSdnEndpoint("https://10.242.228.221:8082");
 		vimConnectionInformation.getInterfaceInfo().setEndpoint("https://10.242.228.250:5000/v3");
-		vimConnectionInformation.setAccessInfo(AccessInfo.builder()
+		vimConnectionInformation.setAccessInfo(KeystoneAuthV3.builder()
 				.username("admin")
 				.password("uoleiChai8no6yai")
 				.projectId("44009ebe33d34d5f81b22a9354661abf")
 				.projectDomain("admin_domain")
 				.userDomain("admin_domain")
-				.sdnDomain("admin")
+				.project("admin")
 				.build());
 	}
 

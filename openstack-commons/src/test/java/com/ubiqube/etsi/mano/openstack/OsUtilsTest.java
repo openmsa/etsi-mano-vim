@@ -21,8 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
 import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 
 /**
  *
@@ -41,7 +41,7 @@ class OsUtilsTest {
 	@Test
 	void testAuth1() {
 		final InterfaceInfo ii = new InterfaceInfo();
-		final AccessInfo ai = new AccessInfo();
+		final KeystoneAuthV3 ai = new KeystoneAuthV3();
 		ai.setUserDomain("userDomain");
 		ai.setProject("project");
 		ai.setProjectId("projectId");
@@ -54,7 +54,7 @@ class OsUtilsTest {
 		final InterfaceInfo ii = new InterfaceInfo();
 		ii.setNonStrictSsl(true);
 		ii.setNatHost("nat-host");
-		final AccessInfo ai = new AccessInfo();
+		final KeystoneAuthV3 ai = new KeystoneAuthV3();
 		ai.setProjectId("projectId");
 		OsUtils.authenticate(ii, ai);
 		assertTrue(true);
@@ -63,7 +63,7 @@ class OsUtilsTest {
 	@Test
 	void testAuth3() {
 		final InterfaceInfo ii = new InterfaceInfo();
-		final AccessInfo ai = new AccessInfo();
+		final KeystoneAuthV3 ai = new KeystoneAuthV3();
 		assertThrows(NullPointerException.class, () -> OsUtils.authenticate(ii, ai));
 	}
 }

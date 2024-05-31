@@ -28,6 +28,8 @@ import org.openstack4j.model.network.ext.PortChain;
 import org.openstack4j.model.network.ext.PortPair;
 import org.openstack4j.model.network.ext.PortPairGroup;
 
+import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnffg.Classifier;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
@@ -40,7 +42,7 @@ import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 @SuppressWarnings("static-method")
 public class OsSfc {
 
-	private static OSClientV3 internalAuthenticate(final SystemConnections vci) {
+	private static OSClientV3 internalAuthenticate(final SystemConnections<InterfaceInfo, KeystoneAuthV3> vci) {
 		return OsUtils.authenticate(vci.getInterfaceInfo(), vci.getAccessInfo());
 	}
 

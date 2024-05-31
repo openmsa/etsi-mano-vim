@@ -35,8 +35,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
 import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.service.vim.VimGenericException;
@@ -82,7 +82,7 @@ class OsClusterServiceTest {
 		final InterfaceInfo ii = new InterfaceInfo();
 		ii.setEndpoint("http://10.31.1.108:5000");
 		vci.setInterfaceInfo(ii);
-		final AccessInfo ai = AccessInfo.builder()
+		final KeystoneAuthV3 ai = KeystoneAuthV3.builder()
 				.username("admin")
 				.password("cc4ace4cf4844540")
 				.projectId("18b7739d3f294ba5adacb41b42e14e80")

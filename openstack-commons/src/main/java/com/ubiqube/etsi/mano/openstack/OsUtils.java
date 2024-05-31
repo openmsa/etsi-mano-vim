@@ -27,8 +27,8 @@ import org.openstack4j.core.transport.Config;
 import org.openstack4j.model.common.Identifier;
 import org.openstack4j.openstack.OSFactory;
 
-import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
 import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 
 /**
  *
@@ -41,7 +41,7 @@ public class OsUtils {
 		//
 	}
 
-	public static OSClientV3 authenticate(final InterfaceInfo interfaceInfo, final AccessInfo accessInfo) {
+	public static OSClientV3 authenticate(final InterfaceInfo interfaceInfo, final KeystoneAuthV3 accessInfo) {
 		final V3 base = OSFactory.builderV3().endpoint(interfaceInfo.getEndpoint());
 		final String userDomain = accessInfo.getUserDomain();
 		if (null != userDomain) {

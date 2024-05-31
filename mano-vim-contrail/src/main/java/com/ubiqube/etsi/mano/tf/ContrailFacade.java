@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.orchestrator.entities.SystemConnections;
 
 import net.juniper.contrail.api.ApiConnector;
@@ -98,7 +100,7 @@ public class ContrailFacade {
 	}
 
 	@SuppressWarnings("static-method")
-	private ApiConnector getConnection(final SystemConnections vimConnectionInformation) {
+	private ApiConnector getConnection(final SystemConnections<InterfaceInfo, KeystoneAuthV3> vimConnectionInformation) {
 		final String endpoint = vimConnectionInformation.getInterfaceInfo().getSdnEndpoint();
 		final URI url = URI.create(endpoint);
 		final String username = vimConnectionInformation.getAccessInfo().getUsername();
