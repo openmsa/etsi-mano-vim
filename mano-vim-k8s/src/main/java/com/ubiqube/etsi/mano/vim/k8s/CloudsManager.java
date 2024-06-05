@@ -59,7 +59,7 @@ public class CloudsManager {
 	}
 
 	private static CloudsObject toCloudObject(final VimConnectionInformation vci) {
-		final KeystoneAuthV3 ai = vci.getAccessInfo();
+		final KeystoneAuthV3 ai = (KeystoneAuthV3) vci.getAccessInfo();
 		final InterfaceInfo ii = vci.getInterfaceInfo();
 		final CloudsObject o = new CloudsObject();
 		o.setAuth(toAuth(ai, ii));
