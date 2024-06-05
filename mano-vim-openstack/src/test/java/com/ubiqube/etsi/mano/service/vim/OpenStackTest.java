@@ -72,6 +72,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.DiskFormatType;
 import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
 import com.ubiqube.etsi.mano.dao.mano.vim.L2Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
+import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
 import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
@@ -91,7 +92,7 @@ public class OpenStackTest {
 	@Mock
 	private VimService vimJpa;
 
-	private final VimConnectionInformation vimConnectionInformation;
+	private final OpenStakVimConnection vimConnectionInformation;
 
 	private final VimConnectionInformation vciInari;
 
@@ -99,11 +100,11 @@ public class OpenStackTest {
 
 	public OpenStackTest() throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
 		final ObjectMapper desMapper = new ObjectMapper();
-		vimConnectionInformation = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack.json"), VimConnectionInformation.class);
+		vimConnectionInformation = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack.json"), OpenStakVimConnection.class);
 		id = UUID.randomUUID();
 		vimConnectionInformation.setId(id);
 		vimConnectionInformation.setVimId(id.toString());
-		vciInari = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack-yoga.json"), VimConnectionInformation.class);
+		vciInari = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack-yoga.json"), OpenStakVimConnection.class);
 		vciInari.setId(id);
 		vciInari.setVimId(id.toString());
 
