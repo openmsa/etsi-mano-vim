@@ -16,21 +16,21 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 import org.openstack4j.api.OSClient.OSClientV3;
 
-import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
 
 class OsNetworkTest {
 
 	@Test
 	void test() {
-		final VimConnectionInformation vimConn = new VimConnectionInformation();
+		final OpenStakVimConnection vimConn = new OpenStakVimConnection();
 		final OSClientV3 os = null;
 		final OsNetwork n = new OsNetwork(os, vimConn);
-		assertTrue(true);
+		assertNotNull(n);
 	}
 
 }

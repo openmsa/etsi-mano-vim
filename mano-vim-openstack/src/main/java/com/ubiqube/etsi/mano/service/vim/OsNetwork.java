@@ -49,8 +49,8 @@ import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
 import com.ubiqube.etsi.mano.dao.mano.vim.L2Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
+import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
 import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
-import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 
 import jakarta.annotation.Nullable;
@@ -60,9 +60,9 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 
 	private final OSClientV3 os;
 
-	private final VimConnectionInformation vimConnectionInformation;
+	private final OpenStakVimConnection vimConnectionInformation;
 
-	public OsNetwork(final OSClientV3 os, final VimConnectionInformation vimConnectionInformation) {
+	public OsNetwork(final OSClientV3 os, final OpenStakVimConnection vimConnectionInformation) {
 		this.os = os;
 		this.vimConnectionInformation = vimConnectionInformation;
 	}

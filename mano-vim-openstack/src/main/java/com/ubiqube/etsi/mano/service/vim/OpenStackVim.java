@@ -35,6 +35,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.mapstruct.factory.Mappers;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.api.exceptions.AuthenticationException;
@@ -56,8 +57,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
+import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
+import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
+import com.ubiqube.etsi.mano.dao.mano.vim.mapping.OsKeyStoneV3Mapping;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
@@ -74,6 +80,8 @@ public class OpenStackVim implements Vim {
 	private static final Logger LOG = LoggerFactory.getLogger(OpenStackVim.class);
 
 	private static final ThreadLocal<Map<String, OSClientV3>> sessions = new ThreadLocal<>();
+
+	private final OsKeyStoneV3Mapping vimConnMapper = Mappers.getMapper(OsKeyStoneV3Mapping.class);
 
 	public OpenStackVim() {
 		LOG.info("""
@@ -96,22 +104,18 @@ public class OpenStackVim implements Vim {
 		super.finalize();
 	}
 
-	private static OSClientV3 internalAuthenticate(final VimConnectionInformation vci) {
-		return OsUtils.authenticate(vci.getInterfaceInfo(), vci.getAccessInfo());
-	}
-
-	private static synchronized OSClientV3 getClient(final VimConnectionInformation vimConnectionInformation) {
+	private static synchronized OSClientV3 getClient(final VimConnectionInformation<InterfaceInfo, AccessInfo> vimConnectionInformation) {
 		final Map<String, OSClientV3> sess = sessions.get();
 		if (null == sess) {
 			final Map<String, OSClientV3> newSess = new ConcurrentHashMap<>();
-			final OSClientV3 osv3 = internalAuthenticate(vimConnectionInformation);
+			final OSClientV3 osv3 = OsUtils.authenticate(vimConnectionInformation.getInterfaceInfo(), (KeystoneAuthV3) vimConnectionInformation.getAccessInfo());
 			newSess.put(vimConnectionInformation.getVimId(), osv3);
 			sessions.set(newSess);
 			return osv3;
 		}
 		final OSClientV3 os = sess.computeIfAbsent(vimConnectionInformation.getVimId(), x -> {
 			LOG.trace("OS connection: {} ", vimConnectionInformation.getVimId());
-			return internalAuthenticate(vimConnectionInformation);
+			return OsUtils.authenticate(vimConnectionInformation.getInterfaceInfo(), (KeystoneAuthV3) vimConnectionInformation.getAccessInfo());
 		});
 		OSClientSession.set((OSClientSession<?, ?>) os);
 		return os;
@@ -446,7 +450,8 @@ public class OpenStackVim implements Vim {
 	@Override
 	public Network network(final VimConnectionInformation vimConnectionInformation) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
-		return new OsNetwork(os, vimConnectionInformation);
+		final OpenStakVimConnection vc = vimConnMapper.map(vimConnectionInformation);
+		return new OsNetwork(os, vc);
 	}
 
 	@Override
@@ -492,7 +497,7 @@ public class OpenStackVim implements Vim {
 	@Override
 	public void authenticate(final VimConnectionInformation vci) {
 		try {
-			internalAuthenticate(vci);
+			OsUtils.authenticate(vci.getInterfaceInfo(), (KeystoneAuthV3) vci.getAccessInfo());
 		} catch (final AuthenticationException e) {
 			throw new OpenStackException("Authentication failed: " + e.getMessage(), e);
 		}
