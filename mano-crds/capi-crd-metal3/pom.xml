@@ -42,7 +42,7 @@
 					<!-- 1 -->
 					<source>${project.basedir}/src/main/resources/</source>
 					<!-- 2 -->
-					<extraAnnotations>true</extraAnnotations>
+					<extraAnnotations>false</extraAnnotations>
 				</configuration>
 				<executions>
 					<execution>
