@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ import com.ubiqube.etsi.mano.vim.k8s.mapping.K8sMapping;
 import com.ubiqube.etsi.mano.vim.k8s.model.K8sParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsMachineParams;
 import com.ubiqube.etsi.mano.vim.k8s.model.OsParams;
+import com.ubiqube.etsi.mano.vim.k8sexecutor.K8sExecutorFabic8Impl;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Secret;
@@ -159,9 +161,16 @@ class OsClusterServiceTest {
 		final String r64 = toBase64(r);
 		secret.getData().put("value", r64);
 		when(value.get()).thenReturn(secret);
-		final K8s k = ocs.getKubeConfig(k8sConfigMock, "default", "capi-quickstart");
-		System.out.println(k);
-		assertThat(k).hasNoNullFieldsOrProperties();
+		final Optional<K8s> k = ocs.getKubeConfig(k8sConfigMock, "default", "capi-quickstart");
+		assertTrue(k.isPresent());
+		System.out.println(k.get());
+		assertThat(k.get()).hasNoNullFieldsOrProperties();
+	}
+
+	void testBadGetClusterInfo() {
+		final OsClusterService ocs = new OsClusterService(new CloudsManager(), new K8sExecutorFabic8Impl(), mapper);
+		final Optional<K8s> res = ocs.getKubeConfig(k8sConfigMock, "default", "bad");
+		assertTrue(res.isEmpty());
 	}
 
 	private static String toBase64(final String r) {

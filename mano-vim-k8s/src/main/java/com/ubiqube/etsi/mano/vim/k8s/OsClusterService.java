@@ -18,6 +18,7 @@ package com.ubiqube.etsi.mano.vim.k8s;
 
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,18 +134,22 @@ public class OsClusterService {
 				.build();
 	}
 
-	public K8s getKubeConfig(final K8s k8sConfig, final String namespace, final String clusterName) {
+	public Optional<K8s> getKubeConfig(final K8s k8sConfig, final String namespace, final String clusterName) {
 		final Config k8sCfg = toConfig(k8sConfig);
 		final Secret secret = kexec.get(k8sCfg, x -> x.secrets().inNamespace(namespace).withName(clusterName + "-kubeconfig").get());
+		if (null == secret) {
+			return Optional.empty();
+		}
 		if (!"cluster.x-k8s.io/secret".equals(secret.getType())) {
 			throw new VimGenericException("Type of expected secret is not correct: " + secret.getType());
 		}
 		final String rawSecret = secret.getData().get("value");
 		final byte[] raw = Base64.getDecoder().decode(rawSecret);
-		return rawToK8s(new String(raw));
+		return Optional.of(rawToK8s(raw));
 	}
 
-	public K8s rawToK8s(final String string) {
+	public K8s rawToK8s(final byte[] raw) {
+		final String string = new String(raw);
 		final io.fabric8.kubernetes.api.model.Config cfg = Serialization.unmarshal(string, io.fabric8.kubernetes.api.model.Config.class);
 		final List<NamedContext> ctx = cfg.getContexts();
 		if (ctx.size() != 1) {
