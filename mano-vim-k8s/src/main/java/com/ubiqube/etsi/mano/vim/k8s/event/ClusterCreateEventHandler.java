@@ -51,8 +51,12 @@ public class ClusterCreateEventHandler implements ResourceEventHandler<Cluster>,
 			latch.countDown();
 			LOG.info("Cluster: {} created.", newObj.getMetadata().getName());
 		} else {
-			LOG.debug("Not correct state: {}", conds);
+			LOG.debug("Not correct state: {}", dumpConds(conds));
 		}
+	}
+
+	private static Object dumpConds(final List<Conditions> conds) {
+		return conds.stream().map(Conditions::getStatus).toList();
 	}
 
 	@Override
