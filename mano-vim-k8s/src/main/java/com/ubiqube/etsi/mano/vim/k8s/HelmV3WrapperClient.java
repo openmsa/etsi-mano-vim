@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,7 +44,12 @@ public class HelmV3WrapperClient implements K8sClient {
 	@Override
 	public String deploy(final Servers server, final K8sServers k8s, final File file, final String name) {
 		final FluxRest fr = new FluxRest(server);
-		final WebClient wc = fr.getWebClient();
+		final int size = 16 * 1024 * 1024;
+		final ExchangeStrategies strategies = ExchangeStrategies.builder()
+				.codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
+				.build();
+		final WebClient wc = fr.getWebClientBuilder()
+				.exchangeStrategies(strategies).build();
 		final MultipartBodyBuilder builder = new MultipartBodyBuilder();
 		builder.part("config", buildInstallMessage(k8s, k8s.getUserKey(), name), MediaType.APPLICATION_JSON);
 		builder.part("file", new FileSystemResource(file), MediaType.APPLICATION_OCTET_STREAM);
@@ -53,7 +59,7 @@ public class HelmV3WrapperClient implements K8sClient {
 				.body(BodyInserters.fromMultipartData(builder.build()))
 				.exchangeToMono(response -> {
 					if (HttpStatus.OK.equals(response.statusCode())) {
-						return response.bodyToMono(HttpStatus.class).thenReturn(response.statusCode());
+						return response.bodyToMono(String.class).thenReturn(response.statusCode());
 					}
 					throw new VimException("Error uploading file");
 				});
@@ -91,7 +97,7 @@ public class HelmV3WrapperClient implements K8sClient {
 				.body(BodyInserters.fromMultipartData(builder.build()))
 				.exchangeToMono(response -> {
 					if (HttpStatus.OK.equals(response.statusCode())) {
-						return response.bodyToMono(HttpStatus.class).thenReturn(response.statusCode());
+						return response.bodyToMono(String.class).thenReturn(response.toBodilessEntity());
 					}
 					throw new VimException("Error uploading file");
 				});
