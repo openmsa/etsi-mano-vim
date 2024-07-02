@@ -23,6 +23,7 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import jakarta.annotation.Nonnull;
 
 public interface K8sExecutor {
 
@@ -35,5 +36,8 @@ public interface K8sExecutor {
 	void waitForClusterCreate(final Config k8sCfg, final HasMetadata obj);
 
 	<R extends HasMetadata> R get(Config k8sCfg, Function<KubernetesClient, R> func);
+
+	@Nonnull
+	List<HasMetadata> apply(Config k8sCfg, String x);
 
 }

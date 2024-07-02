@@ -16,6 +16,7 @@
  */
 package com.ubiqube.etsi.mano.vim.k8sexecutor;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
@@ -28,18 +29,22 @@ import com.ubiqube.etsi.mano.vim.k8s.event.ClusterCreateEventHandler;
 import com.ubiqube.etsi.mano.vim.k8s.event.ClusterDeleteEventHandler;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.dsl.NonDeletingOperation;
 import io.fabric8.kubernetes.client.informers.ResourceEventHandler;
 import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 
 @Service
 public class K8sExecutorFabic8Impl implements K8sExecutor {
 	/** Logger. */
 	private static final Logger LOG = LoggerFactory.getLogger(K8sExecutorFabic8Impl.class);
+	private final KubernetesSerialization kubernetesSerialization = new KubernetesSerialization();
 
 	@Override
 	public <R extends HasMetadata> R create(final Config k8sCfg, final Function<KubernetesClient, R> func) {
@@ -106,6 +111,33 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 			return func.apply(client);
 		} catch (final KubernetesClientException e) {
 			LOG.warn("Error code: {}", e.getCode(), e);
+		}
+		return null;
+	}
+
+	@Override
+	public List<HasMetadata> apply(final Config k8sCfg, final String str) {
+		final Object unmarshalled = kubernetesSerialization.unmarshal(str);
+		Collection<HasMetadata> entities;
+		if (unmarshalled instanceof final Collection c) {
+			entities = c;
+		} else if (unmarshalled instanceof final KubernetesResourceList krl) {
+			entities = krl.getItems();
+		} else {
+			entities = List.of((HasMetadata) unmarshalled);
+		}
+		return entities.stream()
+				.map(x -> createOrPatch(k8sCfg, x))
+				.toList();
+	}
+
+	private HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata1) {
+		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
+			final HasMetadata res = client.resource(hasmetadata1).createOr(NonDeletingOperation::update);
+			LOG.info("{}", res.getMetadata().getUid());
+			return res;
+		} catch (final KubernetesClientException e) {
+			LOG.error("error code: {}", e.getCode(), e);
 		}
 		return null;
 	}

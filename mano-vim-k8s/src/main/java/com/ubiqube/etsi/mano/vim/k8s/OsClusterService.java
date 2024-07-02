@@ -202,4 +202,9 @@ public class OsClusterService {
 				.orElseThrow(() -> new VimException("Unable to find cluster: " + clusName));
 	}
 
+	public Object apply(final K8s cluster, final String x) {
+		final Config cfg = toConfig(cluster);
+		return kexec.apply(cfg, x);
+	}
+
 }

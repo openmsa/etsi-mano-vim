@@ -116,4 +116,9 @@ public class TestExecutor implements K8sExecutor {
 		return func.apply(client);
 	}
 
+	@Override
+	public List<HasMetadata> apply(final Config k8sCfg, final String x) {
+		return List.of();
+	}
+
 }
