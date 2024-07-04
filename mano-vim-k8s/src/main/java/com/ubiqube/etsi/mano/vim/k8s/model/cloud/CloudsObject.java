@@ -21,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This cloud.yaml format is used by CAPI.
+ */
 @Getter
 @Setter
 public class CloudsObject {

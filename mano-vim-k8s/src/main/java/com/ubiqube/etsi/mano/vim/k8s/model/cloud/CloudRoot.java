@@ -21,6 +21,9 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * This cloud.yaml format is used by CAPI.
+ */
 @Getter
 @Setter
 public class CloudRoot {
