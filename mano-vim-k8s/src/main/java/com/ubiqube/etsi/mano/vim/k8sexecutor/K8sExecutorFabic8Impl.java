@@ -60,6 +60,18 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 	}
 
 	@Override
+	public HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata1) {
+		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
+			final HasMetadata res = client.resource(hasmetadata1).createOr(NonDeletingOperation::update);
+			LOG.info("Done creating/update: {}", res.getMetadata().getName());
+			return res;
+		} catch (final KubernetesClientException e) {
+			LOG.error(ERROR_CODE, e.getCode(), e);
+		}
+		return null;
+	}
+
+	@Override
 	public List<StatusDetails> delete(final Config k8sConfig, final Function<KubernetesClient, List<StatusDetails>> func) {
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sConfig).build()) {
 			final List<StatusDetails> res = func.apply(client);
@@ -129,18 +141,6 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 		return entities.stream()
 				.map(x -> createOrPatch(k8sCfg, x))
 				.toList();
-	}
-
-	@Override
-	public HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata1) {
-		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
-			final HasMetadata res = client.resource(hasmetadata1).createOr(NonDeletingOperation::update);
-			LOG.info("Done creating/update: {}", res.getMetadata().getName());
-			return res;
-		} catch (final KubernetesClientException e) {
-			LOG.error(ERROR_CODE, e.getCode(), e);
-		}
-		return null;
 	}
 
 }
