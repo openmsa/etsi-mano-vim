@@ -32,9 +32,6 @@ public class MachineDeploymentFactory {
 		final MachineDeploymentSpec mds = new MachineDeploymentSpec();
 		mds.setClusterName(clusterName);
 		mds.setReplicas(replica);
-//		final Selector selector = new Selector();
-//		selector.setMatchLabels(null);
-//		mds.setSelector(selector);
 		final io.x_k8s.cluster.v1beta1.machinedeploymentspec.Template template = new io.x_k8s.cluster.v1beta1.machinedeploymentspec.Template();
 		final io.x_k8s.cluster.v1beta1.machinedeploymentspec.template.Spec tmplSpec = new io.x_k8s.cluster.v1beta1.machinedeploymentspec.template.Spec();
 		final Bootstrap bootstrap = createBootstrap(clusterName, id);

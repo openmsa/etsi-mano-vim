@@ -70,7 +70,7 @@ public class DummyVim implements Vim {
 
 	@Override
 	public String getOrCreateFlavor(final VimConnectionInformation vimConnectionInformation, final String name, final int numVcpu, final long virtualMemorySize, final long disk, final Map<String, String> flavorSpec) {
-		return null;
+		return "flavour";
 	}
 
 	@Override

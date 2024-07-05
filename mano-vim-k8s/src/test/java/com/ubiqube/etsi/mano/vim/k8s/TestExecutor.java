@@ -28,7 +28,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -88,27 +87,24 @@ public class TestExecutor implements K8sExecutor {
 		return meta.get("name").asText().equals(name);
 	}
 
-	private JsonNode toObjectNode(final Object o) throws JsonMappingException, JsonProcessingException {
+	private JsonNode toObjectNode(final Object o) throws JsonProcessingException {
 		final String ser = Serialization.asYaml(o);
 		return mapper.readTree(ser);
 	}
 
 	@Override
 	public List<StatusDetails> delete(final Config k8sConfig, final Function<KubernetesClient, List<StatusDetails>> func) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void waitForClusterDelete(final Config k8sCfg, final HasMetadata obj) {
-		// TODO Auto-generated method stub
-
+		//
 	}
 
 	@Override
 	public void waitForClusterCreate(final Config k8sCfg, final HasMetadata obj) {
-		// TODO Auto-generated method stub
-
+		//
 	}
 
 	@Override

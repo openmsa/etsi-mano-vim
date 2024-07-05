@@ -60,151 +60,126 @@ public class NamespaceableResourceTest<T> implements NamespaceableResource<T> {
 
 	@Override
 	public boolean isReady() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public T require() throws ResourceNotFoundException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ReplaceDeletable<T> lockResourceVersion() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ReplaceDeletable<T> lockResourceVersion(final String resourceVersion) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T item() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T scale(final int count) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T scale(final int count, final boolean wait) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Scale scale(final Scale scale) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Gettable<T> fromServer() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T get() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Watchable<T> withResourceVersion(final String resourceVersion) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Watch watch(final Watcher<T> watcher) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Watch watch(final ListOptions options, final Watcher<T> watcher) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Watch watch(final String resourceVersion, final Watcher<T> watcher) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T waitUntilReady(final long amount, final TimeUnit timeUnit) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T waitUntilCondition(final Predicate<T> condition, final long amount, final TimeUnit timeUnit) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T replaceStatus() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T updateStatus() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T replace() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T update() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<StatusDetails> delete() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Deletable withTimeout(final long timeout, final TimeUnit unit) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Deletable withTimeoutInMillis(final long timeoutInMillis) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T replaceStatus(final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T replace(final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -215,31 +190,26 @@ public class NamespaceableResourceTest<T> implements NamespaceableResource<T> {
 
 	@Override
 	public NonDeletingOperation<T> unlock() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T editStatus(final UnaryOperator<T> function) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T patchStatus() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public EditReplacePatchable<T> subresource(final String subresource) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T createOrReplace() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -250,13 +220,11 @@ public class NamespaceableResourceTest<T> implements NamespaceableResource<T> {
 
 	@Override
 	public T edit(final UnaryOperator<T> function) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T edit(final Visitor... visitors) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -268,145 +236,121 @@ public class NamespaceableResourceTest<T> implements NamespaceableResource<T> {
 
 	@Override
 	public T accept(final Consumer<T> function) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T patch(final PatchContext patchContext, final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T patch(final PatchContext patchContext, final String patch) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T patch() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T patch(final PatchContext patchContext) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T createOrReplace(final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T create(final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<StatusDetails> delete(final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T updateStatus(final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T patchStatus(final T item) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public PropagationPolicyConfigurable<? extends Deletable> withGracePeriod(final long gracePeriodSeconds) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public GracePeriodConfigurable<? extends Deletable> withPropagationPolicy(final DeletionPropagation propagationPolicy) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public T serverSideApply() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ServerSideApplicable<T> fieldManager(final String manager) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ServerSideApplicable<T> forceConflicts() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public NonDeletingOperation<T> fieldValidation(final Validation fieldValidation) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public WritableOperation<T> dryRun() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public WritableOperation<T> dryRun(final boolean isDryRun) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Informable<T> withIndexers(final Map<String, Function<T, List<String>>> indexers) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Informable<T> withLimit(final Long limit) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public SharedIndexInformer<T> inform(final ResourceEventHandler<? super T> handler, final long resync) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public SharedIndexInformer<T> runnableInformer(final long resync) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public CompletableFuture<List<T>> informOnCondition(final Predicate<List<T>> condition) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Resource<T> inNamespace(final String name) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

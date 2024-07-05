@@ -56,8 +56,6 @@ public class OpenStackClusterFactory {
 		final AllocationPools ap = new AllocationPools();
 		ap.setStart("");
 		ap.setEnd("");
-//		final List<AllocationPools> listAllocPool = List.of();
-//		msn.setAllocationPools(listAllocPool);
 		final List<ManagedSubnets> listSubNet = List.of(msn);
 		spec.setManagedSubnets(listSubNet);
 		osc.setSpec(spec);

@@ -62,7 +62,7 @@ public class DummyStorage implements Storage {
 
 	@Override
 	public SysImage getImagesInformations(final String name) {
-		return null;
+		return new SysImage();
 	}
 
 	@Override

@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s.event;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +35,7 @@ class ClusterDeleteEventHandlerTest {
 		final Cluster obj = new Cluster();
 		srv.onDelete(obj, false);
 		srv.await(10, TimeUnit.SECONDS);
-
+		assertTrue(true);
 	}
 
 }

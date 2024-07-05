@@ -16,6 +16,7 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -29,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -118,7 +118,7 @@ class JavaClientTest {
 				.build();
 	}
 
-	void testCreate() throws IOException {
+	void testCreate() {
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(config).build()) {
 			final PodList podList = client.pods().list();
 			podList.getItems().forEach(x -> {
@@ -135,7 +135,7 @@ class JavaClientTest {
 		final ObjectNode doc = findDocument("OpenStackMachineTemplate");
 		LOG.info("{}", doc);
 		LOG.info("{}", str);
-		assertTrue(doc.equals(str));
+		assertEquals(doc, str);
 	}
 
 	@Test
@@ -145,7 +145,7 @@ class JavaClientTest {
 		final ObjectNode doc = findDocument("OpenStackCluster");
 		LOG.info("{}", doc);
 		LOG.info("{}", str);
-		assertTrue(doc.equals(str));
+		assertEquals(doc, str);
 	}
 
 	@Test
@@ -155,7 +155,7 @@ class JavaClientTest {
 		final ObjectNode doc = findDocument("KubeadmControlPlane");
 		LOG.info("{}", doc);
 		LOG.info("{}", str);
-		assertTrue(doc.equals(str));
+		assertEquals(doc, str);
 	}
 
 	@Test
@@ -165,7 +165,7 @@ class JavaClientTest {
 		final ObjectNode doc = findDocument("MachineDeployment");
 		LOG.info("{}", doc);
 		LOG.info("{}", str);
-		assertTrue(doc.equals(str));
+		assertEquals(doc, str);
 	}
 
 	@Test
@@ -175,7 +175,7 @@ class JavaClientTest {
 		final ObjectNode doc = findDocument("Cluster");
 		LOG.info("{}", doc);
 		LOG.info("{}", str);
-		assertTrue(doc.equals(str));
+		assertEquals(doc, str);
 	}
 
 	@Test
@@ -183,10 +183,10 @@ class JavaClientTest {
 		final KubeadmConfigTemplate o = KubeadmConfigTemplateFactory.create("capi-quickstart", 0);
 		final JsonNode str = toObjectNode(o);
 		final ObjectNode doc = findDocument("KubeadmConfigTemplate");
-		assertTrue(doc.equals(str));
+		assertEquals(doc, str);
 	}
 
-	private JsonNode toObjectNode(final Object o) throws JsonMappingException, JsonProcessingException {
+	private JsonNode toObjectNode(final Object o) throws JsonProcessingException {
 		final String ser = Serialization.asYaml(o);
 		return mapper.readTree(ser);
 	}
@@ -217,14 +217,14 @@ class JavaClientTest {
 	}
 
 	@SuppressWarnings("static-method")
-	void testYamlQuote() throws JsonMappingException, JsonProcessingException {
+	void testYamlQuote() throws JsonProcessingException {
 		final String a = """
 				root:
 				  a: openstack:///'{{ instance_id }}'
 				  b: '{{ local_hostname }}'
 				""";
-		final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-		final JsonNode res = mapper.readTree(a);
+		final ObjectMapper m = new ObjectMapper(new YAMLFactory());
+		final JsonNode res = m.readTree(a);
 		System.out.println(res.toString());
 
 	}
