@@ -52,6 +52,7 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
 			final R res = func.apply(client);
 			LOG.info("Created: {}", res.getMetadata().getUid());
+			return res;
 		} catch (final KubernetesClientException e) {
 			LOG.warn(ERROR_CODE, e.getCode(), e);
 		}
@@ -130,10 +131,11 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 				.toList();
 	}
 
-	private static HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata1) {
+	@Override
+	public HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata1) {
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
 			final HasMetadata res = client.resource(hasmetadata1).createOr(NonDeletingOperation::update);
-			LOG.info("Done creating: {}", res.getMetadata().getName());
+			LOG.info("Done creating/update: {}", res.getMetadata().getName());
 			return res;
 		} catch (final KubernetesClientException e) {
 			LOG.error(ERROR_CODE, e.getCode(), e);

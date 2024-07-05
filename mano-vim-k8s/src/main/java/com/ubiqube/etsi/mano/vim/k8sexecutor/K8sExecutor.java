@@ -40,4 +40,5 @@ public interface K8sExecutor {
 	@Nonnull
 	List<HasMetadata> apply(Config k8sCfg, String x);
 
+	HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata);
 }
