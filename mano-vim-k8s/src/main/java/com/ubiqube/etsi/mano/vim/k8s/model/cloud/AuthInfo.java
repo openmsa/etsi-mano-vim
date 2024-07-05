@@ -45,4 +45,7 @@ public class AuthInfo {
 
 	@JsonProperty("project_id")
 	private String projectId;
+
+	private String region;
+
 }
