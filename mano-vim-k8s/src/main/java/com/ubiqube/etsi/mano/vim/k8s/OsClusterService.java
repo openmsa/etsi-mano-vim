@@ -46,6 +46,7 @@ import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedCluster;
 import io.fabric8.kubernetes.api.model.NamedContext;
 import io.fabric8.kubernetes.api.model.Secret;
+import io.fabric8.kubernetes.api.model.storage.StorageClass;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -59,6 +60,7 @@ import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackCluster;
 import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackMachineTemplate;
 import io.x_k8s.cluster.v1beta1.Cluster;
 import io.x_k8s.cluster.v1beta1.MachineDeployment;
+import jakarta.annotation.Nullable;
 
 @Service
 public class OsClusterService {
@@ -205,6 +207,32 @@ public class OsClusterService {
 	public Object apply(final K8s cluster, final String x) {
 		final Config cfg = toConfig(cluster);
 		return kexec.apply(cfg, x);
+	}
+
+	@Nullable
+	public Secret applySecret(final K8s k8sConfig, final Secret secret) {
+		final Config k8sCfg = toConfig(k8sConfig);
+		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
+			final Secret res = client.secrets().resource(secret).createOr(NonDeletingOperation::update);
+			LOG.info("{}", res.getMetadata().getUid());
+			return res;
+		} catch (final KubernetesClientException e) {
+			LOG.error("error code: {}", e.getCode(), e);
+		}
+		return null;
+	}
+
+	@Nullable
+	public StorageClass applyStorageClass(final K8s k8sConfig, final StorageClass sc) {
+		final Config k8sCfg = toConfig(k8sConfig);
+		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
+			final StorageClass res = client.storage().v1().storageClasses().resource(sc).createOr(NonDeletingOperation::update);
+			LOG.info("{}", res.getMetadata().getUid());
+			return res;
+		} catch (final KubernetesClientException e) {
+			LOG.error("error code: {}", e.getCode(), e);
+		}
+		return null;
 	}
 
 }
