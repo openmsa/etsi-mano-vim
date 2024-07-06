@@ -85,36 +85,31 @@ public class OsClusterService {
 		final String vciB64 = Base64.getEncoder().encodeToString(vimConn.getBytes());
 		LOG.trace("vci :{}", vciB64);
 		final Secret secret = SecretFactory.create(params.getClusterName(), vciB64);
-		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
-			final Secret res = client.secrets().resource(secret).createOr(NonDeletingOperation::update);
-			LOG.info("{}", res.getMetadata().getUid());
-		} catch (final KubernetesClientException e) {
-			LOG.error("error code: {}", e.getCode(), e);
-		}
+		kexec.createOrPatch(k8sCfg, secret);
 		//
 		final KubeadmConfigTemplate kct = KubeadmConfigTemplateFactory.create(params.getClusterName(), 0);
-		kexec.create(k8sCfg, x -> x.resource(kct).createOr(NonDeletingOperation::update));
+		kexec.createOrPatch(k8sCfg, kct);
 		//
 		final Cluster cluster = ClusterFactory.create(params.getClusterName(), params.getClusterNetworkCidr(), params.getServiceDomain());
-		kexec.create(k8sCfg, x -> x.resource(cluster).create());
+		kexec.createOrPatch(k8sCfg, cluster);
 		//
 		final OsParams osParams = params.getOpenStackParams();
 		final OsMachineParams osCp = osParams.getControlPlane();
 		final OsMachineParams osWork = osParams.getWorker();
 		final MachineDeployment md = MachineDeploymentFactory.create(params.getClusterName(), osWork.getReplica(), 0, params.getK8sVersion(), osParams.getDomainZone());
-		kexec.create(k8sCfg, x -> x.resource(md).create());
+		kexec.createOrPatch(k8sCfg, md);
 		//
 		final KubeadmControlPlane kcp = KubeadmControlPlaneFactory.create(params.getClusterName(), osCp.getReplica(), params.getK8sVersion(), osCp.getIgnition());
-		kexec.create(k8sCfg, x -> x.resource(kcp).create());
+		kexec.createOrPatch(k8sCfg, kcp);
 		//
 		final OpenStackCluster oc = OpenStackClusterFactory.create(params.getClusterName(), osParams.getExtNetId(), osParams.getCidr(), osParams.getDns());
-		kexec.create(k8sCfg, x -> x.resource(oc).create());
+		kexec.createOrPatch(k8sCfg, oc);
 		//
 		final OpenStackMachineTemplate osmtCP = OpenStackMachineTemplateFactory.createControlPlane(params.getClusterName(), osCp.getFlavor(), osCp.getImage(), osParams.getSshKey());
-		kexec.create(k8sCfg, x -> x.resource(osmtCP).create());
+		kexec.createOrPatch(k8sCfg, osmtCP);
 		//
 		final OpenStackMachineTemplate osmtMd = OpenStackMachineTemplateFactory.createMd(params.getClusterName(), osWork.getFlavor(), osWork.getImage(), osParams.getSshKey());
-		kexec.create(k8sCfg, x -> x.resource(osmtMd).create());
+		kexec.createOrPatch(k8sCfg, osmtMd);
 		kexec.waitForClusterCreate(k8sCfg, cluster);
 	}
 
@@ -180,7 +175,6 @@ public class OsClusterService {
 		final NamedCluster cluster = findCluster(clusName, cfg.getClusters());
 		final NamedAuthInfo user = findUser(userName, cfg.getUsers());
 		return toK8s(cluster, user);
-
 	}
 
 	private static NamedContext findContext(final io.fabric8.kubernetes.api.model.Config cfg, final String context) {
