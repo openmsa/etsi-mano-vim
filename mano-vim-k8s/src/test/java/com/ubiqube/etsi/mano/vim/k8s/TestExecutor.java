@@ -117,4 +117,16 @@ public class TestExecutor implements K8sExecutor {
 		return List.of();
 	}
 
+	@Override
+	public HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Object> apply(final Config cfg, final List<String> x) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -16,6 +16,7 @@
  */
 package com.ubiqube.etsi.mano.vim.k8sexecutor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -141,6 +142,31 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 		return entities.stream()
 				.map(x -> createOrPatch(k8sCfg, x))
 				.toList();
+	}
+
+	@Override
+	public List<Object> apply(final Config k8sCfg, final List<String> str) {
+		final List<Object> ret = new ArrayList<>();
+		try (final KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
+			for (final String string : str) {
+				final Object unmarshalled = kubernetesSerialization.unmarshal(string);
+				final Collection<HasMetadata> entities;
+				switch (unmarshalled) {
+				case final Collection<?> c -> entities = (Collection<HasMetadata>) c;
+				case final KubernetesResourceList krl -> entities = krl.getItems();
+				default -> entities = List.of((HasMetadata) unmarshalled);
+				}
+				final List<HasMetadata> lst = entities.stream().map((final HasMetadata x) -> {
+					final HasMetadata res = client.resource(x).createOr(NonDeletingOperation::update);
+					LOG.info("Done creating/update: {}", res.getMetadata().getName());
+					return res;
+				}).toList();
+				ret.addAll(lst);
+			}
+		} catch (final KubernetesClientException e) {
+			LOG.warn(ERROR_CODE, e.getCode(), e);
+		}
+		return ret;
 	}
 
 }
