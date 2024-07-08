@@ -80,6 +80,7 @@ public class OsClusterService {
 	}
 
 	public void createCluster(final VimConnectionInformation vci, final K8s k8sConfig, final K8sParams params) {
+		LOG.info("Creating kubernetes cluster on vim :{}", vci.getVimId());
 		final Config k8sCfg = toConfig(k8sConfig);
 		final String vimConn = cm.vimConnectionToYaml(vci);
 		final String vciB64 = Base64.getEncoder().encodeToString(vimConn.getBytes());
