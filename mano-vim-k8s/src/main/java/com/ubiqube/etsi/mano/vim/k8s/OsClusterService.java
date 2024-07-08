@@ -204,6 +204,11 @@ public class OsClusterService {
 		return kexec.apply(cfg, x);
 	}
 
+	public List<Object> apply(final K8s cluster, final List<String> x) {
+		final Config cfg = toConfig(cluster);
+		return kexec.apply(cfg, x);
+	}
+
 	@Nullable
 	public Secret applySecret(final K8s k8sConfig, final Secret secret) {
 		final Config k8sCfg = toConfig(k8sConfig);
