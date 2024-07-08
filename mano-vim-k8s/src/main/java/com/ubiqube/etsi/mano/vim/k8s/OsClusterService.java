@@ -214,7 +214,7 @@ public class OsClusterService {
 		final Config k8sCfg = toConfig(k8sConfig);
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
 			final Secret res = client.secrets().resource(secret).createOr(NonDeletingOperation::update);
-			LOG.info("{}", res.getMetadata().getUid());
+			LOG.info("Secret {}", res.getMetadata().getUid());
 			return res;
 		} catch (final KubernetesClientException e) {
 			LOG.error("error code: {}", e.getCode(), e);
@@ -227,7 +227,7 @@ public class OsClusterService {
 		final Config k8sCfg = toConfig(k8sConfig);
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
 			final StorageClass res = client.storage().v1().storageClasses().resource(sc).createOr(NonDeletingOperation::update);
-			LOG.info("{}", res.getMetadata().getUid());
+			LOG.info("Storage: {}", res.getMetadata().getUid());
 			return res;
 		} catch (final KubernetesClientException e) {
 			LOG.error("error code: {}", e.getCode(), e);
