@@ -95,7 +95,7 @@ class OsClusterServiceTest {
 	}
 
 	@Test
-	void test() {
+	void testCreateCluster() {
 		final OsClusterService srv = createService();
 		final VimConnectionInformation vci = createVci();
 		final K8sParams params = K8sParams.builder()
