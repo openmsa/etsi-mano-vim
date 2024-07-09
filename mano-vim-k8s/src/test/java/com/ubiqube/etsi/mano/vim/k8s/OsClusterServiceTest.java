@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
@@ -176,27 +175,31 @@ class OsClusterServiceTest {
 	@Test
 	void testFromKubeConfigBad() {
 		final OsClusterService srv = createService();
-		try (InputStream is = getClass().getResourceAsStream("/kubeConfig");
-				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			is.transferTo(baos);
-			final byte[] arr = baos.toByteArray();
-			assertThrows(VimException.class, () -> srv.fromKubeConfig("badCtx", arr));
-		} catch (final IOException e) {
-			throw new VimException(e);
-		}
+		final byte[] arr = load("/kubeConfig").getBytes();
+		assertThrows(VimException.class, () -> srv.fromKubeConfig("badCtx", arr));
 	}
 
 	@Test
 	void testFromKubeConfigGood() {
 		final OsClusterService srv = createService();
-		try (InputStream is = getClass().getResourceAsStream("/kubeConfig");
-				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-			is.transferTo(baos);
-			final K8s res = srv.fromKubeConfig("capi-quickstart-admin@capi-quickstart", baos.toByteArray());
-			assertNotNull(res);
-		} catch (final IOException e) {
-			throw new VimException(e);
-		}
+		final byte[] arr = load("/kubeConfig").getBytes();
+		final K8s res = srv.fromKubeConfig("capi-quickstart-admin@capi-quickstart", arr);
+		assertNotNull(res);
+	}
+
+	@Test
+	void testApplySingle() {
+		final OsClusterService srv = createService();
+		srv.apply(k8sConfigMock, load("/capi/quickstart.yaml"));
+		assertTrue(true);
+	}
+
+	@Test
+	void testApplyMulti() {
+		final OsClusterService srv = createService();
+		final String qs = load("/capi/quickstart.yaml");
+		srv.apply(k8sConfigMock, List.of(qs, qs));
+		assertTrue(true);
 	}
 
 	private static String toBase64(final String r) {
