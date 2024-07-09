@@ -17,10 +17,12 @@
 package com.ubiqube.etsi.mano.vim.k8s;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
@@ -169,6 +171,32 @@ class OsClusterServiceTest {
 		final OsClusterService ocs = new OsClusterService(new CloudsManager(), new K8sExecutorFabic8Impl(), mapper);
 		final Optional<K8s> res = ocs.getKubeConfig(k8sConfigMock, "default", "bad");
 		assertTrue(res.isEmpty());
+	}
+
+	@Test
+	void testFromKubeConfigBad() {
+		final OsClusterService srv = createService();
+		try (InputStream is = getClass().getResourceAsStream("/kubeConfig");
+				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			is.transferTo(baos);
+			final byte[] arr = baos.toByteArray();
+			assertThrows(VimException.class, () -> srv.fromKubeConfig("badCtx", arr));
+		} catch (final IOException e) {
+			throw new VimException(e);
+		}
+	}
+
+	@Test
+	void testFromKubeConfigGood() {
+		final OsClusterService srv = createService();
+		try (InputStream is = getClass().getResourceAsStream("/kubeConfig");
+				ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			is.transferTo(baos);
+			final K8s res = srv.fromKubeConfig("capi-quickstart-admin@capi-quickstart", baos.toByteArray());
+			assertNotNull(res);
+		} catch (final IOException e) {
+			throw new VimException(e);
+		}
 	}
 
 	private static String toBase64(final String r) {
