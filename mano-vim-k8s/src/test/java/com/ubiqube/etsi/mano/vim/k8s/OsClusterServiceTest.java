@@ -19,7 +19,6 @@ package com.ubiqube.etsi.mano.vim.k8s;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -122,7 +121,6 @@ class OsClusterServiceTest {
 								.build())
 						.build())
 				.build();
-		when(client.resource((HasMetadata) any())).thenAnswer(x -> new NamespaceableResourceTest(x.getArgument(0)));
 		srv.createCluster(vci, k8sConfigMock, params);
 		assertTrue(true);
 	}
