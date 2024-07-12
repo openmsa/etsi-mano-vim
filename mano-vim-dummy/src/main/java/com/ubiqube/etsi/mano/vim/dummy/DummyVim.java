@@ -182,4 +182,9 @@ public class DummyVim implements Vim {
 		return false;
 	}
 
+	@Override
+	public void populateConnection(final VimConnectionInformation vci) {
+		// Nothing.
+	}
+
 }

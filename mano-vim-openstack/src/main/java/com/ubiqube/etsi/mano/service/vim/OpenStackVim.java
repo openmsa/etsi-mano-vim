@@ -51,6 +51,8 @@ import org.openstack4j.model.compute.Server;
 import org.openstack4j.model.compute.builder.ServerCreateBuilder;
 import org.openstack4j.model.compute.ext.AvailabilityZone;
 import org.openstack4j.model.compute.ext.HypervisorStatistics;
+import org.openstack4j.model.identity.v3.Project;
+import org.openstack4j.model.identity.v3.Token;
 import org.openstack4j.model.network.Agent;
 import org.openstack4j.openstack.internal.OSClientSession;
 import org.slf4j.Logger;
@@ -60,6 +62,7 @@ import org.springframework.stereotype.Service;
 import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
 import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
+import com.ubiqube.etsi.mano.dao.mano.ii.OpenstackV3InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
 import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
@@ -67,6 +70,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.mapping.OsKeyStoneV3Mapping;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
+import com.ubiqube.etsi.mano.service.vim.mapping.TokenMapper;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 
 import jakarta.validation.constraints.Null;
@@ -80,6 +84,8 @@ public class OpenStackVim implements Vim {
 	private static final Logger LOG = LoggerFactory.getLogger(OpenStackVim.class);
 
 	private static final ThreadLocal<Map<String, OSClientV3>> sessions = new ThreadLocal<>();
+
+	private static final TokenMapper TOKEN_MAPPER = Mappers.getMapper(TokenMapper.class);
 
 	private final OsKeyStoneV3Mapping vimConnMapper = Mappers.getMapper(OsKeyStoneV3Mapping.class);
 
@@ -539,6 +545,18 @@ public class OpenStackVim implements Vim {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
 		final Flavor flv = createFlavor(os, toscaName, (int) numVirtualCpu, virtualMemSize, disk, add);
 		return flv.getId();
+	}
+
+	@Override
+	public void populateConnection(final VimConnectionInformation vci) {
+		final VimConnectionInformation<OpenstackV3InterfaceInfo, KeystoneAuthV3> vimConn = vci;
+		final OSClientV3 client = OsUtils.authenticate(vci.getInterfaceInfo(), (KeystoneAuthV3) vci.getAccessInfo());
+		final Token token = client.getToken();
+		final Project prj = token.getProject();
+		final KeystoneAuthV3 ai = vimConn.getAccessInfo();
+		ai.setProjectDomain(prj.getDomain().getName());
+		ai.setProjectId(prj.getId());
+		ai.setProject(prj.getName());
 	}
 
 }

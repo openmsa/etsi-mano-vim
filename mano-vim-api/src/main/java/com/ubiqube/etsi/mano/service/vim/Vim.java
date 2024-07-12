@@ -91,4 +91,12 @@ public interface Vim {
 	Cnf cnf(VimConnectionInformation vimConnectionInformation);
 
 	boolean isEqualMemFlavor(final long tosca, final long os);
+
+	/**
+	 * Because when setting up a connection, we sometimes use partial parameters
+	 * regarding the standardized ETSI connection.
+	 *
+	 * @param vci A VimConnection
+	 */
+	void populateConnection(VimConnectionInformation vci);
 }
