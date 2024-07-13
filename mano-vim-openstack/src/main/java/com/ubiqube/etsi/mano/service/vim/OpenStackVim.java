@@ -70,7 +70,6 @@ import com.ubiqube.etsi.mano.dao.mano.vim.mapping.OsKeyStoneV3Mapping;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
-import com.ubiqube.etsi.mano.service.vim.mapping.TokenMapper;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 
 import jakarta.validation.constraints.Null;
@@ -84,8 +83,6 @@ public class OpenStackVim implements Vim {
 	private static final Logger LOG = LoggerFactory.getLogger(OpenStackVim.class);
 
 	private static final ThreadLocal<Map<String, OSClientV3>> sessions = new ThreadLocal<>();
-
-	private static final TokenMapper TOKEN_MAPPER = Mappers.getMapper(TokenMapper.class);
 
 	private final OsKeyStoneV3Mapping vimConnMapper = Mappers.getMapper(OsKeyStoneV3Mapping.class);
 
