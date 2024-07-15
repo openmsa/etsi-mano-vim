@@ -24,6 +24,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
 import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
+import com.ubiqube.etsi.mano.service.vim.NetowrkSearchField;
 import com.ubiqube.etsi.mano.service.vim.Network;
 import com.ubiqube.etsi.mano.service.vim.NetworkObject;
 import com.ubiqube.etsi.mano.service.vim.Port;
@@ -105,7 +106,7 @@ public class DummyNetwork implements Network {
 	}
 
 	@Override
-	public List<NetworkObject> searchByName(final List<String> vl) {
+	public List<NetworkObject> search(final NetowrkSearchField field, final List<String> vl) {
 		return List.of();
 	}
 
@@ -113,5 +114,4 @@ public class DummyNetwork implements Network {
 	public SubNetwork findSubNetworkById(final String id) {
 		return null;
 	}
-
 }

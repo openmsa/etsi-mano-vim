@@ -223,11 +223,11 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	}
 
 	@Override
-	public List<NetworkObject> searchByName(final List<String> vl) {
+	public List<NetworkObject> search(final NetowrkSearchField field, final List<String> vl) {
 		return vl.stream()
 				.flatMap(x -> {
 					final Map<String, String> filteringParams = new HashMap<>();
-					filteringParams.put("name", x);
+					filteringParams.put(field.toString(), x);
 					return os.networking().network().list(filteringParams).stream();
 				})
 				.map(x -> new NetworkObject(x.getName(), x.getId()))
@@ -301,4 +301,5 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 					return ret;
 				}).toList();
 	}
+
 }

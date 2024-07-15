@@ -212,7 +212,7 @@ class NetworkTest {
 		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		//
-		os.network(vci).searchByName(List.of("public"));
+		os.network(vci).search(NetowrkSearchField.NAME, List.of("public"));
 		assertTrue(true);
 	}
 

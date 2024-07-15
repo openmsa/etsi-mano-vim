@@ -111,7 +111,10 @@ public class OsClusterService {
 		//
 		final OpenStackMachineTemplate osmtMd = OpenStackMachineTemplateFactory.createMd(params.getClusterName(), osWork.getFlavor(), osWork.getImage(), osParams.getSshKey());
 		kexec.createOrPatch(k8sCfg, osmtMd);
-		kexec.waitForClusterCreate(k8sCfg, cluster);
+		final Cluster clust = kexec.get(k8sCfg, c -> c.resource(cluster).get());
+		if (!Boolean.TRUE.equals(clust.getStatus().getInfrastructureReady())) {
+			kexec.waitForClusterCreate(k8sCfg, cluster);
+		}
 	}
 
 	public void deleteCluster(final K8s k8sConfig, final String namespace, final String clusterName) {

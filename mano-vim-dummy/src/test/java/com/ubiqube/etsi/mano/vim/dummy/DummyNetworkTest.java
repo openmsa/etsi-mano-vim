@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
+import com.ubiqube.etsi.mano.service.vim.NetowrkSearchField;
+
 /**
  *
  * @author Olivier Vignaud
@@ -44,7 +46,7 @@ class DummyNetworkTest {
 		srv.deleteSubnet(null);
 		srv.deleteVirtualLink(null);
 		srv.getPublicNetworks();
-		srv.searchByName(null);
+		srv.search(NetowrkSearchField.ID, null);
 		srv.findSubNetworkById(null);
 		assertTrue(true);
 	}
