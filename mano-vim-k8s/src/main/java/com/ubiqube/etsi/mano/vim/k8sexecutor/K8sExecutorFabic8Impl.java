@@ -64,7 +64,7 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 	public HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata1) {
 		try (KubernetesClient client = new KubernetesClientBuilder().withConfig(k8sCfg).build()) {
 			final HasMetadata res = client.resource(hasmetadata1).createOr(NonDeletingOperation::update);
-			LOG.info("Done creating/update: {}", res.getMetadata().getName());
+			LOG.debug("Done creating/update: {}", res.getMetadata().getName());
 			return res;
 		} catch (final KubernetesClientException e) {
 			LOG.error(ERROR_CODE, e.getCode(), e);
@@ -158,7 +158,7 @@ public class K8sExecutorFabic8Impl implements K8sExecutor {
 				}
 				final List<HasMetadata> lst = entities.stream().map((final HasMetadata x) -> {
 					final HasMetadata res = client.resource(x).createOr(NonDeletingOperation::update);
-					LOG.info("Done creating/update: {}", res.getMetadata().getName());
+					LOG.debug("Done creating/update: {}", res.getMetadata().getName());
 					return res;
 				}).toList();
 				ret.addAll(lst);
