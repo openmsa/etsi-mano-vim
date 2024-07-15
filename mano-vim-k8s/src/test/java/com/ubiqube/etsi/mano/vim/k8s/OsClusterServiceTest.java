@@ -20,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -54,6 +55,8 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NamespaceableResource;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.x_k8s.cluster.v1beta1.Cluster;
+import io.x_k8s.cluster.v1beta1.ClusterStatus;
 
 @ExtendWith(MockitoExtension.class)
 class OsClusterServiceTest {
@@ -122,6 +125,11 @@ class OsClusterServiceTest {
 								.build())
 						.build())
 				.build();
+		when(client.resource((HasMetadata) any())).thenReturn(namespaceRes);
+		final Cluster cluster = Mockito.mock(Cluster.class);
+		when(namespaceRes.get()).thenReturn(cluster);
+		final ClusterStatus clusterStatus = Mockito.mock(ClusterStatus.class);
+		when(cluster.getStatus()).thenReturn(clusterStatus);
 		srv.createCluster(vci, k8sConfigMock, params);
 		assertTrue(true);
 	}
