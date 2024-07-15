@@ -230,7 +230,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 					filteringParams.put(field.toString(), x);
 					return os.networking().network().list(filteringParams).stream();
 				})
-				.map(x -> new NetworkObject(x.getName(), x.getId()))
+				.map(x -> new NetworkObject(x.getId(), x.getName()))
 				.toList();
 	}
 
