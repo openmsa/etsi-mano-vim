@@ -16,15 +16,13 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
-import java.beans.IntrospectionException;
-import java.lang.reflect.InvocationTargetException;
-
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("static-method")
 class DefaultQuotasTest {
 
 	@Test
-	void test() throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalArgumentException, InstantiationException, IntrospectionException {
+	void test() {
 		TestBean.testClass(DefaultQuotas.class);
 	}
 }

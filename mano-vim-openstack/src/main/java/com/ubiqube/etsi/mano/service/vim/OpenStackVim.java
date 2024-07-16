@@ -133,7 +133,7 @@ public class OpenStackVim implements Vim {
 
 	@Override
 	public void freeResources(final VimConnectionInformation vimConnectionInformation, final String grantInformation) {
-		// TODO Auto-generated method stub
+		// XXX Auto-generated method stub
 
 	}
 

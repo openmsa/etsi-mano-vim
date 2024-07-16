@@ -67,8 +67,6 @@ class ContrailTest {
 		vimConnectionInformation = new SystemConnections<>();
 		vimConnectionInformation.setAccessInfo(new KeystoneAuthV3());
 		vimConnectionInformation.setInterfaceInfo(new InterfaceInfo());
-		// vimConnectionInformation.getInterfaceInfo().put("endpoint",
-		// "http://192.168.1.36:8082");
 		vimConnectionInformation.getInterfaceInfo().setSdnEndpoint("https://10.242.228.221:8082");
 		vimConnectionInformation.getInterfaceInfo().setEndpoint("https://10.242.228.250:5000/v3");
 		vimConnectionInformation.setAccessInfo(KeystoneAuthV3.builder()
@@ -154,8 +152,6 @@ class ContrailTest {
 		subnets.add(ipt);
 		executeCreate(root);
 		LOG.info("Done crating ipam.");
-
-		// conn.update(root);
 	}
 
 	void deleteIpam() throws IOException {
@@ -169,8 +165,6 @@ class ContrailTest {
 		final VirtualNetwork root = new VirtualNetwork();
 		root.setDisplayName("ovi display name");
 		root.setName("ovi-vl");
-		// final NetworkIpam ipam = (NetworkIpam) conn.findById(NetworkIpam.class,
-		// "8e2e057c-204f-499c-9782-0367e0bc0aa1");
 		final NetworkIpam ipam = new NetworkIpam();
 		ipam.setName("ovi-ipam-name");
 		final List<IpamSubnetType> subnets = new ArrayList<>();
@@ -184,7 +178,6 @@ class ContrailTest {
 	}
 
 	void createVirtualMachineInterfaceTest() throws IOException {
-		final ApiConnector conn = getConnection();
 		final VirtualMachineInterface root = new VirtualMachineInterface();
 		root.setName("vmi-ovi");
 		root.setDisplayName("VirtMacInt-OVI");
@@ -239,7 +232,6 @@ class ContrailTest {
 		final PortTuple pt = new PortTuple();
 		final Project prj = new Project();
 		prj.setName("admin");
-		// pt.setParent(prj);
 		pt.setUuid("edf523f2-8237-4fa3-9bdd-0ad43a8d6d08");
 		cf.delete(vimConnectionInformation, pt);
 	}
@@ -289,7 +281,7 @@ class ContrailTest {
 	}
 
 	@Test
-	void testName() throws Exception {
+	void testName() {
 		assertTrue(true);
 	}
 }

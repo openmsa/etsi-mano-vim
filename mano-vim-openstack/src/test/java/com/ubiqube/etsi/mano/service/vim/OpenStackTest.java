@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,8 +62,6 @@ import org.openstack4j.openstack.OSFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 import com.ubiqube.etsi.mano.dao.mano.vim.ContainerFormatType;
@@ -98,7 +95,7 @@ public class OpenStackTest {
 
 	private final UUID id;
 
-	public OpenStackTest() throws JsonParseException, JsonMappingException, FileNotFoundException, IOException {
+	public OpenStackTest() throws IOException {
 		final ObjectMapper desMapper = new ObjectMapper();
 		vimConnectionInformation = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack.json"), OpenStakVimConnection.class);
 		id = UUID.randomUUID();
@@ -250,7 +247,7 @@ public class OpenStackTest {
 		assertNotNull(lid);
 	}
 
-	void testFlavorGet() throws Exception {
+	void testFlavorGet() {
 		final OpenStackVim vim = createOsVim();
 		when(vimJpa.findById(id)).thenReturn(Optional.ofNullable(vimConnectionInformation));
 
@@ -262,7 +259,7 @@ public class OpenStackTest {
 		assertNotNull(lid);
 	}
 
-	void testCompute() throws Exception {
+	void testCompute() {
 		final OpenStackVim vim = createOsVim();
 		when(vimJpa.findById(id)).thenReturn(Optional.ofNullable(vimConnectionInformation));
 
@@ -513,19 +510,20 @@ public class OpenStackTest {
 		assertNotNull(os);
 	}
 
-	void testGnocchiDelete() throws Exception {
+	void testGnocchiDelete() {
 		final OSClientV3 os = getWallabyConnection();
 		os.telemetry().gnocchi().metrics().delete("7856e791-c918-4f72-814c-b3f18127190b");
 		assertNotNull(os);
 	}
 
-	void testServerGroup() throws Exception {
+	void testServerGroup() {
 		final OSClientV3 os = getWallabyConnection();
 		final org.openstack4j.model.compute.ServerGroup res = os.compute().serverGroups().create(UUID.randomUUID().toString(), "affinity");
+		assertNotNull(res);
 		assertNotNull(os);
 	}
 
-	void testSecurityGroup() throws Exception {
+	void testSecurityGroup() {
 		final SecurityGroup sg = new SecurityGroup();
 		sg.setDirection("ingress");
 		sg.setEtherType("ipv4");
@@ -542,7 +540,7 @@ public class OpenStackTest {
 				.protocol(sg.getProtocol())
 				.securityGroupId(sg.getToscaName())
 				.build();
-		// final SecurityGroupRule res = os.networking().securityrule().create(group);
+		assertNotNull(group);
 		final org.openstack4j.model.network.SecurityGroup securityGroup = Builders.securityGroup()
 				.name("security")
 				.build();
@@ -623,11 +621,13 @@ public class OpenStackTest {
 	void testCreatePort() {
 		final OpenStackVim vim = createOsVim();
 		final com.ubiqube.etsi.mano.service.vim.Port port = vim.network(vciInari).createPort("testname", "0dc0e07c-0eae-4c55-9b28-13bb909a9d94", "0f33bd64-5c7c-46f8-8f71-563ec7fc4689", null, NicType.NORMAL);
+		assertNotNull(port);
 	}
 
 	@Test
 	void testUserInfo() {
 		final OpenStackVim vim = createOsVim();
 		vim.authenticate(vciInari);
+		assertNotNull(vim);
 	}
 }

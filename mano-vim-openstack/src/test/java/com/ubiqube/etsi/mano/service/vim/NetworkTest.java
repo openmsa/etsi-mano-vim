@@ -169,7 +169,7 @@ class NetworkTest {
 				.withBody(OsHelper.getFile(wri, "/security-group-rules-create.json"))));
 		final SecurityGroup sg = new SecurityGroup();
 		sg.setDirection("ingress");
-		// sg.setEtherType("");
+		// sg.setEtherType("")
 		sg.setPortRangeMin(80);
 		sg.setPortRangeMax(80);
 		sg.setProtocol("TCP");

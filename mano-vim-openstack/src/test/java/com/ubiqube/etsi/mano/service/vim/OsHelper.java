@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +57,7 @@ public class OsHelper {
 						.build())
 				.authType(List.of(AuthType.BASIC))
 				.build();
+		assertNotNull(auth);
 		final VimConnectionInformation vci = new VimConnectionInformation();
 		vci.setId(UUID.randomUUID());
 		vci.setVimId(vci.getId().toString());

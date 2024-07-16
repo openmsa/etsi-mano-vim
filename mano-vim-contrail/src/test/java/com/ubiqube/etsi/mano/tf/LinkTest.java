@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 class LinkTest {
 
 	@Test
-	void testName() throws Exception {
+	void testName() {
 		final List<PairsVl> ports = Arrays.asList(new PairsVl("A", "B"),
 				new PairsVl("C", "D"),
 				new PairsVl("E", "F"));

@@ -131,7 +131,7 @@ class CliTest {
 		assertTrue(true);
 	}
 
-	void testName() throws Exception {
+	void testName() {
 		final HelmV3WrapperClient cli = new HelmV3WrapperClient();
 		final File file = new File("/home/olivier/Downloads/helm/wordpress-0.1.tgz");
 		final Servers server = createServers();
@@ -139,7 +139,7 @@ class CliTest {
 		cli.deploy(server, k8s, file, "deployement-name");
 	}
 
-	void testUninstall() throws Exception {
+	void testUninstall() {
 		final HelmV3WrapperClient cli = new HelmV3WrapperClient();
 		final Servers server = createServers();
 		final K8sServers k8s = createK8s();

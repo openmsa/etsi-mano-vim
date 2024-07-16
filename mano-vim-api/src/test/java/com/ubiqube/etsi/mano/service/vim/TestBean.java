@@ -36,12 +36,11 @@ public class TestBean {
 			final PropertyDescriptor[] props = beanInfo.getPropertyDescriptors();
 			testObject(obj, props);
 		} catch (final InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | IntrospectionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private static void testObject(final Object obj, final PropertyDescriptor[] props) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalArgumentException {
+	private static void testObject(final Object obj, final PropertyDescriptor[] props) throws IllegalAccessException, InvocationTargetException, SecurityException, IllegalArgumentException {
 		for (final PropertyDescriptor propertyDescriptor : props) {
 			final Method mr = propertyDescriptor.getReadMethod();
 			if (null != mr) {
@@ -51,7 +50,7 @@ public class TestBean {
 			if ((null != mw) && (null != mr)) {
 				final Class<?> ret = mr.getReturnType();
 				if (Modifier.isAbstract(ret.getModifiers())) {
-					// continue;
+					// continue
 				}
 				mw.invoke(obj, createType(ret));
 			}

@@ -101,7 +101,6 @@ class ContrailApiTest {
 		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
-		final Classifier clas = new Classifier();
 		srv.deletePortTuple(vimConn, "");
 		assertTrue(true);
 	}
@@ -111,7 +110,6 @@ class ContrailApiTest {
 		final ContrailApi srv = new ContrailApi();
 		final SystemConnections vimConn = createConn();
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
-		final Classifier clas = new Classifier();
 		srv.deleteServiceTemplate(vimConn, "");
 		assertTrue(true);
 	}
@@ -122,7 +120,6 @@ class ContrailApiTest {
 		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
-		final Classifier clas = new Classifier();
 		srv.deleteServiceInstance(vimConn, "");
 		assertTrue(true);
 	}
@@ -133,7 +130,6 @@ class ContrailApiTest {
 		final SystemConnections vimConn = createConn();
 		vimConn.setExtra(Map.of());
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
-		final Classifier clas = new Classifier();
 		srv.deleteNetworkPolicy(vimConn, "");
 		assertTrue(true);
 	}
@@ -143,7 +139,6 @@ class ContrailApiTest {
 		final ContrailApi srv = new ContrailApi();
 		final SystemConnections vimConn = createConn();
 		vimConn.getInterfaceInfo().setSdnEndpoint(wmRuntimeInfo.getHttpBaseUrl());
-		final Classifier clas = new Classifier();
 		srv.rollbackVmi(vimConn, "");
 		assertTrue(true);
 	}

@@ -230,7 +230,6 @@ public class NamespaceableResourceTest<T> implements NamespaceableResource<T> {
 
 	@Override
 	public <V> T edit(final Class<V> visitorType, final Visitor<V> visitor) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
