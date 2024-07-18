@@ -20,6 +20,7 @@ import java.util.List;
 
 import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackCluster;
 import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackClusterSpec;
+import io.x_k8s.cluster.infrastructure.v1beta1.openstackclusterspec.ApiServerLoadBalancer;
 import io.x_k8s.cluster.infrastructure.v1beta1.openstackclusterspec.IdentityRef;
 import io.x_k8s.cluster.infrastructure.v1beta1.openstackclusterspec.ManagedSecurityGroups;
 import io.x_k8s.cluster.infrastructure.v1beta1.openstackclusterspec.ManagedSubnets;
@@ -37,6 +38,9 @@ public class OpenStackClusterFactory {
 		CommonFactory.setNameNamespace(osc, "default", clusterName);
 		final OpenStackClusterSpec spec = new OpenStackClusterSpec();
 		spec.setExternalNetwork(CommonFactory.extNetById(extNetId));
+		final ApiServerLoadBalancer lb = new ApiServerLoadBalancer();
+		lb.setEnabled(true);
+		spec.setApiServerLoadBalancer(lb);
 		final IdentityRef identityRef = new IdentityRef();
 		identityRef.setCloudName("mano");
 		identityRef.setName(CommonFactory.createCloudConfigName(clusterName));
