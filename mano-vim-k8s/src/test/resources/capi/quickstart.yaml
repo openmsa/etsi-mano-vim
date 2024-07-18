@@ -111,6 +111,8 @@ metadata:
   name: capi-quickstart
   namespace: default
 spec:
+  apiServerLoadBalancer:
+    enabled: true
   externalNetwork:
     id: 2b9c9c46-62e6-4903-a1ee-b0aca3b6f834
   identityRef:
