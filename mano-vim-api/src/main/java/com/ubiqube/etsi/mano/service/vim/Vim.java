@@ -99,4 +99,5 @@ public interface Vim {
 	 * @param vci A VimConnection
 	 */
 	void populateConnection(VimConnectionInformation vci);
+
 }
