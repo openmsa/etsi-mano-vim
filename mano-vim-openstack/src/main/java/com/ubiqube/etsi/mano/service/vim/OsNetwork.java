@@ -45,12 +45,13 @@ import org.openstack4j.model.network.builder.SubnetBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
 import com.ubiqube.etsi.mano.dao.mano.vim.L2Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
-import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
 import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 
 import jakarta.annotation.Nullable;
@@ -60,9 +61,9 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 
 	private final OSClientV3 os;
 
-	private final OpenStakVimConnection vimConnectionInformation;
+	private final VimConnectionInformation vimConnectionInformation;
 
-	public OsNetwork(final OSClientV3 os, final OpenStakVimConnection vimConnectionInformation) {
+	public OsNetwork(final OSClientV3 os, final VimConnectionInformation vimConnectionInformation) {
 		this.os = os;
 		this.vimConnectionInformation = vimConnectionInformation;
 	}
@@ -70,7 +71,8 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	@Override
 	public String createNetwork(final VlProtocolData vl, final String name, final String dnsDomain, final String qosPolicyId) {
 		final L2Data l2 = vl.getL2ProtocolData();
-		final NetworkBuilder bNet = Builders.network().tenantId(vimConnectionInformation.getAccessInfo().getProjectId());
+		final KeystoneAuthV3 ai = (KeystoneAuthV3) vimConnectionInformation.getAccessInfo();
+		final NetworkBuilder bNet = Builders.network().tenantId(ai.getProjectId());
 		bNet.name(name);
 		Optional.ofNullable(l2.getMtu()).ifPresent(bNet::mtu);
 		Optional.ofNullable(l2.getNetworkType()).ifPresent(x2 -> bNet.networkType(NetworkType.valueOf(x2.toUpperCase())));
@@ -89,10 +91,11 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 		if (null != ipAllocationPool) {
 			bSub.addPool(ipAllocationPool.getStartIpAddress(), ipAllocationPool.getEndIpAddress());
 		}
+		final KeystoneAuthV3 ai = (KeystoneAuthV3) vimConnectionInformation.getAccessInfo();
 		bSub.cidr(l3ProtocolData.getCidr())
 				.enableDHCP(Optional.ofNullable(l3ProtocolData.isDhcpEnabled()).orElse(false))
 				.gateway(l3ProtocolData.getGatewayIp())
-				.tenantId(vimConnectionInformation.getAccessInfo().getProjectId())
+				.tenantId(ai.getProjectId())
 				.ipVersion(convertIpVersion(l3ProtocolData.getIpVersion()))
 				.networkId(networkId);
 		final Subnet res = os.networking().subnet().create(bSub.build());
@@ -136,7 +139,7 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 		final List<? extends Port> routerList = os.networking().port().list();
 		routerList.stream()
 				.filter(x -> x.getDeviceId().equals(resourceId))
-				.filter(x -> !x.getDeviceOwner().equals("network:router_gateway"))
+				.filter(x -> !"network:router_gateway".equals(x.getDeviceOwner()))
 				.map(Port::getId)
 				.forEach(x -> os.networking().router().detachInterface(resourceId, null, x));
 		checkResult(os.networking().router().delete(resourceId));

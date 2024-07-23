@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.openstack4j.api.OSClient.OSClientV3;
 
-import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
+import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
 class OsNetworkTest {
 
 	@Test
 	void test() {
-		final OpenStakVimConnection vimConn = new OpenStakVimConnection();
+		final VimConnectionInformation vimConn = new VimConnectionInformation();
 		final OSClientV3 os = null;
 		final OsNetwork n = new OsNetwork(os, vimConn);
 		assertNotNull(n);

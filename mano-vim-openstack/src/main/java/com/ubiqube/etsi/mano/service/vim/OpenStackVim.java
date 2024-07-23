@@ -35,7 +35,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.mapstruct.factory.Mappers;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.api.exceptions.AuthenticationException;
@@ -59,14 +58,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.ubiqube.etsi.mano.dao.mano.AccessInfo;
-import com.ubiqube.etsi.mano.dao.mano.InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
-import com.ubiqube.etsi.mano.dao.mano.ii.OpenstackV3InterfaceInfo;
 import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
-import com.ubiqube.etsi.mano.dao.mano.vim.OpenStakVimConnection;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
-import com.ubiqube.etsi.mano.dao.mano.vim.mapping.OsKeyStoneV3Mapping;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
@@ -83,8 +77,6 @@ public class OpenStackVim implements Vim {
 	private static final Logger LOG = LoggerFactory.getLogger(OpenStackVim.class);
 
 	private static final ThreadLocal<Map<String, OSClientV3>> sessions = new ThreadLocal<>();
-
-	private final OsKeyStoneV3Mapping vimConnMapper = Mappers.getMapper(OsKeyStoneV3Mapping.class);
 
 	public OpenStackVim() {
 		LOG.info("""
@@ -107,7 +99,7 @@ public class OpenStackVim implements Vim {
 		super.finalize();
 	}
 
-	private static synchronized OSClientV3 getClient(final VimConnectionInformation<InterfaceInfo, AccessInfo> vimConnectionInformation) {
+	private static synchronized OSClientV3 getClient(final VimConnectionInformation vimConnectionInformation) {
 		final Map<String, OSClientV3> sess = sessions.get();
 		if (null == sess) {
 			final Map<String, OSClientV3> newSess = new ConcurrentHashMap<>();
@@ -144,7 +136,8 @@ public class OpenStackVim implements Vim {
 
 	@Override
 	public String createCompute(final ComputeParameters cp) {
-		final OSClientV3 os = OpenStackVim.getClient(cp.getVimConnectionInformation());
+		final VimConnectionInformation vim = cp.getVimConnectionInformation();
+		final OSClientV3 os = OpenStackVim.getClient(vim);
 		final ServerCreateBuilder bs = Builders.server();
 		LOG.trace("Creating server: {}", cp);
 		bs.image(cp.getImageId());
@@ -453,8 +446,7 @@ public class OpenStackVim implements Vim {
 	@Override
 	public Network network(final VimConnectionInformation vimConnectionInformation) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
-		final OpenStakVimConnection vc = vimConnMapper.map(vimConnectionInformation);
-		return new OsNetwork(os, vc);
+		return new OsNetwork(os, vimConnectionInformation);
 	}
 
 	@Override
@@ -546,11 +538,11 @@ public class OpenStackVim implements Vim {
 
 	@Override
 	public void populateConnection(final VimConnectionInformation vci) {
-		final VimConnectionInformation<OpenstackV3InterfaceInfo, KeystoneAuthV3> vimConn = vci;
+		final VimConnectionInformation vimConn = vci;
 		final OSClientV3 client = OsUtils.authenticate(vci.getInterfaceInfo(), (KeystoneAuthV3) vci.getAccessInfo());
 		final Token token = client.getToken();
 		final Project prj = token.getProject();
-		final KeystoneAuthV3 ai = vimConn.getAccessInfo();
+		final KeystoneAuthV3 ai = (KeystoneAuthV3) vimConn.getAccessInfo();
 		ai.setProjectDomain(prj.getDomain().getName());
 		ai.setProjectId(prj.getId());
 		ai.setProject(prj.getName());
