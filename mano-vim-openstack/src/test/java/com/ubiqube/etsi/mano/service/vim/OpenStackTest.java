@@ -96,14 +96,27 @@ public class OpenStackTest {
 
 	public OpenStackTest() throws IOException {
 		final ObjectMapper desMapper = new ObjectMapper();
-		vimConnectionInformation = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack.json"), VimConnectionInformation.class);
+		VimConnectionDto tmpVci = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack.json"), VimConnectionDto.class);
+		vimConnectionInformation = map(tmpVci);
 		id = UUID.randomUUID();
 		vimConnectionInformation.setId(id);
 		vimConnectionInformation.setVimId(id.toString());
-		vciInari = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack-yoga.json"), VimConnectionInformation.class);
+		tmpVci = desMapper.readValue(new FileInputStream("src/test/resources/vim-connection/openstack-yoga.json"), VimConnectionDto.class);
+		vciInari = map(tmpVci);
 		vciInari.setId(id);
 		vciInari.setVimId(id.toString());
 
+	}
+
+	private VimConnectionInformation map(final VimConnectionDto tmpVci) {
+		final VimConnectionInformation ret = new VimConnectionInformation();
+		ret.setAccessInfo(tmpVci.getAccessInfo());
+		ret.setInterfaceInfo(tmpVci.getInterfaceInfo());
+		ret.setCnfInfo(tmpVci.getCnfInfo());
+		ret.setExtra(tmpVci.getExtra());
+		ret.setJujuInfo(tmpVci.getJujuInfo());
+		ret.setVimType(tmpVci.getVimType());
+		return ret;
 	}
 
 	@Test
