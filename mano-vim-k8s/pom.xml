@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.ubiqube.mano</groupId>
 		<artifactId>mano-vim-aggregator</artifactId>
-		<version>4.0.0</version>
+		<version>4.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>mano-vim-k8s</artifactId>
 	<name>mano-vim-k8s</name>
@@ -71,12 +71,12 @@
 		<dependency>
 			<groupId>com.ubiqube.mano.crd</groupId>
 			<artifactId>capi-crd-openstack</artifactId>
-			<version>4.0.0</version>
+			<version>4.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ubiqube.mano.crd</groupId>
 			<artifactId>capi-crd-main</artifactId>
-			<version>4.0.0</version>
+			<version>4.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
