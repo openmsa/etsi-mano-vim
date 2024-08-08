@@ -10,7 +10,6 @@
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>mano-db-connection</artifactId>
-			<version>${version.small-db}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.openstack4j.core</groupId>

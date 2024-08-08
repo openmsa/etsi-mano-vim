@@ -23,12 +23,10 @@
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>orchestration-api</artifactId>
-			<version>${version.orchestration-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>mano-db-vim</artifactId>
-			<version>${version.small-db}</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.annotation</groupId>
