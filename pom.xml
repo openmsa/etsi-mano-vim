@@ -22,7 +22,7 @@
 		<module>mano-crds</module>
 	</modules>
 	<scm>
-		<developerConnection>scm:git:https://github.com/openmsa/etsi-mano-vim.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com/openmsa/etsi-mano-vim.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 </project>
