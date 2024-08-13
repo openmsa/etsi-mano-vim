@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>capi-crd-openstack</artifactId>
 	<properties>
-		<fabric8.version>6.13.2</fabric8.version>
+		<fabric8.version>6.13.3</fabric8.version>
 	</properties>
 	<dependencies>
 		<dependency>
