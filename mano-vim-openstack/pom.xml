@@ -43,7 +43,6 @@
 		<dependency>
 			<groupId>com.github.openstack4j.core.connectors</groupId>
 			<artifactId>openstack4j-httpclient5</artifactId>
-			<version>3.12-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.openstack4j.core</groupId>
@@ -52,7 +51,6 @@
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>mano-vim-api</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
@@ -73,7 +71,6 @@
 		<dependency>
 			<groupId>com.ubiqube.mano</groupId>
 			<artifactId>openstack-commons</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
