@@ -145,6 +145,7 @@ public class OpenStackTest {
 		final ServerCreate sc = Builders.server()
 				.name("cirros-ovi")
 				.flavor("1")
+				.hostname("aa")
 				.image("e5429d68-3f1a-43e6-b46b-f83700d771da")
 				.addPersonality("/etc/motd", "Welcome to the new VM! Restricted access only")
 				.networks(List.of("3958926a-b986-41f4-a5d9-95a3474d3d7b"))
@@ -153,6 +154,11 @@ public class OpenStackTest {
 //Boot the Server
 		final Server server = os.compute().servers().boot(sc);
 		assertNotNull(server);
+	}
+
+	@Test
+	void testServer() {
+		createServer(getYogaConnection());
 	}
 
 	void testConn() throws Exception {
@@ -329,10 +335,10 @@ public class OpenStackTest {
 	private static OSClientV3 getYogaConnection() {
 		final Identifier domainIdentifier = Identifier.byName("Default");
 		return OSFactory.builderV3()
-				.withConfig(Config.newConfig().withEndpointNATResolution("10.31.1.15"))
-				.endpoint("http://10.31.1.15:5000/v3")
-				.credentials("admin", "ffd1c4cca62c4912", domainIdentifier)
-				.scopeToProject(Identifier.byId("c958ebf4c38a4bee889a93a4715a54d8"))
+				.withConfig(Config.newConfig().withEndpointNATResolution("10.31.1.108"))
+				.endpoint("http://10.31.1.108:5000/v3")
+				.credentials("admin", "cc4ace4cf4844540", domainIdentifier)
+				.scopeToProject(Identifier.byId("18b7739d3f294ba5adacb41b42e14e80"))
 				.authenticate();
 	}
 
@@ -575,9 +581,14 @@ public class OpenStackTest {
 		assertTrue(true);
 	}
 
+	@Test
 	void testPort() {
-		final OSClientV3 os = getWallabyConnection();
-		final Port port = Builders.port().build();
+		final OSClientV3 os = getYogaConnection();
+		final Port port = Builders.port()
+				.networkId("1bcb8318-a90f-46c5-9078-2bbf195e2686")
+
+				.dnsName("bbb")
+				.build();
 		os.networking().port().create(port);
 		assertTrue(true);
 	}
