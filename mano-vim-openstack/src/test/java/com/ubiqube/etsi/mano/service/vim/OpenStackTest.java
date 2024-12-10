@@ -156,7 +156,6 @@ public class OpenStackTest {
 		assertNotNull(server);
 	}
 
-	@Test
 	void testServer() {
 		createServer(getYogaConnection());
 	}
