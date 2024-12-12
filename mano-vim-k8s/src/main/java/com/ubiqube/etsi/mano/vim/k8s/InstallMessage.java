@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s;
 
+import com.ubiqube.etsi.mano.vim.k8s.conn.K8s;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 

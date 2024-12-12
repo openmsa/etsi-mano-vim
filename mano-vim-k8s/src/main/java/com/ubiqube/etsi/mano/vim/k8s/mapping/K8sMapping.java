@@ -21,24 +21,27 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 
-import com.ubiqube.etsi.mano.vim.k8s.K8s;
+import com.ubiqube.etsi.mano.vim.k8s.conn.K8s;
 
 import io.fabric8.kubernetes.api.model.NamedAuthInfo;
 import io.fabric8.kubernetes.api.model.NamedCluster;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface K8sMapping {
+	@Mapping(target = "certificateAuthInfo", ignore = true)
+	@Mapping(target = "openIdAuthInfo", ignore = true)
+	@Mapping(target = "tokenAuthInfo", ignore = true)
 	@Mapping(target = "apiUrl", source = "cluster.server")
 	@Mapping(target = "caData", source = "cluster.certificateAuthorityData")
-	@Mapping(target = "clientCrt", ignore = true)
-	@Mapping(target = "clientKey", ignore = true)
 	@Mapping(target = "namespace", ignore = true)
 	void map(NamedCluster cluster, @MappingTarget K8s tgt);
 
+	@Mapping(target = "openIdAuthInfo", ignore = true)
+	@Mapping(target = "tokenAuthInfo", ignore = true)
 	@Mapping(target = "apiUrl", ignore = true)
 	@Mapping(target = "caData", ignore = true)
-	@Mapping(target = "clientCrt", source = "user.clientCertificateData")
-	@Mapping(target = "clientKey", source = "user.clientKeyData")
+	@Mapping(target = "certificateAuthInfo.clientCertificate", source = "user.clientCertificateData")
+	@Mapping(target = "certificateAuthInfo.clientCertificateKey", source = "user.clientKeyData")
 	@Mapping(target = "namespace", ignore = true)
 	void map(NamedAuthInfo cluster, @MappingTarget K8s tgt);
 

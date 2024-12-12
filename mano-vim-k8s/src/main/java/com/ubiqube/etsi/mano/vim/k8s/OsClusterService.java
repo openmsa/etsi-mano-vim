@@ -27,6 +27,8 @@ import org.springframework.stereotype.Service;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.service.vim.VimGenericException;
+import com.ubiqube.etsi.mano.vim.k8s.conn.CertificateAuthInfo;
+import com.ubiqube.etsi.mano.vim.k8s.conn.K8s;
 import com.ubiqube.etsi.mano.vim.k8s.factory.ClusterFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.CommonFactory;
 import com.ubiqube.etsi.mano.vim.k8s.factory.KubeadmConfigTemplateFactory;
@@ -126,13 +128,22 @@ public class OsClusterService {
 	}
 
 	private static Config toConfig(final K8s k8sConfig) {
-		return new ConfigBuilder()
+		final ConfigBuilder cfg = new ConfigBuilder()
 				.withMasterUrl(k8sConfig.getApiUrl())
-				.withCaCertData(k8sConfig.getCaData())
-				.withClientCertData(k8sConfig.getClientCrt())
-				.withClientKeyData(k8sConfig.getClientKey())
-				.withClientKeyAlgo("RSA")
-				.build();
+				.withCaCertData(k8sConfig.getCaData());
+		if (k8sConfig.getTokenAuthInfo() != null) {
+			return cfg.withOauthToken(k8sConfig.getTokenAuthInfo().getToken()).build();
+		}
+		if (k8sConfig.getCertificateAuthInfo() != null) {
+			final CertificateAuthInfo cert = k8sConfig.getCertificateAuthInfo();
+			return cfg.withClientCertData(cert.getClientCertificate())
+					.withClientKeyData(cert.getClientCertificateKey())
+					.withClientKeyAlgo("RSA")
+					.build();
+		} else if (k8sConfig.getOpenIdAuthInfo() != null) {
+			throw new VimException("Unimplemeted method k8s login openId");
+		}
+		return cfg.build();
 	}
 
 	public Optional<K8s> getKubeConfig(final K8s k8sConfig, final String namespace, final String clusterName) {

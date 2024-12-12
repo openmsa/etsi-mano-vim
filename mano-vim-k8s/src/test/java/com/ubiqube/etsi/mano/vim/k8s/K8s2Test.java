@@ -20,7 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 
-import com.ubiqube.etsi.mano.vim.k8s.K8s.K8sBuilder;
+import com.ubiqube.etsi.mano.vim.k8s.conn.CertificateAuthInfo;
+import com.ubiqube.etsi.mano.vim.k8s.conn.K8s;
+import com.ubiqube.etsi.mano.vim.k8s.conn.K8s.K8sBuilder;
+import com.ubiqube.etsi.mano.vim.k8s.conn.OpenIdAuthInfo;
+import com.ubiqube.etsi.mano.vim.k8s.conn.TokenAuthInfo;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.EqualsVerifierReport;
@@ -34,22 +38,29 @@ class K8s2Test {
 		final K8sBuilder k = K8s.builder()
 				.apiUrl(null)
 				.caData(null)
-				.clientCrt(null)
-				.clientKey(null)
 				.namespace(null);
 		assertNotNull(k.toString());
 		final K8s k2 = k.build();
 		assertNotNull(k2.toString());
 		k2.setApiUrl(null);
 		k2.setCaData(null);
-		k2.setClientCrt(null);
-		k2.setClientKey(null);
 		k2.setNamespace(null);
 		k2.getApiUrl();
 		k2.getCaData();
-		k2.getClientCrt();
-		k2.getClientKey();
 		k2.getNamespace();
+		k2.setCertificateAuthInfo(CertificateAuthInfo.builder()
+				.clientCertificate(null)
+				.clientCertificateKey(null)
+				.build());
+		k2.setOpenIdAuthInfo(OpenIdAuthInfo.builder()
+				.clientId(null)
+				.clientSecret(null)
+				.password(null)
+				.remoteServerCertificate(null)
+				.skipCertificateVerification(false)
+				.username(null)
+				.build());
+		k2.setTokenAuthInfo(TokenAuthInfo.builder().token(null).build());
 		final EqualsVerifierReport rep = EqualsVerifier
 				.simple()
 				.forClass(k2.getClass())

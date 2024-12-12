@@ -14,7 +14,7 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program.  If not, see https://www.gnu.org/licenses/.
  */
-package com.ubiqube.etsi.mano.vim.k8s;
+package com.ubiqube.etsi.mano.vim.k8s.conn;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -41,11 +41,10 @@ public class K8s {
 	@NotNull
 	private String caData;
 
-	@Pattern(regexp = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
-	@NotNull
-	private String clientCrt;
+	private CertificateAuthInfo certificateAuthInfo;
 
-	@Pattern(regexp = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$")
-	@NotNull
-	private String clientKey;
+	private OpenIdAuthInfo openIdAuthInfo;
+
+	private TokenAuthInfo tokenAuthInfo;
+
 }

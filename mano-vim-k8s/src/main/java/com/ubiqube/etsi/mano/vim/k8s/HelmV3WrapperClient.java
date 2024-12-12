@@ -35,6 +35,8 @@ import com.ubiqube.etsi.mano.dao.mano.vim.k8s.K8sServers;
 import com.ubiqube.etsi.mano.service.rest.FluxRest;
 import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.service.vim.k8s.K8sClient;
+import com.ubiqube.etsi.mano.vim.k8s.conn.CertificateAuthInfo;
+import com.ubiqube.etsi.mano.vim.k8s.conn.K8s;
 
 import reactor.core.publisher.Mono;
 
@@ -72,8 +74,10 @@ public class HelmV3WrapperClient implements K8sClient {
 				.k8s(K8s.builder()
 						.apiUrl(k8s.getApiAddress())
 						.caData(Base64.getEncoder().encodeToString(k8s.getCaPem().getBytes()))
-						.clientCrt(Base64.getEncoder().encodeToString(k8s.getUserCrt().getBytes()))
-						.clientKey(Base64.getEncoder().encodeToString(userKey.getBytes()))
+						.certificateAuthInfo(CertificateAuthInfo.builder()
+								.clientCertificate(Base64.getEncoder().encodeToString(k8s.getUserCrt().getBytes()))
+								.clientCertificateKey(Base64.getEncoder().encodeToString(userKey.getBytes()))
+								.build())
 						.build())
 				.name(name)
 				.build();
