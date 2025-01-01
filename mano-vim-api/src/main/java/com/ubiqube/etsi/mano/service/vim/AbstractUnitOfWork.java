@@ -20,7 +20,7 @@ import com.ubiqube.etsi.mano.orchestrator.nodes.Node;
 import com.ubiqube.etsi.mano.orchestrator.uow.UnitOfWorkV3;
 import com.ubiqube.etsi.mano.orchestrator.vt.VirtualTaskV3;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 /**
  *
@@ -28,9 +28,9 @@ import jakarta.annotation.Nonnull;
  *
  */
 public abstract class AbstractUnitOfWork<U> implements UnitOfWorkV3<U> {
-	@Nonnull
+	@NonNull
 	private final VirtualTaskV3<U> task;
-	@Nonnull
+	@NonNull
 	private final Class<? extends Node> node;
 
 	protected AbstractUnitOfWork(final VirtualTaskV3<U> task, final Class<? extends Node> node) {

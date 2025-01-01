@@ -49,8 +49,8 @@ import com.ubiqube.etsi.mano.service.sys.SysImage;
 import com.ubiqube.etsi.mano.service.vim.mapping.ImageMapper;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public class OsStorage implements Storage {
 
@@ -146,7 +146,7 @@ public class OsStorage implements Storage {
 	}
 
 	@Override
-	@Nonnull
+	@NonNull
 	public SysImage getImagesInformations(final String name) {
 		final List<? extends Image> images = os.imagesV2().list(Map.of(LIMIT, "500"));
 		final Image image = images.stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst().orElseThrow(() -> new VimException("Image " + name + " Cannot be found on Vim."));

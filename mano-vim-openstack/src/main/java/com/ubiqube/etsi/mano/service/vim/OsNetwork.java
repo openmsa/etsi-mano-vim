@@ -54,7 +54,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	private static final Logger LOG = LoggerFactory.getLogger(OsNetwork.class);

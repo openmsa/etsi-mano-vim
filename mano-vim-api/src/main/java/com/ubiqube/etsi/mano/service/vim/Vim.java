@@ -26,7 +26,7 @@ import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 import com.ubiqube.etsi.mano.vim.dto.Flavor;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 /**
  *
@@ -37,19 +37,19 @@ public interface Vim {
 
 	String getType();
 
-	@Nonnull
+	@NonNull
 	Network network(final VimConnectionInformation vimConnectionInformation);
 
-	@Nonnull
+	@NonNull
 	Storage storage(final VimConnectionInformation vimConnectionInformation);
 
-	@Nonnull
+	@NonNull
 	Dns dns(final VimConnectionInformation vimConnectionInformation);
 
-	@Nonnull
+	@NonNull
 	VimMonitoring getMonitoring(VimConnectionInformation vimConnectionInformation);
 
-	@Nonnull
+	@NonNull
 	String getOrCreateFlavor(VimConnectionInformation vimConnectionInformation, String name, int numVcpu, long virtualMemorySize, long disk, Map<String, String> flavorSpec);
 
 	String createCompute(ComputeParameters computeParameters);

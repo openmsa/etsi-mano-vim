@@ -25,7 +25,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.sys.SysImage;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
-import jakarta.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 
 /**
  *
@@ -45,7 +45,7 @@ public interface Storage {
 
 	String createObjectStorage(final VnfStorage vnfStorage);
 
-	@Nonnull
+	@NonNull
 	SysImage getImagesInformations(String name);
 
 	List<SwImage> getImageList();

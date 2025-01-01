@@ -62,7 +62,7 @@ import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackCluster;
 import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackMachineTemplate;
 import io.x_k8s.cluster.v1beta1.Cluster;
 import io.x_k8s.cluster.v1beta1.MachineDeployment;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 
 @Service
 public class OsClusterService {

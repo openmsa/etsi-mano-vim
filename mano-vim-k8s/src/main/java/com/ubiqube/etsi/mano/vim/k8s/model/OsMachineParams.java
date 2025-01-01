@@ -16,7 +16,7 @@
  */
 package com.ubiqube.etsi.mano.vim.k8s.model;
 
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import lombok.Builder;
 import lombok.Getter;
 

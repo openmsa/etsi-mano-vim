@@ -25,8 +25,8 @@ import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /**
  *
@@ -46,7 +46,7 @@ public interface Network {
 
 	void deleteRouter(String resourceId);
 
-	@Nonnull
+	@NonNull
 	Map<String, String> getPublicNetworks();
 
 	Port createPort(final String name, final String networkId, @Nullable final String deviceId, @Nullable String macAddress, NicType nicType);
