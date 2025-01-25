@@ -37,6 +37,7 @@ import com.ubiqube.etsi.mano.service.vim.VimException;
 import com.ubiqube.etsi.mano.vim.k8sexecutor.K8sExecutor;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -125,6 +126,11 @@ public class TestExecutor implements K8sExecutor {
 	@Override
 	public List<Object> apply(final Config cfg, final List<String> x) {
 		return List.of();
+	}
+
+	@Override
+	public <T extends HasMetadata> KubernetesResourceList<T> list(final Config k8sCfg, final Function<KubernetesClient, KubernetesResourceList<T>> func) {
+		return null;
 	}
 
 }

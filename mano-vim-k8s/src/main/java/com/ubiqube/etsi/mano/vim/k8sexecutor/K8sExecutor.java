@@ -19,11 +19,13 @@ package com.ubiqube.etsi.mano.vim.k8sexecutor;
 import java.util.List;
 import java.util.function.Function;
 
+import org.jspecify.annotations.NonNull;
+
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.api.model.KubernetesResourceList;
 import io.fabric8.kubernetes.api.model.StatusDetails;
 import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import org.jspecify.annotations.NonNull;
 
 public interface K8sExecutor {
 
@@ -43,4 +45,6 @@ public interface K8sExecutor {
 	HasMetadata createOrPatch(final Config k8sCfg, final HasMetadata hasmetadata);
 
 	List<Object> apply(Config cfg, List<String> x);
+
+	<T extends HasMetadata> KubernetesResourceList<T> list(final Config k8sCfg, final Function<KubernetesClient, KubernetesResourceList<T>> func);
 }
