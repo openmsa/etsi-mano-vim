@@ -37,7 +37,7 @@ public interface K8sMapping {
 	void map(NamedCluster cluster, @MappingTarget K8s tgt);
 
 	@Mapping(target = "openIdAuthInfo", ignore = true)
-	@Mapping(target = "tokenAuthInfo", ignore = true)
+	@Mapping(target = "tokenAuthInfo.token", source = "user.token")
 	@Mapping(target = "apiUrl", ignore = true)
 	@Mapping(target = "caData", ignore = true)
 	@Mapping(target = "certificateAuthInfo.clientCertificate", source = "user.clientCertificateData")
