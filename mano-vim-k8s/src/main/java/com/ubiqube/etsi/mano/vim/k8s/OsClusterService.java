@@ -20,6 +20,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -62,7 +63,6 @@ import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackCluster;
 import io.x_k8s.cluster.infrastructure.v1beta1.OpenStackMachineTemplate;
 import io.x_k8s.cluster.v1beta1.Cluster;
 import io.x_k8s.cluster.v1beta1.MachineDeployment;
-import org.jspecify.annotations.Nullable;
 
 @Service
 public class OsClusterService {
@@ -128,10 +128,10 @@ public class OsClusterService {
 	}
 
 	private static Config toConfig(final K8s k8sConfig) {
-		final ConfigBuilder cfg = new ConfigBuilder()
+		final ConfigBuilder cfg = new ConfigBuilder(Config.empty())
 				.withMasterUrl(k8sConfig.getApiUrl())
 				.withCaCertData(k8sConfig.getCaData());
-		if (k8sConfig.getTokenAuthInfo() != null) {
+		if ((k8sConfig.getTokenAuthInfo() != null) && (k8sConfig.getTokenAuthInfo().getToken() != null)) {
 			return cfg.withOauthToken(k8sConfig.getTokenAuthInfo().getToken()).build();
 		}
 		if (k8sConfig.getCertificateAuthInfo() != null) {
