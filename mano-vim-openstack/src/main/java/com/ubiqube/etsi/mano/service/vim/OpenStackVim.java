@@ -239,7 +239,7 @@ public class OpenStackVim implements Vim {
 		if (409 == res.getCode()) {
 			return;
 		}
-		int cnt = 100;
+		int cnt = 3000;
 		while (cnt >= 0) {
 			final Server res2 = os.compute().servers().get(resourceId);
 			if (null == res2) {
@@ -254,6 +254,7 @@ public class OpenStackVim implements Vim {
 			}
 			cnt--;
 		}
+		LOG.warn("Compute resource not released.");
 	}
 
 	@Override
