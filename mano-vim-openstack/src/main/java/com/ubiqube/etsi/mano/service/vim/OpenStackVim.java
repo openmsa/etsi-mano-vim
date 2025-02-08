@@ -35,6 +35,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import org.mapstruct.factory.Mappers;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.api.exceptions.AuthenticationException;
@@ -64,6 +65,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.openstack.OsUtils;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
+import com.ubiqube.etsi.mano.service.vim.mapping.ComputeInfoMapping;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 
 import jakarta.validation.constraints.Null;
@@ -77,6 +79,8 @@ public class OpenStackVim implements Vim {
 	private static final Logger LOG = LoggerFactory.getLogger(OpenStackVim.class);
 
 	private static final ThreadLocal<Map<String, OSClientV3>> sessions = new ThreadLocal<>();
+
+	private final ComputeInfoMapping computeInfoMapping = Mappers.getMapper(ComputeInfoMapping.class);
 
 	public OpenStackVim() {
 		LOG.info("""
@@ -164,6 +168,12 @@ public class OpenStackVim implements Vim {
 		}
 		final Server res = os.compute().servers().boot(bs.build());
 		return res.getId();
+	}
+
+	public ComputeInfo getCompute(final VimConnectionInformation vimConnectionInformation, final String resourceId) {
+		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
+		final Server server = os.compute().servers().get(resourceId);
+		return computeInfoMapping.mapServerInfo(server);
 	}
 
 	@Override
