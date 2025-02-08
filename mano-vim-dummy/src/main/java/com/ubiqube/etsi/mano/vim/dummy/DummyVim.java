@@ -24,6 +24,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.Cnf;
+import com.ubiqube.etsi.mano.service.vim.ComputeInfo;
 import com.ubiqube.etsi.mano.service.vim.ComputeParameters;
 import com.ubiqube.etsi.mano.service.vim.Dns;
 import com.ubiqube.etsi.mano.service.vim.Network;
@@ -185,6 +186,11 @@ public class DummyVim implements Vim {
 	@Override
 	public void populateConnection(final VimConnectionInformation vci) {
 		// Nothing.
+	}
+
+	@Override
+	public ComputeInfo getCompute(final VimConnectionInformation vimConnectionInformation, final String resourceId) {
+		return null;
 	}
 
 }
