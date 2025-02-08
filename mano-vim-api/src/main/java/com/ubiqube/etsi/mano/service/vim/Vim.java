@@ -19,14 +19,14 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.util.List;
 import java.util.Map;
 
+import org.jspecify.annotations.NonNull;
+
 import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.vnfi.VimCapability;
 import com.ubiqube.etsi.mano.service.sys.ServerGroup;
 import com.ubiqube.etsi.mano.service.vim.mon.VimMonitoring;
 import com.ubiqube.etsi.mano.vim.dto.Flavor;
-
-import org.jspecify.annotations.NonNull;
 
 /**
  *
@@ -53,6 +53,8 @@ public interface Vim {
 	String getOrCreateFlavor(VimConnectionInformation vimConnectionInformation, String name, int numVcpu, long virtualMemorySize, long disk, Map<String, String> flavorSpec);
 
 	String createCompute(ComputeParameters computeParameters);
+
+	ComputeInfo getCompute(VimConnectionInformation vimConnectionInformation, String resourceId);
 
 	void deleteCompute(VimConnectionInformation vimConnectionInformation, String resourceId);
 
