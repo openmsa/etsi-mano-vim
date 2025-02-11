@@ -24,6 +24,7 @@ import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.sys.SysImage;
 import com.ubiqube.etsi.mano.service.vim.Storage;
+import com.ubiqube.etsi.mano.service.vim.VimVolume;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
 public class DummyStorage implements Storage {
@@ -72,6 +73,11 @@ public class DummyStorage implements Storage {
 
 	@Override
 	public SoftwareImage getImageDetail(final String id) {
+		return null;
+	}
+
+	@Override
+	public VimVolume getStorage(final String id) {
 		return null;
 	}
 
