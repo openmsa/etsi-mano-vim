@@ -20,12 +20,12 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
+import org.jspecify.annotations.NonNull;
+
 import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.sys.SysImage;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
-
-import org.jspecify.annotations.NonNull;
 
 /**
  *
@@ -52,4 +52,5 @@ public interface Storage {
 
 	SoftwareImage getImageDetail(String id);
 
+	VimVolume getStorage(final String id);
 }
