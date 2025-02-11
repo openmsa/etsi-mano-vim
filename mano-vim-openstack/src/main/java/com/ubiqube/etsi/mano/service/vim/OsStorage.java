@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.mapstruct.factory.Mappers;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
@@ -47,10 +49,8 @@ import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
 import com.ubiqube.etsi.mano.service.sys.SysImage;
 import com.ubiqube.etsi.mano.service.vim.mapping.ImageMapper;
+import com.ubiqube.etsi.mano.service.vim.mapping.VimVolumeMapper;
 import com.ubiqube.etsi.mano.vim.dto.SwImage;
-
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 public class OsStorage implements Storage {
 
@@ -63,6 +63,7 @@ public class OsStorage implements Storage {
 	private final OSClientV3 os;
 
 	private final ImageMapper mapper = Mappers.getMapper(ImageMapper.class);
+	private final VimVolumeMapper volumeMapper = Mappers.getMapper(VimVolumeMapper.class);
 
 	public OsStorage(final OSClientV3 os) {
 		this.os = os;
@@ -198,6 +199,11 @@ public class OsStorage implements Storage {
 		si.setSize(image.getSize());
 		si.setVimId(id);
 		return si;
+	}
+
+	public VimVolume getStorage(final String id) {
+		Volume r = os.blockStorage().volumes().get(id);
+		return volumeMapper.map(r);
 	}
 
 	private static Checksum buildChecksum(final Image image) {
