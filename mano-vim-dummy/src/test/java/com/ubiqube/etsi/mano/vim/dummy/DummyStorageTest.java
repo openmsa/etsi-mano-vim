@@ -39,6 +39,7 @@ class DummyStorageTest {
 		s.getImagesInformations(null);
 		s.getSwImageMatching(null);
 		s.uploadSoftwareImage(null, null);
+		s.getStorage(null);
 		assertTrue(true);
 	}
 

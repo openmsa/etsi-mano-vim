@@ -58,6 +58,8 @@ class DummyVimTest {
 		dv.startServer(null, null);
 		dv.stopServer(null, null);
 		dv.storage(null);
+		dv.populateConnection(null);
+		dv.getCompute(null, null);
 		assertTrue(true);
 	}
 
