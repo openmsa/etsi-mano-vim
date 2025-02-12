@@ -24,10 +24,13 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.put;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +39,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
+import com.ubiqube.etsi.mano.vim.dto.SwImage;
 
 @WireMockTest
 class StorageTest {
@@ -183,7 +187,7 @@ class StorageTest {
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
 		stubFor(post(urlPathMatching("/9292/v2/images")).willReturn(aResponse()
 				.withStatus(200)
-				.withBody(OsHelper.getFile(wri, "/image-single.json"))));
+				.withBody(OsHelper.getFile(wri, "/image-single2.json"))));
 		stubFor(put(urlPathMatching("/9292/v2/images/9f326f5f-7839-4928-9722-ad51ca97b478/file")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody("")));
@@ -203,11 +207,39 @@ class StorageTest {
 				.withBody(OsHelper.getFile(wri, "/auth.json"))));
 		stubFor(get(urlPathMatching("/9292/v2/images/9f326f5f-7839-4928-9722-ad51ca97b478")).willReturn(aResponse()
 				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/image-single2.json"))));
+		final OpenStackVim os = createOsVim();
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		Storage sto = os.storage(vci);
+		assertThrows(VimException.class, () -> sto.getImageDetail("9f326f5f-7839-4928-9722-ad51ca97b478"));
+	}
+
+	@Test
+	void testGetAlgorithm(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/9292/v2/images/9f326f5f-7839-4928-9722-ad51ca97b478")).willReturn(aResponse()
+				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/image-single.json"))));
 		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
-		os.storage(vci).getImageDetail("9f326f5f-7839-4928-9722-ad51ca97b478");
-		assertTrue(true);
+		final SoftwareImage imageDetail = os.storage(vci).getImageDetail("9f326f5f-7839-4928-9722-ad51ca97b478");
+		assertEquals("SHA-512", imageDetail.getChecksum().getAlgorithm());
+	}
+
+	@Test
+	void testGetAlgorithmNull(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/9292/v2/images/9f326f5f-7839-4928-9722-ad51ca97b478")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/image-single-null.json"))));
+		final OpenStackVim os = createOsVim();
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final SoftwareImage imageDetail = os.storage(vci).getImageDetail("9f326f5f-7839-4928-9722-ad51ca97b478");
+		assertEquals("MD5", imageDetail.getChecksum().getAlgorithm());
 	}
 
 	@Test
@@ -262,5 +294,35 @@ class StorageTest {
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
 		final Storage sto = os.storage(vci);
 		assertThrows(VimException.class, () -> sto.getImagesInformations("cirros-0.5.2"));
+	}
+
+	@Test
+	void testGetImageList(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/9292/v2/images"))
+				.withQueryParam("limit", equalTo("500"))
+				.willReturn(aResponse()
+						.withStatus(200)
+						.withBody(OsHelper.getFile(wri, "/images.json"))));
+		final OpenStackVim os = createOsVim();
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final List<SwImage> images = os.storage(vci).getImageList();
+		assertTrue(images.size() > 0);
+	}
+
+	@Test
+	void testGetStorage(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8776/v3/volumes/d0ae47e1-7240-47f8-b9b6-65df236214f6")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/volumes-detail.json"))));
+		final OpenStackVim os = createOsVim();
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final VimVolume volume = os.storage(vci).getStorage("d0ae47e1-7240-47f8-b9b6-65df236214f6");
+		assertNotNull(volume);
 	}
 }
