@@ -86,6 +86,8 @@ class K8sExecutorFabic8ImplTest {
 	@Test
 	void testApply() {
 		Config k8sCfg = new Config(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		k8sCfg.setConnectionTimeout(1);
+		k8sCfg.setRequestTimeout(1);
 		String str = getFile("/k8s-get-pods.yaml");
 		List<HasMetadata> r = k8sExecutor.apply(k8sCfg, str);
 		assertNotNull(r);
@@ -94,6 +96,8 @@ class K8sExecutorFabic8ImplTest {
 	@Test
 	void testApplyList() {
 		Config k8sCfg = new Config(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		k8sCfg.setConnectionTimeout(1);
+		k8sCfg.setRequestTimeout(1);
 		String str = getFile("/k8s-get-pods.yaml");
 		List<Object> r = k8sExecutor.apply(k8sCfg, List.of(str));
 		assertNotNull(r);
