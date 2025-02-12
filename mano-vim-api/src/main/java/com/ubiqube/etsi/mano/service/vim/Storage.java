@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import com.ubiqube.etsi.mano.dao.mano.vim.SoftwareImage;
 import com.ubiqube.etsi.mano.dao.mano.vim.VnfStorage;
@@ -52,5 +53,6 @@ public interface Storage {
 
 	SoftwareImage getImageDetail(String id);
 
+	@Nullable
 	VimVolume getStorage(final String id);
 }
