@@ -21,6 +21,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,6 +35,7 @@ import org.junit.jupiter.api.Test;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
 import com.ubiqube.etsi.mano.dao.mano.vim.AffinityRule;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
@@ -352,4 +355,31 @@ class OpenStackVimTest {
 		assertTrue(true);
 	}
 
+	@Test
+	void testPopulateConnection(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		final OpenStackVim os = createOsVim();
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		os.populateConnection(vci);
+		KeystoneAuthV3 ai = (KeystoneAuthV3) vci.getAccessInfo();
+		assertEquals("Default", ai.getProjectDomain());
+		assertEquals("1da4d2fa72dc41dfb71a9972809e50ae", ai.getProjectId());
+		assertEquals("admin", ai.getProject());
+	}
+
+	@Test
+	void testGetCompute(final WireMockRuntimeInfo wri) {
+		stubFor(post(urlPathMatching("/auth/tokens")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/auth.json"))));
+		stubFor(get(urlPathMatching("/8774/v2.1/servers/be36d444-0762-4935-ac05-76eca2c77c25")).willReturn(aResponse()
+				.withStatus(200)
+				.withBody(OsHelper.getFile(wri, "/server.json"))));
+		final VimConnectionInformation vci = OsHelper.createServer(wri);
+		final OpenStackVim os = createOsVim();
+		ComputeInfo r = os.getCompute(vci, "be36d444-0762-4935-ac05-76eca2c77c25");
+		assertNotNull(r);
+	}
 }

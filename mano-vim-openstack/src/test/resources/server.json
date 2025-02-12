@@ -1,0 +1,87 @@
+{
+  "server": {
+    "id": "8b7b2127-d148-45a7-94ce-7d39ea0cccc6",
+    "name": "rightVdu01-Compute-0000",
+    "status": "ACTIVE",
+    "tenant_id": "407aac6f52a14d2ca36556c6cbc4c918",
+    "user_id": "d6805cbb4d9047cdbb0d027e838eaf48",
+    "metadata": {},
+    "hostId": "cda7ed05e21450fa18cfbb81d7b474345d10073ffc1f715456466c7a",
+    "image": {
+      "id": "ea747085-888f-483e-ab23-8df878bb2869",
+      "links": [
+        {
+          "rel": "bookmark",
+          "href": "http://localhost:8774/images/ea747085-888f-483e-ab23-8df878bb2869"
+        }
+      ]
+    },
+    "flavor": {
+      "id": "3cf4718f-28da-4d78-9d47-b3bd0ca7068d",
+      "links": [
+        {
+          "rel": "bookmark",
+          "href": "http://localhost:8774/flavors/3cf4718f-28da-4d78-9d47-b3bd0ca7068d"
+        }
+      ]
+    },
+    "created": "2025-02-11T16:35:03Z",
+    "updated": "2025-02-11T16:37:41Z",
+    "addresses": {
+      "middleVl01-Network-0000": [
+        {
+          "version": 4,
+          "addr": "192.168.21.165",
+          "OS-EXT-IPS:type": "fixed",
+          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:e5:91:ce"
+        }
+      ],
+      "rightVl01-Network-0000": [
+        {
+          "version": 4,
+          "addr": "192.168.20.175",
+          "OS-EXT-IPS:type": "fixed",
+          "OS-EXT-IPS-MAC:mac_addr": "fa:16:3e:8b:8c:2f"
+        }
+      ]
+    },
+    "accessIPv4": "",
+    "accessIPv6": "",
+    "links": [
+      {
+        "rel": "self",
+        "href": "http://localhost:8774/v2.1/servers/8b7b2127-d148-45a7-94ce-7d39ea0cccc6"
+      },
+      {
+        "rel": "bookmark",
+        "href": "http://localhost:8774/servers/8b7b2127-d148-45a7-94ce-7d39ea0cccc6"
+      }
+    ],
+    "OS-DCF:diskConfig": "MANUAL",
+    "progress": 0,
+    "OS-EXT-AZ:availability_zone": "nova",
+    "config_drive": "",
+    "key_name": null,
+    "OS-SRV-USG:launched_at": "2025-02-11T16:37:41.000000",
+    "OS-SRV-USG:terminated_at": null,
+    "security_groups": [
+      {
+        "name": "default"
+      },
+      {
+        "name": "default"
+      }
+    ],
+    "OS-EXT-SRV-ATTR:host": "DEV-UBI-OPENSTACK-INARI",
+    "OS-EXT-SRV-ATTR:instance_name": "instance-000058c4",
+    "OS-EXT-SRV-ATTR:hypervisor_hostname": "DEV-UBI-OPENSTACK-INARI",
+    "OS-EXT-STS:task_state": null,
+    "OS-EXT-STS:vm_state": "active",
+    "OS-EXT-STS:power_state": 1,
+    "os-extended-volumes:volumes_attached": [
+      {
+        "id": "bdd00baa-b6a7-4f0d-827e-92384c09f4f5"
+      }
+    ]
+  }
+}
