@@ -1,0 +1,143 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      cni.projectcalico.org/containerID: 53fa5f7a39e9d95dd9cb711030e8b365bff92d766e5a047f61a797f7971b5f53
+      cni.projectcalico.org/podIP: 10.233.102.179/32
+      cni.projectcalico.org/podIPs: 10.233.102.179/32
+    creationTimestamp: "2025-02-10T10:26:20Z"
+    generateName: docker-registry-56948549d4-
+    labels:
+      app: docker-registry
+      pod-template-hash: 56948549d4
+    name: docker-registry-56948549d4-wz254
+    namespace: mano
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: docker-registry-56948549d4
+      uid: d1a9bbee-7e38-4a7d-a393-601aed71cff0
+    resourceVersion: "37145244"
+    uid: f0b83534-959f-4ca1-9fcb-8c56d387d516
+  spec:
+    containers:
+    - env:
+      - name: REGISTRY_AUTH
+        value: htpasswd
+      - name: REGISTRY_AUTH_HTPASSWD_REALM
+        value: Registry Realm
+      - name: REGISTRY_AUTH_HTPASSWD_PATH
+        value: /auth/htpasswd
+      image: registry:2
+      imagePullPolicy: Always
+      name: registry
+      ports:
+      - containerPort: 5000
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/registry
+        name: registry-storage
+      - mountPath: /auth
+        name: auth-secret
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-c659m
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: node1
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: registry-storage
+      persistentVolumeClaim:
+        claimName: registry-pvc
+    - name: auth-secret
+      secret:
+        defaultMode: 420
+        secretName: registry-auth-secret
+    - name: kube-api-access-c659m
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2025-02-10T10:26:43Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2025-02-10T10:26:24Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2025-02-10T10:26:43Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2025-02-10T10:26:43Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2025-02-10T10:26:24Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://7800a28567857fdb84eb73c57047b06b6fe31186118c505342b947e6d30c7489
+      image: docker.io/library/registry:2
+      imageID: docker.io/library/registry@sha256:319881be2ee9e345d5837d15842a04268de6a139e23be42654fc7664fc6eaf52
+      lastState: {}
+      name: registry
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2025-02-10T10:26:42Z"
+    hostIP: 10.255.3.80
+    hostIPs:
+    - ip: 10.255.3.80
+    phase: Running
+    podIP: 10.233.102.179
+    podIPs:
+    - ip: 10.233.102.179
+    qosClass: BestEffort
+    startTime: "2025-02-10T10:26:24Z"
+kind: List
+metadata:
+  resourceVersion: ""
