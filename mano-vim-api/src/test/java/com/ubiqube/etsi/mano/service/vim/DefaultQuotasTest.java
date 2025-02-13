@@ -16,6 +16,8 @@
  */
 package com.ubiqube.etsi.mano.service.vim;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("static-method")
@@ -24,5 +26,20 @@ class DefaultQuotasTest {
 	@Test
 	void test() {
 		TestBean.testClass(DefaultQuotas.class);
+	}
+
+	@Test
+	void test002() {
+		DefaultQuotas dq = new DefaultQuotas();
+		dq.setFloatingIpMax(-1);
+		assertEquals(Integer.MAX_VALUE, dq.getFloatingFree());
+		dq.setRamMax(-1);
+		assertEquals(Long.MAX_VALUE, dq.getRamFree());
+		dq.setKeyPairsMax(-1);
+		assertEquals(Integer.MAX_VALUE, dq.getKeyPairsFree());
+		dq.setInstanceMax(-1);
+		assertEquals(Integer.MAX_VALUE, dq.getInstanceFree());
+		dq.setVcpuMax(-1);
+		assertEquals(Integer.MAX_VALUE, dq.getVcpuFree());
 	}
 }
