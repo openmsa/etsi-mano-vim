@@ -29,121 +29,101 @@ class AbstractUnitOfWorkTest {
 
 		@Override
 		public boolean isDeleteTask() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public @Nullable String getVimConnectionId() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public void setVimConnectionId(final String id) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public void setName(final String name) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public String getName() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public Class<? extends Node> getType() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public void setAlias(final String alias) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public String getAlias() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public int getRank() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		@Override
 		public void setRank(final int rank) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public String getTemplateParameters() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public void setTemplateParameters(final String u) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public void setDelete(final boolean del) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public void setSystemBuilder(final SystemBuilder<String> db) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public SystemBuilder<String> getSystemBuilder() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public @Nullable String getVimResourceId() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public void setVimResourceId(final String res) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public void setRemovedLiveInstanceId(final UUID liveInstanceId) {
-			// TODO Auto-generated method stub
-
+			//
 		}
 
 		@Override
 		public String getToscaName() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
 		public ResultType getStatus() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 	}
