@@ -17,6 +17,7 @@
 package com.ubiqube.etsi.mano.service.vim;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 
@@ -45,4 +46,5 @@ public class ComputeParameters {
 	private List<String> securityGroup;
 	private List<String> affinityRules;
 	private List<String> portsId;
+	private Map<String, String> metadata;
 }

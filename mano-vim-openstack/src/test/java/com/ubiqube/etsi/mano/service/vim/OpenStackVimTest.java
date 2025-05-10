@@ -158,7 +158,7 @@ class OpenStackVimTest {
 				.withBody(OsHelper.getFile(wri, "/servers.json"))));
 		final OpenStackVim os = createOsVim();
 		final VimConnectionInformation vci = OsHelper.createServer(wri);
-		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, new ArrayList<>(), new ArrayList<>(), null, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), Map.of());
 		os.createCompute(cp);
 		assertTrue(true);
 	}
@@ -177,7 +177,7 @@ class OpenStackVimTest {
 		final List<String> storage = List.of("storage");
 		final List<String> ports = List.of("port");
 		final List<String> affinity = List.of("affinity");
-		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, networks, storage, "cloudInit", new ArrayList<>(), affinity, ports);
+		final ComputeParameters cp = new ComputeParameters(vci, null, null, null, networks, storage, "cloudInit", new ArrayList<>(), affinity, ports, Map.of());
 		os.createCompute(cp);
 		assertTrue(true);
 	}

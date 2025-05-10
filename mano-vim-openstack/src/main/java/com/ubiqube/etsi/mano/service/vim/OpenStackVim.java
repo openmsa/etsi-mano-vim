@@ -166,10 +166,12 @@ public class OpenStackVim implements Vim {
 					.build();
 			bs.blockDevice(blockDevice);
 		}
+		bs.addMetadata(cp.getMetadata());
 		final Server res = os.compute().servers().boot(bs.build());
 		return res.getId();
 	}
 
+	@Override
 	public ComputeInfo getCompute(final VimConnectionInformation vimConnectionInformation, final String resourceId) {
 		final OSClientV3 os = OpenStackVim.getClient(vimConnectionInformation);
 		final Server server = os.compute().servers().get(resourceId);
