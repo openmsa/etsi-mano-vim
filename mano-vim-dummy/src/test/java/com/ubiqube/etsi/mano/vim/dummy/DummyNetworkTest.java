@@ -33,7 +33,7 @@ class DummyNetworkTest {
 	void test() {
 		final DummyNetwork srv = new DummyNetwork();
 		srv.createNetwork(null, null, null, null);
-		srv.createPort(null, null, null, null, null);
+		srv.createPort(null);
 		srv.createRouter(null, null, null);
 		srv.createSecurityGroup(null);
 		srv.createSecurityRule(null, null);

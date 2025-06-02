@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.jspecify.annotations.Nullable;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient.OSClientV3;
 import org.openstack4j.model.common.ActionResponse;
@@ -46,15 +47,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ubiqube.etsi.mano.dao.mano.ai.KeystoneAuthV3;
-import com.ubiqube.etsi.mano.dao.mano.common.NicType;
 import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
 import com.ubiqube.etsi.mano.dao.mano.vim.L2Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.vim.VimConnectionInformation;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
-
-import org.jspecify.annotations.Nullable;
 
 public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	private static final Logger LOG = LoggerFactory.getLogger(OsNetwork.class);
@@ -152,13 +150,14 @@ public class OsNetwork implements com.ubiqube.etsi.mano.service.vim.Network {
 	}
 
 	@Override
-	public com.ubiqube.etsi.mano.service.vim.Port createPort(final String name, final String networkId, final String deviceId, final String macAddress, final NicType nicType) {
+	public com.ubiqube.etsi.mano.service.vim.Port createPort(final PortParameters params) {
 		final Port port = Builders.port()
-				.networkId(networkId)
-				.macAddress(macAddress)
-				.name(name)
-				.deviceId(deviceId)
-				.vNicType(nicType.toString())
+				.networkId(params.getNetworkId())
+				.macAddress(params.getMacAddress())
+				.name(params.getName())
+				.deviceId(params.getDeviceId())
+				.vNicType(params.getNicType().toString())
+				.qosPolicyId(params.getQosPolicyId())
 				.build();
 		final Port p = os.networking().port().create(port);
 		return map(p);

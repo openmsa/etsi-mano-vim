@@ -19,14 +19,13 @@ package com.ubiqube.etsi.mano.service.vim;
 import java.util.List;
 import java.util.Map;
 
-import com.ubiqube.etsi.mano.dao.mano.common.NicType;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
+
 import com.ubiqube.etsi.mano.dao.mano.vim.IpPool;
 import com.ubiqube.etsi.mano.dao.mano.vim.L3Data;
 import com.ubiqube.etsi.mano.dao.mano.vim.SecurityGroup;
 import com.ubiqube.etsi.mano.dao.mano.vim.VlProtocolData;
-
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 /**
  *
@@ -49,7 +48,7 @@ public interface Network {
 	@NonNull
 	Map<String, String> getPublicNetworks();
 
-	Port createPort(final String name, final String networkId, @Nullable final String deviceId, @Nullable String macAddress, NicType nicType);
+	Port createPort(PortParameters portParameters);
 
 	void deletePort(final String uuid);
 

@@ -642,7 +642,13 @@ public class OpenStackTest {
 	 */
 	void testCreatePort() {
 		final OpenStackVim vim = createOsVim();
-		final com.ubiqube.etsi.mano.service.vim.Port port = vim.network(vciInari).createPort("testname", "0dc0e07c-0eae-4c55-9b28-13bb909a9d94", "0f33bd64-5c7c-46f8-8f71-563ec7fc4689", null, NicType.NORMAL);
+		PortParameters portParameters = PortParameters.builder()
+				.name("testname")
+				.networkId("0dc0e07c-0eae-4c55-9b28-13bb909a9d94")
+				.deviceId("0f33bd64-5c7c-46f8-8f71-563ec7fc4689")
+				.nicType(NicType.NORMAL)
+				.build();
+		final com.ubiqube.etsi.mano.service.vim.Port port = vim.network(vciInari).createPort(portParameters);
 		assertNotNull(port);
 	}
 

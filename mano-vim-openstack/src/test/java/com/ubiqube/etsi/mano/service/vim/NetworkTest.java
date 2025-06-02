@@ -137,7 +137,14 @@ class NetworkTest {
 		stubFor(post(urlPathMatching("/9696/v2.0/ports")).willReturn(aResponse()
 				.withStatus(200)
 				.withBody(OsHelper.getFile(wri, "/ports-create.json"))));
-		os.network(vci).createPort("name", "networkId", "deviceId", null, NicType.NORMAL);
+		PortParameters pp = PortParameters.builder()
+				.name("name")
+				.networkId("networkId")
+				.deviceId("deviceId")
+				.macAddress(null)
+				.nicType(NicType.NORMAL)
+				.build();
+		os.network(vci).createPort(pp);
 		assertTrue(true);
 	}
 
