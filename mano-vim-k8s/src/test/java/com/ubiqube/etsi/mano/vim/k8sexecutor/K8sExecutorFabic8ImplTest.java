@@ -101,7 +101,7 @@ class K8sExecutorFabic8ImplTest {
 
 	@Test
 	void testApply() {
-		Config k8sCfg = new Config(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		Config k8sCfg = Config.empty();
 		k8sCfg.setConnectionTimeout(1);
 		k8sCfg.setRequestTimeout(1);
 		String str = getFile("/k8s-get-pods.yaml");
@@ -111,7 +111,7 @@ class K8sExecutorFabic8ImplTest {
 
 	@Test
 	void testApplyList() {
-		Config k8sCfg = new Config(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		Config k8sCfg = Config.empty();
 		k8sCfg.setConnectionTimeout(1);
 		k8sCfg.setRequestTimeout(1);
 		String str = getFile("/k8s-get-pods.yaml");
