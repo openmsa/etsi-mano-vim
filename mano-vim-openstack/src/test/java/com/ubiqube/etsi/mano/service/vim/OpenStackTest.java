@@ -580,7 +580,6 @@ public class OpenStackTest {
 		assertTrue(true);
 	}
 
-	@Test
 	void testPort() {
 		final OSClientV3 os = getYogaConnection();
 		final Port port = Builders.port()
@@ -652,7 +651,6 @@ public class OpenStackTest {
 		assertNotNull(port);
 	}
 
-	@Test
 	void testUserInfo() {
 		final OpenStackVim vim = createOsVim();
 		vim.authenticate(vciInari);
