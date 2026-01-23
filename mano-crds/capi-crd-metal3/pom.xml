@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>capi-crd-metal3</artifactId>
 	<properties>
-		<fabric8.version>7.5.1</fabric8.version>
+		<fabric8.version>7.5.2</fabric8.version>
 	</properties>
 	<dependencies>
 		<dependency>
